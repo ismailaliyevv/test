@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azərbaycan Olimpiya Medalları Testi</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f4ff;--bg2:#e4eaff;--card:#ffffff;--ink:#0d1535;--ink2:#2d3a6a;--ink3:#6a78aa;--accent:#2a3fa0;--accent2:#4a6aff;--gold:#d4920a;--silver:#8a9ab5;--bronze:#b87040;--green:#1a7a3c;--red:#c8341a;--border:#c0ccee;--shadow:rgba(13,21,53,0.11)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.7}
+body::after{content:'';position:fixed;width:700px;height:700px;background:radial-gradient(circle,rgba(42,63,160,.06) 0%,transparent 70%);top:-250px;right:-200px;pointer-events:none;z-index:0}
+.deco{position:fixed;width:500px;height:500px;background:radial-gradient(circle,rgba(74,106,255,.05) 0%,transparent 70%);bottom:-200px;left:-150px;pointer-events:none;z-index:0}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--ink);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--accent2)}
+.topbar-brand{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--bg);letter-spacing:2.5px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.topbar-brand span{color:var(--accent2)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.score-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:5px 14px;border-radius:20px;font-family:'Space Mono',monospace;font-size:12px;color:#fff;display:flex;align-items:center;gap:6px}
+.score-pill .sc{color:var(--accent2);font-weight:700}
+.snd-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.snd-btn:hover{background:rgba(255,255,255,.16)}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:82px 20px 60px}
+.q-grid-section{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:22px;box-shadow:0 4px 22px var(--shadow)}
+.q-grid-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.q-grid-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.q-grid{display:flex;flex-wrap:wrap;gap:5px}
+.q-cell{width:34px;height:34px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
+.q-cell:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.q-cell.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.q-cell.answered-correct{background:var(--green);color:#fff;border-color:var(--green)}
+.q-cell.answered-wrong{background:var(--red);color:#fff;border-color:var(--red)}
+.prog-strip{height:4px;background:var(--border);border-radius:4px;margin-bottom:20px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;width:0%;transition:width .4s ease}
+.q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;margin-bottom:20px;box-shadow:0 8px 32px var(--shadow);overflow:hidden;animation:cardIn .35s cubic-bezier(.4,0,.2,1)}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.q-header{background:var(--ink);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.q-num{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.q-num strong{color:var(--accent2);font-size:14px}
+.q-topic{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);background:rgba(255,255,255,.07);padding:4px 10px;border-radius:10px}
+.q-body{padding:28px 28px 12px;border-bottom:1px solid var(--bg2)}
+.q-text{font-size:15px;font-weight:500;line-height:1.78;color:var(--ink);white-space:pre-line}
+.q-opts{padding:16px 20px 22px;display:flex;flex-direction:column;gap:10px}
+.opt{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:13px 18px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;transition:all .2s;text-align:left;width:100%;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);position:relative;overflow:hidden}
+.opt::before{content:'';position:absolute;inset:0;background:var(--accent);opacity:0;transition:opacity .2s}
+.opt:hover:not(:disabled)::before{opacity:.04}
+.opt:hover:not(:disabled){border-color:var(--accent);transform:translateX(5px);box-shadow:0 4px 16px rgba(42,63,160,.15)}
+.opt-lbl{width:28px;height:28px;border-radius:7px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--ink2);flex-shrink:0;margin-top:1px;position:relative;z-index:1;transition:all .2s}
+.opt-text{position:relative;z-index:1;line-height:1.5;padding-top:3px;font-weight:400}
+.opt:disabled{cursor:not-allowed}
+.opt.correct{background:rgba(26,122,60,.07);border-color:var(--green);animation:pulseG .4s ease}
+.opt.correct .opt-lbl{background:var(--green);color:#fff}
+.opt.wrong{background:rgba(200,52,26,.07);border-color:var(--red);animation:shake .35s ease}
+.opt.wrong .opt-lbl{background:var(--red);color:#fff}
+.opt.show-correct{background:rgba(26,122,60,.04);border-color:var(--green);border-style:dashed}
+.opt.show-correct .opt-lbl{background:var(--green);color:#fff}
+@keyframes pulseG{0%{transform:scale(1)}50%{transform:scale(1.016) translateX(5px)}100%{transform:scale(1) translateX(5px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.feedback-bar{margin:0 20px 16px;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;display:none;align-items:center;gap:10px;animation:slideUp .25s ease}
+.feedback-bar.show{display:flex}
+.feedback-bar.ok{background:rgba(26,122,60,.1);border:1.5px solid rgba(26,122,60,.3);color:#0d5a26}
+.feedback-bar.fail{background:rgba(200,52,26,.08);border:1.5px solid rgba(200,52,26,.28);color:#922010}
+.fb-icon{font-size:20px}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.nav-row{display:flex;gap:10px;padding:0 20px 22px}
+.btn-back,.btn-next{padding:12px 24px;border-radius:10px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:2px solid}
+.btn-back{background:transparent;border-color:var(--border);color:var(--ink2);display:none}
+.btn-back.show{display:flex;align-items:center;gap:8px}
+.btn-back:hover{border-color:var(--ink);color:var(--ink)}
+.btn-next{background:var(--ink);border-color:var(--ink);color:#fff;display:none;align-items:center;gap:8px;margin-left:auto}
+.btn-next.show{display:flex}
+.btn-next:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(42,63,160,.3)}
+.results{display:none;animation:cardIn .5s ease}
+.results.show{display:block}
+.res-card{background:var(--card);border:2px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 12px 48px var(--shadow)}
+.res-header{background:var(--ink);padding:40px 36px;text-align:center;position:relative;overflow:hidden}
+.res-header::before{content:'🏅';position:absolute;font-size:130px;opacity:.05;right:-15px;top:-25px}
+.res-emoji-big{font-size:54px;margin-bottom:12px}
+.res-title-big{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.res-sub-big{color:rgba(255,255,255,.5);font-size:14px}
+.res-body{padding:32px 36px}
+.res-big-num{text-align:center;margin-bottom:28px}
+.res-big-num .num{font-family:'Space Mono',monospace;font-size:72px;font-weight:700;color:var(--accent2);line-height:1}
+.res-big-num .denom{font-family:'Space Mono',monospace;font-size:28px;color:var(--ink3)}
+.res-stats{display:flex;gap:16px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
+.res-stat{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:16px 22px;text-align:center;min-width:100px}
+.res-stat .sn{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;display:block;margin-bottom:4px}
+.res-stat .sl{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:1.5px}
+.res-stat.c .sn{color:var(--green)}
+.res-stat.w .sn{color:var(--red)}
+.res-stat.p .sn{color:var(--gold)}
+.restart-btn{display:flex;align-items:center;gap:10px;margin:0 auto;padding:16px 40px;background:var(--ink);border:2px solid var(--ink);border-radius:12px;color:#fff;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.restart-btn:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 28px rgba(42,63,160,.35)}
+.review-panel{margin-top:28px;background:var(--bg);border:1.5px solid var(--border);border-radius:14px;overflow:hidden}
+.review-header{background:var(--ink);padding:12px 20px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:space-between}
+.review-toggle{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'Space Mono',monospace;letter-spacing:1px}
+.review-list{padding:12px;display:none}
+.review-list.open{display:block}
+.review-item{padding:10px 14px;border-radius:10px;margin-bottom:8px;border:1.5px solid;display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer;transition:all .15s}
+.review-item:hover{transform:translateX(4px)}
+.review-item.c{border-color:rgba(26,122,60,.3);background:rgba(26,122,60,.05)}
+.review-item.w{border-color:rgba(200,52,26,.3);background:rgba(200,52,26,.05)}
+.ri-num{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;width:28px;margin-top:1px}
+.ri-icon{flex-shrink:0;font-size:14px;margin-top:2px}
+.ri-text{color:var(--ink2);flex:1;line-height:1.5}
+#loading{position:fixed;inset:0;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s ease}
+.load-icon{font-size:62px;margin-bottom:20px;animation:bounce2 1s ease infinite alternate}
+.load-title{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:#fff;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+.load-sub{font-size:13px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase}
+.load-bar{width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:4px;margin-top:28px;overflow:hidden}
+.load-fill{height:100%;background:var(--accent2);border-radius:4px;animation:loadfill 1.3s ease forwards}
+@keyframes loadfill{from{width:0}to{width:100%}}
+@keyframes bounce2{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.cf-wrap{position:fixed;inset:0;pointer-events:none;z-index:999}
+.cp{position:absolute;border-radius:2px;animation:cffall linear forwards}
+@keyframes cffall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(105vh) rotate(540deg);opacity:0}}
+@media(max-width:600px){.q-body{padding:20px 16px 10px}.q-opts{padding:10px 12px 18px}.nav-row{padding:0 12px 18px}.q-header{padding:14px 16px}.res-body{padding:24px 18px}.q-cell{width:28px;height:28px;font-size:9px}.res-big-num .num{font-size:52px}.topbar-brand{font-size:9px;letter-spacing:1.5px}}
+</style>
+</head>
+<body>
+<div id="loading">
+  <div class="load-icon">🏅</div>
+  <div class="load-title">OLİMPİYA MEDALLARI</div>
+  <div class="load-sub">Azərbaycan · Test Yüklənir</div>
+  <div class="load-bar"><div class="load-fill"></div></div>
+</div>
+<div class="deco"></div>
+<div class="topbar">
+  <div class="topbar-brand">🏅 <span>AZƏRBAYCANın</span> OLİMPİYA MEDALLARI</div>
+  <div class="topbar-right">
+    <div class="score-pill">Bal: <span class="sc" id="topScore">0</span></div>
+    <button class="snd-btn" id="sndBtn">🔊</button>
+  </div>
+</div>
+<div class="wrap">
+  <div id="quizArea">
+    <div class="prog-strip"><div class="prog-fill" id="pFill"></div></div>
+    <div class="q-grid-section">
+      <div class="q-grid-label">Sual Naviqasiyası</div>
+      <div class="q-grid" id="qGrid"></div>
+    </div>
+    <div class="q-card" id="qCard">
+      <div class="q-header">
+        <div class="q-num">SUAL <strong id="qNumDisp">1</strong> / <span id="qTotalDisp">?</span></div>
+        <div class="q-topic" id="qTopic">Ümumi</div>
+      </div>
+      <div class="q-body"><div class="q-text" id="qTxt"></div></div>
+      <div class="q-opts" id="optsWrap"></div>
+      <div class="feedback-bar" id="fb"><span class="fb-icon" id="fbIcon"></span><span id="fbTxt"></span></div>
+      <div class="nav-row">
+        <button class="btn-back" id="btnBack">← Geri</button>
+        <button class="btn-next" id="btnNext">Növbəti →</button>
+      </div>
+    </div>
+  </div>
+  <div class="results" id="results">
+    <div class="res-card">
+      <div class="res-header">
+        <div class="res-emoji-big" id="resEmoji">🏆</div>
+        <div class="res-title-big" id="resTitle">Əla!</div>
+        <div class="res-sub-big" id="resSub">Test tamamlandı</div>
+      </div>
+      <div class="res-body">
+        <div class="res-big-num"><span class="num" id="resScore">0</span><span class="denom" id="resTotal">/0</span></div>
+        <div class="res-stats">
+          <div class="res-stat c"><span class="sn" id="rC">0</span><span class="sl">Düzgün</span></div>
+          <div class="res-stat w"><span class="sn" id="rW">0</span><span class="sl">Səhv</span></div>
+          <div class="res-stat p"><span class="sn" id="rP">0%</span><span class="sl">Faiz</span></div>
+        </div>
+        <button class="restart-btn" onclick="startQuiz()">↺ Yenidən Başla</button>
+        <div class="review-panel">
+          <div class="review-header">Cavabların İcmalı <button class="review-toggle" id="revToggle" onclick="toggleReview()">Göstər</button></div>
+          <div class="review-list" id="reviewList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cf-wrap" id="cfWrap"></div>
+<script>
+const ALL_Q = [
+  // ══ 1996 ATLANTA ══
+  {q:'1996-cı il Atlanta Olimpiyasında Azərbaycan neçə ölkə ilə yanaşı iştirak etdi?',topic:'Atlanta 1996',opts:[{t:'197 ölkə',c:true},{t:'199 ölkə',c:false},{t:'202 ölkə',c:false},{t:'204 ölkə',c:false}]},
+  {q:'1996-cı il Atlanta Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Atlanta 1996',opts:[{t:'23 idmançı',c:true},{t:'31 idmançı',c:false},{t:'38 idmançı',c:false},{t:'44 idmançı',c:false}]},
+  {q:'1996-cı il Atlanta Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Atlanta 1996',opts:[{t:'1 medal',c:true},{t:'3 medal',c:false},{t:'5 medal',c:false},{t:'7 medal',c:false}]},
+  {q:'1996-cı il Atlanta Olimpiyasında Azərbaycan hansı medal qazandı?',topic:'Atlanta 1996',opts:[{t:'Gümüş medal',c:true},{t:'Qızıl medal',c:false},{t:'Bürünc medal',c:false},{t:'Medal qazanmadı',c:false}]},
+  {q:'Atlanta 1996-da Azərbaycan üçün gümüş medal qazanan idmançı kimdir?',topic:'Atlanta 1996',opts:[{t:'Namiq Abdullayev — Sərbəst güləş',c:true},{t:'Vüqar Ələkbərov — Boks',c:false},{t:'Elnur Məmmədli — Cüdo',c:false},{t:'Zemfira Meftahaddinova — Stend atıcılığı',c:false}]},
+  {q:'Atlanta 1996-da Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Atlanta 1996',opts:[{t:'61-ci yer',c:true},{t:'34-cü yer',c:false},{t:'37-ci yer',c:false},{t:'39-cu yer',c:false}]},
+
+  // ══ 2000 SİDNEY ══
+  {q:'2000-ci il Sidney Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Sidney 2000',opts:[{t:'199 ölkə',c:true},{t:'197 ölkə',c:false},{t:'202 ölkə',c:false},{t:'204 ölkə',c:false}]},
+  {q:'2000-ci il Sidney Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Sidney 2000',opts:[{t:'31 idmançı',c:true},{t:'23 idmançı',c:false},{t:'38 idmançı',c:false},{t:'44 idmançı',c:false}]},
+  {q:'2000-ci il Sidney Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Sidney 2000',opts:[{t:'3 medal',c:true},{t:'1 medal',c:false},{t:'5 medal',c:false},{t:'7 medal',c:false}]},
+  {q:'Sidney 2000-də Azərbaycan üçün qızıl medal qazanan idmançı kimdir?',topic:'Sidney 2000',opts:[{t:'Zemfira Meftahaddinova — Stend atıcılığı',c:true},{t:'Namiq Abdullayev — Güləş',c:false},{t:'Vüqar Ələkbərov — Boks',c:false},{t:'İradə Aşurova — Boks',c:false}]},
+  {q:'Sidney 2000-də Namiq Abdullayev hansı növdə medal qazandı?',topic:'Sidney 2000',opts:[{t:'Sərbəst güləş — Gümüş',c:true},{t:'Yunan-Roma güləşi — Qızıl',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Boks — Gümüş',c:false}]},
+  {q:'Sidney 2000-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Sidney 2000',opts:[{t:'34-cü yer',c:true},{t:'61-ci yer',c:false},{t:'37-ci yer',c:false},{t:'39-cu yer',c:false}]},
+  {q:'Sidney 2000-də Vüqar Ələkbərov hansı idman növündə medal qazandı?',topic:'Sidney 2000',opts:[{t:'Boks — Bürünc',c:true},{t:'Güləş — Gümüş',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Taekvondo — Bürünc',c:false}]},
+
+  // ══ 2004 AFİNA ══
+  {q:'2004-cü il Afina Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Afina 2004',opts:[{t:'202 ölkə',c:true},{t:'199 ölkə',c:false},{t:'204 ölkə',c:false},{t:'207 ölkə',c:false}]},
+  {q:'2004-cü il Afina Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Afina 2004',opts:[{t:'38 idmançı',c:true},{t:'31 idmançı',c:false},{t:'44 idmançı',c:false},{t:'53 idmançı',c:false}]},
+  {q:'2004-cü il Afina Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Afina 2004',opts:[{t:'5 medal',c:true},{t:'3 medal',c:false},{t:'7 medal',c:false},{t:'10 medal',c:false}]},
+  {q:'Afina 2004-də qızıl medal qazanan idmançı kimdir?',topic:'Afina 2004',opts:[{t:'Fərid Mansurov — Yunan-Roma güləşi',c:true},{t:'Zemfira Meftahaddinova — Stend atıcılığı',c:false},{t:'Elnur Məmmədli — Cüdo',c:false},{t:'Ağası Məmmədov — Boks',c:false}]},
+  {q:'Afina 2004-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Afina 2004',opts:[{t:'37-ci yer',c:true},{t:'34-cü yer',c:false},{t:'39-cu yer',c:false},{t:'30-cu yer',c:false}]},
+  {q:'Afina 2004-də Fuad Aslanov hansı növdə medal qazandı?',topic:'Afina 2004',opts:[{t:'Boks — Bürünc',c:true},{t:'Güləş — Gümüş',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Taekvondo — Bürünc',c:false}]},
+
+  // ══ 2008 PEKİN ══
+  {q:'2008-ci il Pekin Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Pekin 2008',opts:[{t:'204 ölkə',c:true},{t:'202 ölkə',c:false},{t:'207 ölkə',c:false},{t:'205 ölkə',c:false}]},
+  {q:'2008-ci il Pekin Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Pekin 2008',opts:[{t:'44 idmançı',c:true},{t:'38 idmançı',c:false},{t:'53 idmançı',c:false},{t:'56 idmançı',c:false}]},
+  {q:'2008-ci il Pekin Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Pekin 2008',opts:[{t:'7 medal',c:true},{t:'5 medal',c:false},{t:'10 medal',c:false},{t:'8 medal',c:false}]},
+  {q:'Pekin 2008-də qızıl medal qazanan idmançı kimdir?',topic:'Pekin 2008',opts:[{t:'Elnur Məmmədli — Cüdo, 73kq',c:true},{t:'Rövşən Bayramov — Güləş',c:false},{t:'Vitaliy Rahimov — Güləş',c:false},{t:'Şahin İmranov — Boks',c:false}]},
+  {q:'Pekin 2008-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Pekin 2008',opts:[{t:'39-cu yer',c:true},{t:'37-ci yer',c:false},{t:'30-cu yer',c:false},{t:'34-cü yer',c:false}]},
+  {q:'Pekin 2008-də Vitaliy Rahimov hansı növdə medal qazandı?',topic:'Pekin 2008',opts:[{t:'Yunan-Roma güləşi — Gümüş',c:true},{t:'Sərbəst güləş — Qızıl',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Boks — Gümüş',c:false}]},
+  {q:'Pekin 2008-də Mariya Stadnik hansı növdə medal qazandı?',topic:'Pekin 2008',opts:[{t:'Sərbəst güləş — Bürünc',c:true},{t:'Yunan-Roma güləşi — Gümüş',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Boks — Bürünc',c:false}]},
+
+  // ══ 2012 LONDON ══
+  {q:'2012-ci il London Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'London 2012',opts:[{t:'204 ölkə',c:true},{t:'202 ölkə',c:false},{t:'207 ölkə',c:false},{t:'205 ölkə',c:false}]},
+  {q:'2012-ci il London Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'London 2012',opts:[{t:'53 idmançı',c:true},{t:'44 idmançı',c:false},{t:'56 idmançı',c:false},{t:'38 idmançı',c:false}]},
+  {q:'2012-ci il London Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'London 2012',opts:[{t:'10 medal',c:true},{t:'7 medal',c:false},{t:'18 medal',c:false},{t:'8 medal',c:false}]},
+  {q:'London 2012-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'London 2012',opts:[{t:'30-cu yer',c:true},{t:'39-cu yer',c:false},{t:'37-ci yer',c:false},{t:'34-cü yer',c:false}]},
+  {q:'London 2012-də qızıl medal qazanan idmançı kimdir?',topic:'London 2012',opts:[{t:'Toğrul Əsgərov — Sərbəst güləş',c:true},{t:'Şərif Şərifov — Sərbəst güləş',c:false},{t:'Valentin Xristov — Ağırlıq qaldırma',c:false},{t:'Radik İsayev — Taekvondo',c:false}]},
+  {q:'London 2012-də Radik İsayev hansı idman növündə medal qazandı?',topic:'London 2012',opts:[{t:'Taekvondo — Qızıl',c:true},{t:'Güləş — Gümüş',c:false},{t:'Boks — Bürünc',c:false},{t:'Cüdo — Qızıl',c:false}]},
+
+  // ══ 2016 RİO ══
+  {q:'2016-cı il Rio-de-Janeiro Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Rio 2016',opts:[{t:'207 ölkə',c:true},{t:'204 ölkə',c:false},{t:'205 ölkə',c:false},{t:'202 ölkə',c:false}]},
+  {q:'2016-cı il Rio Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Rio 2016',opts:[{t:'56 idmançı',c:true},{t:'53 idmançı',c:false},{t:'44 idmançı',c:false},{t:'38 idmançı',c:false}]},
+  {q:'2016-cı il Rio Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Rio 2016',opts:[{t:'18 medal',c:true},{t:'10 medal',c:false},{t:'7 medal',c:false},{t:'15 medal',c:false}]},
+  {q:'2016-cı il Rio Olimpiyasında Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Rio 2016',opts:[{t:'39-cu yer',c:true},{t:'30-cu yer',c:false},{t:'34-cü yer',c:false},{t:'37-ci yer',c:false}]},
+  {q:'Rio 2016-da Hidayət Heydərov hansı idman növündə qızıl medal qazandı?',topic:'Rio 2016',opts:[{t:'Cüdo',c:true},{t:'Taekvondo',c:false},{t:'Güləş',c:false},{t:'Boks',c:false}]},
+  {q:'Rio 2016-da Zəlim Kotsoyev hansı idman növündə qızıl medal qazandı?',topic:'Rio 2016',opts:[{t:'Cüdo',c:true},{t:'Güləş',c:false},{t:'Boks',c:false},{t:'Taekvondo',c:false}]},
+  {q:'Rio 2016-da Hidayət Heydərov hansı çəki kateqoriyasında müsabiqə apardı?',topic:'Rio 2016',opts:[{t:'−73 Kq',c:true},{t:'−66 Kq',c:false},{t:'−81 Kq',c:false},{t:'−100 Kq',c:false}]},
+  {q:'Rio 2016-da Zəlim Kotsoyev hansı çəki kateqoriyasında müsabiqə apardı?',topic:'Rio 2016',opts:[{t:'−100 Kq',c:true},{t:'−73 Kq',c:false},{t:'−90 Kq',c:false},{t:'−81 Kq',c:false}]},
+  {q:'Rio 2016-da Qaşım Maqomedov hansı idman növündə gümüş medal qazandı?',topic:'Rio 2016',opts:[{t:'Taekvondo — −58 Kq',c:true},{t:'Cüdo — −73 Kq',c:false},{t:'Boks — −92 Kq',c:false},{t:'Güləş — −67 Kq',c:false}]},
+  {q:'Rio 2016-da Loren Alfonso hansı idman növündə gümüş medal qazandı?',topic:'Rio 2016',opts:[{t:'Boks — −92 Kq',c:true},{t:'Taekvondo — −58 Kq',c:false},{t:'Güləş — −125 Kq',c:false},{t:'Cüdo — −100 Kq',c:false}]},
+  {q:'Rio 2016-da Həsrət Cəfərov hansı idman növündə bürünc medal qazandı?',topic:'Rio 2016',opts:[{t:'Güləş — Yunan-Roma güləşi, 67 Kq',c:true},{t:'Cüdo — −73 Kq',c:false},{t:'Boks — −92 Kq',c:false},{t:'Taekvondo — −58 Kq',c:false}]},
+  {q:'Rio 2016-da Giorgi Meşvildişvili hansı idman növündə bürünc medal qazandı?',topic:'Rio 2016',opts:[{t:'Güləş — Sərbəst güləş, 125 Kq',c:true},{t:'Cüdo — −100 Kq',c:false},{t:'Boks − 91 Kq',c:false},{t:'Güləş − 67 Kq',c:false}]},
+  {q:'Rio 2016-da Maqomedxan Maqomedov hansı idman növündə bürünc medal qazandı?',topic:'Rio 2016',opts:[{t:'Güləş — Sərbəst güləş, 97 Kq',c:true},{t:'Cüdo — −100 Kq',c:false},{t:'Boks — −92 Kq',c:false},{t:'Güləş − 125 Kq',c:false}]},
+
+  // ══ 2020 TOKİO ══
+  {q:'2020-ci il Tokio Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Tokio 2020',opts:[{t:'205 ölkə',c:true},{t:'207 ölkə',c:false},{t:'204 ölkə',c:false},{t:'202 ölkə',c:false}]},
+  {q:'Tokio 2020-də Azərbaycandan neçə idmançı iştirak etdi?',topic:'Tokio 2020',opts:[{t:'44 idmançı',c:true},{t:'56 idmançı',c:false},{t:'53 idmançı',c:false},{t:'38 idmançı',c:false}]},
+  {q:'Tokio 2020-də Azərbaycan neçə medal qazandı?',topic:'Tokio 2020',opts:[{t:'7 medal',c:true},{t:'10 medal',c:false},{t:'5 medal',c:false},{t:'18 medal',c:false}]},
+  {q:'Tokio 2020-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Tokio 2020',opts:[{t:'67-ci yer',c:true},{t:'39-cu yer',c:false},{t:'30-cu yer',c:false},{t:'61-ci yer',c:false}]},
+  {q:'Tokio 2020-də Azərbaycan üçün gümüş medal qazanan idmançı kimdir?',topic:'Tokio 2020',opts:[{t:'Mariya Stadnik — Sərbəst güləş',c:true},{t:'Haci Əliyev — Güləş',c:false},{t:'Alfonso Diogo — Güləş',c:false},{t:'Rafiq Hüseyn — Güləş',c:false}]},
+
+  // ══ MÜQAYİSƏLİ ══
+  {q:'Azərbaycan ən çox medal hansı Olimpiya oyunlarında qazandı?',topic:'Müqayisəli',opts:[{t:'Rio-de-Janeiro 2016 — 18 medal',c:true},{t:'London 2012 — 10 medal',c:false},{t:'Pekin 2008 — 7 medal',c:false},{t:'Tokio 2020 — 7 medal',c:false}]},
+  {q:'Azərbaycandan olimpiyadaya ən çox idmançı hansı ildə iştirak etdi?',topic:'Müqayisəli',opts:[{t:'Rio-de-Janeiro 2016 — 56 idmançı',c:true},{t:'London 2012 — 53 idmançı',c:false},{t:'Pekin 2008 — 44 idmançı',c:false},{t:'Afina 2004 — 38 idmançı',c:false}]},
+  {q:'Azərbaycandan ən az idmançı hansı olimpiyadaya iştirak etdi?',topic:'Müqayisəli',opts:[{t:'Atlanta 1996 — 23 idmançı',c:true},{t:'Sidney 2000 — 31 idmançı',c:false},{t:'Afina 2004 — 38 idmançı',c:false},{t:'Tokio 2020 — 44 idmançı',c:false}]},
+  {q:'Azərbaycan ən yüksək olimpiya reytinqinə (ən az sıraya) hansı ildə çatdı?',topic:'Müqayisəli',opts:[{t:'London 2012 — 30-cu yer',c:true},{t:'Rio 2016 — 39-cu yer',c:false},{t:'Pekin 2008 — 39-cu yer',c:false},{t:'Tokio 2020 — 67-ci yer',c:false}]},
+  {q:'Azərbaycan ilk dəfə hansı Olimpiya oyunlarında iştirak etdi?',topic:'Müqayisəli',opts:[{t:'Atlanta 1996',c:true},{t:'Sidney 2000',c:false},{t:'Afina 2004',c:false},{t:'Barselona 1992',c:false}]},
+  {q:'Azərbaycan üçün ən çox medal qazanılan idman növü hansıdır?',topic:'Müqayisəli',opts:[{t:'Güləş',c:true},{t:'Cüdo',c:false},{t:'Boks',c:false},{t:'Taekvondo',c:false}]},
+  {q:'Sidney 2000-də Zemfira Meftahaddinova hansı idman növündə qızıl medal qazandı?',topic:'Sidney 2000',opts:[{t:'Stend atıcılığı',c:true},{t:'Güləş',c:false},{t:'Cüdo',c:false},{t:'Boks',c:false}]},
+  {q:'Azərbaycan ən az medal hansı Olimpiya oyunlarında qazandı?',topic:'Müqayisəli',opts:[{t:'Atlanta 1996 — 1 medal',c:true},{t:'Tokio 2020 — 7 medal',c:false},{t:'Afina 2004 — 5 medal',c:false},{t:'Sidney 2000 — 3 medal',c:false}]}
+];
+
+// ══ ENGINE ══
+let questions=[],cur=0,userAns=[],score=0,soundOn=true,audioCtx=null,revOpen=false;
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function beep(type){
+  if(!soundOn)return;
+  try{
+    const c=getCtx(),t=c.currentTime;
+    if(type==='correct'){[[440,0],[554,.1],[659,.2]].forEach(([f,d])=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.22,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.3);o.start(t+d);o.stop(t+d+.32)});}
+    else if(type==='wrong'){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sawtooth';o.frequency.setValueAtTime(280,t);o.frequency.exponentialRampToValueAtTime(140,t+.3);g.gain.setValueAtTime(.16,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.start(t);o.stop(t+.37);}
+    else if(type==='next'){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=480;o.type='sine';g.gain.setValueAtTime(.09,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.start(t);o.stop(t+.14);}
+    else if(type==='finish'){[[523,0],[659,.13],[784,.26],[1046,.39]].forEach(([f,d])=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.2,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.35);o.start(t+d);o.stop(t+d+.37)});}
+  }catch(e){}
+}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function startQuiz(){
+  questions=shuffle(ALL_Q).map(q=>({q:q.q,topic:q.topic,opts:shuffle(q.opts)}));
+  userAns=new Array(questions.length).fill(null);
+  score=0;cur=0;revOpen=false;
+  document.getElementById('topScore').textContent='0';
+  document.getElementById('quizArea').style.display='block';
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('cfWrap').innerHTML='';
+  buildGrid();render();
+}
+function buildGrid(){
+  const grid=document.getElementById('qGrid');grid.innerHTML='';
+  questions.forEach((_,i)=>{const cell=document.createElement('button');cell.className='q-cell'+(i===0?' active':'');cell.textContent=i+1;cell.id='cell-'+i;cell.onclick=()=>goToQ(i);grid.appendChild(cell);});
+}
+function updateGrid(){
+  questions.forEach((_,i)=>{const cell=document.getElementById('cell-'+i);if(!cell)return;cell.className='q-cell';if(i===cur)cell.classList.add('active');else if(userAns[i]!==null)cell.classList.add(questions[i].opts[userAns[i]].c?'answered-correct':'answered-wrong');});
+}
+function render(){
+  const d=questions[cur];const L=['A','B','C','D'];
+  document.getElementById('qNumDisp').textContent=cur+1;
+  document.getElementById('qTotalDisp').textContent=questions.length;
+  document.getElementById('qTopic').textContent=d.topic;
+  document.getElementById('qTxt').textContent=d.q;
+  document.getElementById('pFill').style.width=((cur/questions.length)*100)+'%';
+  const wrap=document.getElementById('optsWrap');wrap.innerHTML='';
+  const answered=userAns[cur]!==null;
+  d.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');btn.className='opt';
+    if(answered){btn.disabled=true;if(i===userAns[cur])btn.classList.add(opt.c?'correct':'wrong');else if(opt.c&&!d.opts[userAns[cur]].c)btn.classList.add('show-correct');}
+    btn.innerHTML=`<span class="opt-lbl">${L[i]}</span><span class="opt-text">${opt.t}</span>`;
+    btn.onclick=()=>pick(i);wrap.appendChild(btn);
+  });
+  const fb=document.getElementById('fb');
+  if(answered){const chosen=d.opts[userAns[cur]];fb.className='feedback-bar show '+(chosen.c?'ok':'fail');document.getElementById('fbIcon').textContent=chosen.c?'✅':'❌';document.getElementById('fbTxt').textContent=chosen.c?'Düzgün cavab! Əla!':'Səhv cavab. Düzgün cavab yaşıl ilə işarələndi.';}
+  else{fb.className='feedback-bar';}
+  document.getElementById('btnBack').className='btn-back'+(cur>0?' show':'');
+  const nb=document.getElementById('btnNext');nb.className='btn-next'+(answered?' show':'');nb.textContent=cur===questions.length-1&&answered?'Nəticə →':'Növbəti →';
+  const card=document.getElementById('qCard');card.style.animation='none';void card.offsetHeight;card.style.animation='cardIn .35s cubic-bezier(.4,0,.2,1)';
+  updateGrid();
+}
+function goToQ(idx){if(idx<0||idx>=questions.length)return;cur=idx;render();beep('next');document.getElementById('qCard').scrollIntoView({behavior:'smooth',block:'nearest'});}
+function pick(idx){
+  if(userAns[cur]!==null)return;
+  userAns[cur]=idx;
+  if(questions[cur].opts[idx].c){score++;document.getElementById('topScore').textContent=score;beep('correct');}else beep('wrong');
+  render();
+}
+document.getElementById('btnNext').onclick=function(){beep('next');if(cur>=questions.length-1)showResults();else{cur++;render();document.getElementById('qCard').scrollIntoView({behavior:'smooth',block:'nearest'});}};
+document.getElementById('btnBack').onclick=function(){if(cur>0){cur--;render();beep('next');document.getElementById('qCard').scrollIntoView({behavior:'smooth',block:'nearest'});}};
+function showResults(){
+  document.getElementById('quizArea').style.display='none';
+  const res=document.getElementById('results');res.classList.add('show');res.scrollIntoView({behavior:'smooth'});
+  const tot=questions.length,pct=Math.round((score/tot)*100);
+  document.getElementById('resScore').textContent=score;document.getElementById('resTotal').textContent='/'+tot;
+  document.getElementById('rC').textContent=score;document.getElementById('rW').textContent=tot-score;document.getElementById('rP').textContent=pct+'%';
+  let emoji,title,sub;
+  if(pct>=90){emoji='🥇';title='Əla Nəticə!';sub='Olimpiya tarixini mükəmməl bilirsiniz!';}
+  else if(pct>=75){emoji='🥈';title='Çox Yaxşı!';sub='Güclü nəticə göstərdiniz!';}
+  else if(pct>=60){emoji='🥉';title='Yaxşı İş!';sub='Ortalamadan yüksək nəticə.';}
+  else if(pct>=40){emoji='📚';title='Orta Nəticə';sub='Daha çox öyrənmə lazımdır.';}
+  else{emoji='💪';title='Davam Et!';sub='Materialı yenidən nəzərdən keçirin.';}
+  document.getElementById('resEmoji').textContent=emoji;document.getElementById('resTitle').textContent=title;document.getElementById('resSub').textContent=sub;
+  beep('finish');if(pct>=60)confetti();
+  const list=document.getElementById('reviewList');list.innerHTML='';
+  questions.forEach((q,i)=>{
+    const ans=userAns[i],isOk=ans!==null&&q.opts[ans].c;
+    const item=document.createElement('div');item.className='review-item '+(ans===null?'w':(isOk?'c':'w'));
+    item.onclick=()=>{cur=i;document.getElementById('quizArea').style.display='block';document.getElementById('results').classList.remove('show');render();document.getElementById('qGrid').scrollIntoView({behavior:'smooth'});};
+    const short=q.q.length>72?q.q.slice(0,72)+'…':q.q;
+    item.innerHTML=`<span class="ri-num">${i+1}</span><span class="ri-icon">${ans===null?'⏭':(isOk?'✅':'❌')}</span><span class="ri-text">${short}</span>`;
+    list.appendChild(item);
+  });
+}
+function toggleReview(){revOpen=!revOpen;document.getElementById('reviewList').classList.toggle('open',revOpen);document.getElementById('revToggle').textContent=revOpen?'Gizlət':'Göstər';}
+function confetti(){
+  const wrap=document.getElementById('cfWrap');wrap.innerHTML='';
+  const colors=['#2a3fa0','#4a6aff','#d4920a','#1a7a3c','#c8341a','#8a3aa0'];
+  for(let i=0;i<100;i++){const p=document.createElement('div');p.className='cp';const sz=4+Math.random()*8;p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${sz}px;height:${sz}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${1.8+Math.random()*2.5}s;animation-delay:${Math.random()*1.5}s;`;wrap.appendChild(p);}
+  setTimeout(()=>wrap.innerHTML='',6000);
+}
+document.getElementById('sndBtn').onclick=function(){soundOn=!soundOn;this.textContent=soundOn?'🔊':'🔇';};
+window.addEventListener('load',()=>{setTimeout(()=>{const l=document.getElementById('loading');l.style.opacity='0';setTimeout(()=>{l.style.display='none';startQuiz();},500);},1400);});
+</script>
+</body>
+</html>
