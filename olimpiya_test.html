@@ -3,353 +3,664 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Azərbaycan Olimpiya Medalları Testi</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Fiziki Tərbiyə Testi</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f0f4ff;--bg2:#e4eaff;--card:#ffffff;--ink:#0d1535;--ink2:#2d3a6a;--ink3:#6a78aa;--accent:#2a3fa0;--accent2:#4a6aff;--gold:#d4920a;--silver:#8a9ab5;--bronze:#b87040;--green:#1a7a3c;--red:#c8341a;--border:#c0ccee;--shadow:rgba(13,21,53,0.11)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;position:relative}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.7}
-body::after{content:'';position:fixed;width:700px;height:700px;background:radial-gradient(circle,rgba(42,63,160,.06) 0%,transparent 70%);top:-250px;right:-200px;pointer-events:none;z-index:0}
-.deco{position:fixed;width:500px;height:500px;background:radial-gradient(circle,rgba(74,106,255,.05) 0%,transparent 70%);bottom:-200px;left:-150px;pointer-events:none;z-index:0}
-.topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--ink);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--accent2)}
-.topbar-brand{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--bg);letter-spacing:2.5px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
-.topbar-brand span{color:var(--accent2)}
-.topbar-right{display:flex;align-items:center;gap:12px}
-.score-pill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:5px 14px;border-radius:20px;font-family:'Space Mono',monospace;font-size:12px;color:#fff;display:flex;align-items:center;gap:6px}
-.score-pill .sc{color:var(--accent2);font-weight:700}
-.snd-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.snd-btn:hover{background:rgba(255,255,255,.16)}
-.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:82px 20px 60px}
-.q-grid-section{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:22px;box-shadow:0 4px 22px var(--shadow)}
-.q-grid-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.q-grid-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.q-grid{display:flex;flex-wrap:wrap;gap:5px}
-.q-cell{width:34px;height:34px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg);font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
-.q-cell:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
-.q-cell.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-.q-cell.answered-correct{background:var(--green);color:#fff;border-color:var(--green)}
-.q-cell.answered-wrong{background:var(--red);color:#fff;border-color:var(--red)}
-.prog-strip{height:4px;background:var(--border);border-radius:4px;margin-bottom:20px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;width:0%;transition:width .4s ease}
-.q-card{background:var(--card);border:2px solid var(--border);border-radius:20px;margin-bottom:20px;box-shadow:0 8px 32px var(--shadow);overflow:hidden;animation:cardIn .35s cubic-bezier(.4,0,.2,1)}
-@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.q-header{background:var(--ink);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.q-num{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
-.q-num strong{color:var(--accent2);font-size:14px}
-.q-topic{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);background:rgba(255,255,255,.07);padding:4px 10px;border-radius:10px}
-.q-body{padding:28px 28px 12px;border-bottom:1px solid var(--bg2)}
-.q-text{font-size:15px;font-weight:500;line-height:1.78;color:var(--ink);white-space:pre-line}
-.q-opts{padding:16px 20px 22px;display:flex;flex-direction:column;gap:10px}
-.opt{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:13px 18px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;transition:all .2s;text-align:left;width:100%;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);position:relative;overflow:hidden}
-.opt::before{content:'';position:absolute;inset:0;background:var(--accent);opacity:0;transition:opacity .2s}
-.opt:hover:not(:disabled)::before{opacity:.04}
-.opt:hover:not(:disabled){border-color:var(--accent);transform:translateX(5px);box-shadow:0 4px 16px rgba(42,63,160,.15)}
-.opt-lbl{width:28px;height:28px;border-radius:7px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--ink2);flex-shrink:0;margin-top:1px;position:relative;z-index:1;transition:all .2s}
-.opt-text{position:relative;z-index:1;line-height:1.5;padding-top:3px;font-weight:400}
-.opt:disabled{cursor:not-allowed}
-.opt.correct{background:rgba(26,122,60,.07);border-color:var(--green);animation:pulseG .4s ease}
-.opt.correct .opt-lbl{background:var(--green);color:#fff}
-.opt.wrong{background:rgba(200,52,26,.07);border-color:var(--red);animation:shake .35s ease}
-.opt.wrong .opt-lbl{background:var(--red);color:#fff}
-.opt.show-correct{background:rgba(26,122,60,.04);border-color:var(--green);border-style:dashed}
-.opt.show-correct .opt-lbl{background:var(--green);color:#fff}
-@keyframes pulseG{0%{transform:scale(1)}50%{transform:scale(1.016) translateX(5px)}100%{transform:scale(1) translateX(5px)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
-.feedback-bar{margin:0 20px 16px;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;display:none;align-items:center;gap:10px;animation:slideUp .25s ease}
-.feedback-bar.show{display:flex}
-.feedback-bar.ok{background:rgba(26,122,60,.1);border:1.5px solid rgba(26,122,60,.3);color:#0d5a26}
-.feedback-bar.fail{background:rgba(200,52,26,.08);border:1.5px solid rgba(200,52,26,.28);color:#922010}
-.fb-icon{font-size:20px}
-@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.nav-row{display:flex;gap:10px;padding:0 20px 22px}
-.btn-back,.btn-next{padding:12px 24px;border-radius:10px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:2px solid}
-.btn-back{background:transparent;border-color:var(--border);color:var(--ink2);display:none}
-.btn-back.show{display:flex;align-items:center;gap:8px}
-.btn-back:hover{border-color:var(--ink);color:var(--ink)}
-.btn-next{background:var(--ink);border-color:var(--ink);color:#fff;display:none;align-items:center;gap:8px;margin-left:auto}
-.btn-next.show{display:flex}
-.btn-next:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(42,63,160,.3)}
-.results{display:none;animation:cardIn .5s ease}
-.results.show{display:block}
-.res-card{background:var(--card);border:2px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 12px 48px var(--shadow)}
-.res-header{background:var(--ink);padding:40px 36px;text-align:center;position:relative;overflow:hidden}
-.res-header::before{content:'🏅';position:absolute;font-size:130px;opacity:.05;right:-15px;top:-25px}
-.res-emoji-big{font-size:54px;margin-bottom:12px}
-.res-title-big{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
-.res-sub-big{color:rgba(255,255,255,.5);font-size:14px}
-.res-body{padding:32px 36px}
-.res-big-num{text-align:center;margin-bottom:28px}
-.res-big-num .num{font-family:'Space Mono',monospace;font-size:72px;font-weight:700;color:var(--accent2);line-height:1}
-.res-big-num .denom{font-family:'Space Mono',monospace;font-size:28px;color:var(--ink3)}
-.res-stats{display:flex;gap:16px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
-.res-stat{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:16px 22px;text-align:center;min-width:100px}
-.res-stat .sn{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;display:block;margin-bottom:4px}
-.res-stat .sl{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:1.5px}
-.res-stat.c .sn{color:var(--green)}
-.res-stat.w .sn{color:var(--red)}
-.res-stat.p .sn{color:var(--gold)}
-.restart-btn{display:flex;align-items:center;gap:10px;margin:0 auto;padding:16px 40px;background:var(--ink);border:2px solid var(--ink);border-radius:12px;color:#fff;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.restart-btn:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 28px rgba(42,63,160,.35)}
-.review-panel{margin-top:28px;background:var(--bg);border:1.5px solid var(--border);border-radius:14px;overflow:hidden}
-.review-header{background:var(--ink);padding:12px 20px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:space-between}
-.review-toggle{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:3px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'Space Mono',monospace;letter-spacing:1px}
-.review-list{padding:12px;display:none}
-.review-list.open{display:block}
-.review-item{padding:10px 14px;border-radius:10px;margin-bottom:8px;border:1.5px solid;display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer;transition:all .15s}
-.review-item:hover{transform:translateX(4px)}
-.review-item.c{border-color:rgba(26,122,60,.3);background:rgba(26,122,60,.05)}
-.review-item.w{border-color:rgba(200,52,26,.3);background:rgba(200,52,26,.05)}
-.ri-num{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;width:28px;margin-top:1px}
-.ri-icon{flex-shrink:0;font-size:14px;margin-top:2px}
-.ri-text{color:var(--ink2);flex:1;line-height:1.5}
-#loading{position:fixed;inset:0;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s ease}
-.load-icon{font-size:62px;margin-bottom:20px;animation:bounce2 1s ease infinite alternate}
-.load-title{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:#fff;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
-.load-sub{font-size:13px;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase}
-.load-bar{width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:4px;margin-top:28px;overflow:hidden}
-.load-fill{height:100%;background:var(--accent2);border-radius:4px;animation:loadfill 1.3s ease forwards}
-@keyframes loadfill{from{width:0}to{width:100%}}
-@keyframes bounce2{from{transform:translateY(0)}to{transform:translateY(-12px)}}
-.cf-wrap{position:fixed;inset:0;pointer-events:none;z-index:999}
-.cp{position:absolute;border-radius:2px;animation:cffall linear forwards}
-@keyframes cffall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(105vh) rotate(540deg);opacity:0}}
-@media(max-width:600px){.q-body{padding:20px 16px 10px}.q-opts{padding:10px 12px 18px}.nav-row{padding:0 12px 18px}.q-header{padding:14px 16px}.res-body{padding:24px 18px}.q-cell{width:28px;height:28px;font-size:9px}.res-big-num .num{font-size:52px}.topbar-brand{font-size:9px;letter-spacing:1.5px}}
+  :root {
+    --primary: #3b82f6;
+    --primary-light: #eff6ff;
+    --primary-dark: #1d4ed8;
+    --success: #16a34a;
+    --success-light: #f0fdf4;
+    --success-border: #86efac;
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+    --danger-border: #fca5a5;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --nav-size: 48px;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .header {
+    background: white;
+    border-bottom: 2px solid var(--border);
+    padding: 14px 24px 18px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--primary-dark);
+    flex: 1;
+  }
+  .score-pill {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 6px 18px;
+    border-radius: 999px;
+    border: 2px solid var(--primary);
+    white-space: nowrap;
+  }
+  .progress-bar-wrap {
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), #60a5fa);
+    transition: width 0.4s ease;
+  }
+  .nav-section {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+  }
+  .nav-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .nav-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .nav-btn {
+    width: var(--nav-size);
+    height: var(--nav-size);
+    border: 2px solid var(--border);
+    background: white;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .nav-btn.current { border-color: var(--primary); background: var(--primary); color: white; }
+  .nav-btn.correct { border-color: var(--success); background: var(--success-light); color: var(--success); }
+  .nav-btn.wrong { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+  .main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 28px 16px 60px;
+  }
+  .question-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    border: 2px solid var(--border);
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .q-number {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .q-text {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 22px;
+    white-space: pre-wrap;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    transform: translateX(3px);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-letter {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .option-text { flex: 1; }
+  .option-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .option-btn.correct {
+    border-color: var(--success);
+    background: var(--success-light);
+    animation: correctPop 0.4s ease;
+  }
+  .option-btn.correct .option-letter { background: var(--success); color: white; }
+  .option-btn.correct .option-icon { opacity: 1; }
+  @keyframes correctPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
+  .option-btn.wrong {
+    border-color: var(--danger);
+    background: var(--danger-light);
+    animation: wrongShake 0.4s ease;
+  }
+  .option-btn.wrong .option-letter { background: var(--danger); color: white; }
+  .option-btn.wrong .option-icon { opacity: 1; }
+  @keyframes wrongShake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+  .option-btn.show-correct {
+    border-color: var(--success);
+    background: var(--success-light);
+  }
+  .option-btn.show-correct .option-letter { background: var(--success); color: white; }
+  .option-btn.show-correct .option-icon { opacity: 1; }
+  .feedback {
+    margin-top: 16px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    align-items: center;
+    gap: 10px;
+    display: none;
+  }
+  .feedback.correct { background: var(--success-light); border: 2px solid var(--success-border); color: var(--success); display: flex; }
+  .feedback.wrong { background: var(--danger-light); border: 2px solid var(--danger-border); color: var(--danger); display: flex; }
+  .nav-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-back {
+    background: white;
+    color: var(--muted);
+    border: 2px solid var(--border);
+  }
+  .btn-back:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .btn-back:disabled { opacity: 0.3; cursor: default; }
+  .btn-next {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.35);
+  }
+  .btn-next:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .q-counter { font-size: 0.85rem; font-weight: 700; color: var(--muted); }
+  .result-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    text-align: center;
+  }
+  .result-emoji { font-size: 5rem; margin-bottom: 16px; animation: bounce 0.6s ease; }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  .result-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .result-score { font-size: 3.5rem; font-weight: 900; color: var(--primary); margin-bottom: 8px; }
+  .result-sub { font-size: 1rem; color: var(--muted); margin-bottom: 32px; font-weight: 600; }
+  .result-stats { display: flex; gap: 20px; margin-bottom: 32px; flex-wrap: wrap; justify-content: center; }
+  .stat-box { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 18px 28px; min-width: 120px; }
+  .stat-val { font-size: 2rem; font-weight: 900; }
+  .stat-val.green { color: var(--success); }
+  .stat-val.red { color: var(--danger); }
+  .stat-val.orange { color: #f59e0b; }
+  .stat-label { font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-top: 4px; }
+  .btn-restart {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(59,130,246,0.35);
+    transition: all 0.15s;
+  }
+  .btn-restart:hover { background: var(--primary-dark); transform: translateY(-2px); }
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.45);
+    animation: rippleAnim 0.5s linear;
+    pointer-events: none;
+    transform: scale(0);
+  }
+  @keyframes rippleAnim {
+    from { transform: scale(0); opacity: 1; }
+    to { transform: scale(8); opacity: 0; }
+  }
 </style>
 </head>
 <body>
-<div id="loading">
-  <div class="load-icon">🏅</div>
-  <div class="load-title">OLİMPİYA MEDALLARI</div>
-  <div class="load-sub">Azərbaycan · Test Yüklənir</div>
-  <div class="load-bar"><div class="load-fill"></div></div>
-</div>
-<div class="deco"></div>
-<div class="topbar">
-  <div class="topbar-brand">🏅 <span>AZƏRBAYCANın</span> OLİMPİYA MEDALLARI</div>
-  <div class="topbar-right">
-    <div class="score-pill">Bal: <span class="sc" id="topScore">0</span></div>
-    <button class="snd-btn" id="sndBtn">🔊</button>
+
+<div class="header" id="header">
+  <div class="header-title">🏃 Fiziki Tərbiyə Testi</div>
+  <div class="score-pill" id="scorePill">✓ 0 / 0</div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
   </div>
 </div>
-<div class="wrap">
-  <div id="quizArea">
-    <div class="prog-strip"><div class="prog-fill" id="pFill"></div></div>
-    <div class="q-grid-section">
-      <div class="q-grid-label">Sual Naviqasiyası</div>
-      <div class="q-grid" id="qGrid"></div>
-    </div>
-    <div class="q-card" id="qCard">
-      <div class="q-header">
-        <div class="q-num">SUAL <strong id="qNumDisp">1</strong> / <span id="qTotalDisp">?</span></div>
-        <div class="q-topic" id="qTopic">Ümumi</div>
-      </div>
-      <div class="q-body"><div class="q-text" id="qTxt"></div></div>
-      <div class="q-opts" id="optsWrap"></div>
-      <div class="feedback-bar" id="fb"><span class="fb-icon" id="fbIcon"></span><span id="fbTxt"></span></div>
-      <div class="nav-row">
-        <button class="btn-back" id="btnBack">← Geri</button>
-        <button class="btn-next" id="btnNext">Növbəti →</button>
-      </div>
-    </div>
+
+<div class="nav-section" id="navSection">
+  <div class="nav-label">Suallar arasında keçid</div>
+  <div class="nav-grid" id="navGrid"></div>
+</div>
+
+<div class="main" id="mainArea">
+  <div class="question-card" id="questionCard">
+    <div class="q-number" id="qNumber"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="feedback" id="feedbackBanner"></div>
   </div>
-  <div class="results" id="results">
-    <div class="res-card">
-      <div class="res-header">
-        <div class="res-emoji-big" id="resEmoji">🏆</div>
-        <div class="res-title-big" id="resTitle">Əla!</div>
-        <div class="res-sub-big" id="resSub">Test tamamlandı</div>
-      </div>
-      <div class="res-body">
-        <div class="res-big-num"><span class="num" id="resScore">0</span><span class="denom" id="resTotal">/0</span></div>
-        <div class="res-stats">
-          <div class="res-stat c"><span class="sn" id="rC">0</span><span class="sl">Düzgün</span></div>
-          <div class="res-stat w"><span class="sn" id="rW">0</span><span class="sl">Səhv</span></div>
-          <div class="res-stat p"><span class="sn" id="rP">0%</span><span class="sl">Faiz</span></div>
-        </div>
-        <button class="restart-btn" onclick="startQuiz()">↺ Yenidən Başla</button>
-        <div class="review-panel">
-          <div class="review-header">Cavabların İcmalı <button class="review-toggle" id="revToggle" onclick="toggleReview()">Göstər</button></div>
-          <div class="review-list" id="reviewList"></div>
-        </div>
-      </div>
-    </div>
+  <div class="nav-controls">
+    <button class="btn btn-back" id="btnBack" onclick="navigate(-1)">← Geri</button>
+    <span class="q-counter" id="qCounter"></span>
+    <button class="btn btn-next" id="btnNext" onclick="navigate(1)">İrəli →</button>
   </div>
 </div>
-<div class="cf-wrap" id="cfWrap"></div>
+
+<div class="result-screen" id="resultScreen">
+  <div class="result-emoji" id="resultEmoji">🏆</div>
+  <div class="result-title">Test Tamamlandı!</div>
+  <div class="result-score" id="resultScore"></div>
+  <div class="result-sub" id="resultSub"></div>
+  <div class="result-stats">
+    <div class="stat-box">
+      <div class="stat-val green" id="statCorrect">0</div>
+      <div class="stat-label">✅ Düzgün</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val red" id="statWrong">0</div>
+      <div class="stat-label">❌ Yanlış</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val orange" id="statSkipped">0</div>
+      <div class="stat-label">⏭ Cavabsız</div>
+    </div>
+  </div>
+  <button class="btn-restart" onclick="restartQuiz()">🔄 Yenidən Başla</button>
+</div>
+
 <script>
-const ALL_Q = [
-  // ══ 1996 ATLANTA ══
-  {q:'1996-cı il Atlanta Olimpiyasında Azərbaycan neçə ölkə ilə yanaşı iştirak etdi?',topic:'Atlanta 1996',opts:[{t:'197 ölkə',c:true},{t:'199 ölkə',c:false},{t:'202 ölkə',c:false},{t:'204 ölkə',c:false}]},
-  {q:'1996-cı il Atlanta Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Atlanta 1996',opts:[{t:'23 idmançı',c:true},{t:'31 idmançı',c:false},{t:'38 idmançı',c:false},{t:'44 idmançı',c:false}]},
-  {q:'1996-cı il Atlanta Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Atlanta 1996',opts:[{t:'1 medal',c:true},{t:'3 medal',c:false},{t:'5 medal',c:false},{t:'7 medal',c:false}]},
-  {q:'1996-cı il Atlanta Olimpiyasında Azərbaycan hansı medal qazandı?',topic:'Atlanta 1996',opts:[{t:'Gümüş medal',c:true},{t:'Qızıl medal',c:false},{t:'Bürünc medal',c:false},{t:'Medal qazanmadı',c:false}]},
-  {q:'Atlanta 1996-da Azərbaycan üçün gümüş medal qazanan idmançı kimdir?',topic:'Atlanta 1996',opts:[{t:'Namiq Abdullayev — Sərbəst güləş',c:true},{t:'Vüqar Ələkbərov — Boks',c:false},{t:'Elnur Məmmədli — Cüdo',c:false},{t:'Zemfira Meftahaddinova — Stend atıcılığı',c:false}]},
-  {q:'Atlanta 1996-da Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Atlanta 1996',opts:[{t:'61-ci yer',c:true},{t:'34-cü yer',c:false},{t:'37-ci yer',c:false},{t:'39-cu yer',c:false}]},
-
-  // ══ 2000 SİDNEY ══
-  {q:'2000-ci il Sidney Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Sidney 2000',opts:[{t:'199 ölkə',c:true},{t:'197 ölkə',c:false},{t:'202 ölkə',c:false},{t:'204 ölkə',c:false}]},
-  {q:'2000-ci il Sidney Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Sidney 2000',opts:[{t:'31 idmançı',c:true},{t:'23 idmançı',c:false},{t:'38 idmançı',c:false},{t:'44 idmançı',c:false}]},
-  {q:'2000-ci il Sidney Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Sidney 2000',opts:[{t:'3 medal',c:true},{t:'1 medal',c:false},{t:'5 medal',c:false},{t:'7 medal',c:false}]},
-  {q:'Sidney 2000-də Azərbaycan üçün qızıl medal qazanan idmançı kimdir?',topic:'Sidney 2000',opts:[{t:'Zemfira Meftahaddinova — Stend atıcılığı',c:true},{t:'Namiq Abdullayev — Güləş',c:false},{t:'Vüqar Ələkbərov — Boks',c:false},{t:'İradə Aşurova — Boks',c:false}]},
-  {q:'Sidney 2000-də Namiq Abdullayev hansı növdə medal qazandı?',topic:'Sidney 2000',opts:[{t:'Sərbəst güləş — Gümüş',c:true},{t:'Yunan-Roma güləşi — Qızıl',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Boks — Gümüş',c:false}]},
-  {q:'Sidney 2000-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Sidney 2000',opts:[{t:'34-cü yer',c:true},{t:'61-ci yer',c:false},{t:'37-ci yer',c:false},{t:'39-cu yer',c:false}]},
-  {q:'Sidney 2000-də Vüqar Ələkbərov hansı idman növündə medal qazandı?',topic:'Sidney 2000',opts:[{t:'Boks — Bürünc',c:true},{t:'Güləş — Gümüş',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Taekvondo — Bürünc',c:false}]},
-
-  // ══ 2004 AFİNA ══
-  {q:'2004-cü il Afina Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Afina 2004',opts:[{t:'202 ölkə',c:true},{t:'199 ölkə',c:false},{t:'204 ölkə',c:false},{t:'207 ölkə',c:false}]},
-  {q:'2004-cü il Afina Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Afina 2004',opts:[{t:'38 idmançı',c:true},{t:'31 idmançı',c:false},{t:'44 idmançı',c:false},{t:'53 idmançı',c:false}]},
-  {q:'2004-cü il Afina Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Afina 2004',opts:[{t:'5 medal',c:true},{t:'3 medal',c:false},{t:'7 medal',c:false},{t:'10 medal',c:false}]},
-  {q:'Afina 2004-də qızıl medal qazanan idmançı kimdir?',topic:'Afina 2004',opts:[{t:'Fərid Mansurov — Yunan-Roma güləşi',c:true},{t:'Zemfira Meftahaddinova — Stend atıcılığı',c:false},{t:'Elnur Məmmədli — Cüdo',c:false},{t:'Ağası Məmmədov — Boks',c:false}]},
-  {q:'Afina 2004-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Afina 2004',opts:[{t:'37-ci yer',c:true},{t:'34-cü yer',c:false},{t:'39-cu yer',c:false},{t:'30-cu yer',c:false}]},
-  {q:'Afina 2004-də Fuad Aslanov hansı növdə medal qazandı?',topic:'Afina 2004',opts:[{t:'Boks — Bürünc',c:true},{t:'Güləş — Gümüş',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Taekvondo — Bürünc',c:false}]},
-
-  // ══ 2008 PEKİN ══
-  {q:'2008-ci il Pekin Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Pekin 2008',opts:[{t:'204 ölkə',c:true},{t:'202 ölkə',c:false},{t:'207 ölkə',c:false},{t:'205 ölkə',c:false}]},
-  {q:'2008-ci il Pekin Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Pekin 2008',opts:[{t:'44 idmançı',c:true},{t:'38 idmançı',c:false},{t:'53 idmançı',c:false},{t:'56 idmançı',c:false}]},
-  {q:'2008-ci il Pekin Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Pekin 2008',opts:[{t:'7 medal',c:true},{t:'5 medal',c:false},{t:'10 medal',c:false},{t:'8 medal',c:false}]},
-  {q:'Pekin 2008-də qızıl medal qazanan idmançı kimdir?',topic:'Pekin 2008',opts:[{t:'Elnur Məmmədli — Cüdo, 73kq',c:true},{t:'Rövşən Bayramov — Güləş',c:false},{t:'Vitaliy Rahimov — Güləş',c:false},{t:'Şahin İmranov — Boks',c:false}]},
-  {q:'Pekin 2008-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Pekin 2008',opts:[{t:'39-cu yer',c:true},{t:'37-ci yer',c:false},{t:'30-cu yer',c:false},{t:'34-cü yer',c:false}]},
-  {q:'Pekin 2008-də Vitaliy Rahimov hansı növdə medal qazandı?',topic:'Pekin 2008',opts:[{t:'Yunan-Roma güləşi — Gümüş',c:true},{t:'Sərbəst güləş — Qızıl',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Boks — Gümüş',c:false}]},
-  {q:'Pekin 2008-də Mariya Stadnik hansı növdə medal qazandı?',topic:'Pekin 2008',opts:[{t:'Sərbəst güləş — Bürünc',c:true},{t:'Yunan-Roma güləşi — Gümüş',c:false},{t:'Cüdo — Bürünc',c:false},{t:'Boks — Bürünc',c:false}]},
-
-  // ══ 2012 LONDON ══
-  {q:'2012-ci il London Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'London 2012',opts:[{t:'204 ölkə',c:true},{t:'202 ölkə',c:false},{t:'207 ölkə',c:false},{t:'205 ölkə',c:false}]},
-  {q:'2012-ci il London Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'London 2012',opts:[{t:'53 idmançı',c:true},{t:'44 idmançı',c:false},{t:'56 idmançı',c:false},{t:'38 idmançı',c:false}]},
-  {q:'2012-ci il London Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'London 2012',opts:[{t:'10 medal',c:true},{t:'7 medal',c:false},{t:'18 medal',c:false},{t:'8 medal',c:false}]},
-  {q:'London 2012-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'London 2012',opts:[{t:'30-cu yer',c:true},{t:'39-cu yer',c:false},{t:'37-ci yer',c:false},{t:'34-cü yer',c:false}]},
-  {q:'London 2012-də qızıl medal qazanan idmançı kimdir?',topic:'London 2012',opts:[{t:'Toğrul Əsgərov — Sərbəst güləş',c:true},{t:'Şərif Şərifov — Sərbəst güləş',c:false},{t:'Valentin Xristov — Ağırlıq qaldırma',c:false},{t:'Radik İsayev — Taekvondo',c:false}]},
-  {q:'London 2012-də Radik İsayev hansı idman növündə medal qazandı?',topic:'London 2012',opts:[{t:'Taekvondo — Qızıl',c:true},{t:'Güləş — Gümüş',c:false},{t:'Boks — Bürünc',c:false},{t:'Cüdo — Qızıl',c:false}]},
-
-  // ══ 2016 RİO ══
-  {q:'2016-cı il Rio-de-Janeiro Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Rio 2016',opts:[{t:'207 ölkə',c:true},{t:'204 ölkə',c:false},{t:'205 ölkə',c:false},{t:'202 ölkə',c:false}]},
-  {q:'2016-cı il Rio Olimpiyasında Azərbaycandan neçə idmançı iştirak etdi?',topic:'Rio 2016',opts:[{t:'56 idmançı',c:true},{t:'53 idmançı',c:false},{t:'44 idmançı',c:false},{t:'38 idmançı',c:false}]},
-  {q:'2016-cı il Rio Olimpiyasında Azərbaycan neçə medal qazandı?',topic:'Rio 2016',opts:[{t:'18 medal',c:true},{t:'10 medal',c:false},{t:'7 medal',c:false},{t:'15 medal',c:false}]},
-  {q:'2016-cı il Rio Olimpiyasında Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Rio 2016',opts:[{t:'39-cu yer',c:true},{t:'30-cu yer',c:false},{t:'34-cü yer',c:false},{t:'37-ci yer',c:false}]},
-  {q:'Rio 2016-da Hidayət Heydərov hansı idman növündə qızıl medal qazandı?',topic:'Rio 2016',opts:[{t:'Cüdo',c:true},{t:'Taekvondo',c:false},{t:'Güləş',c:false},{t:'Boks',c:false}]},
-  {q:'Rio 2016-da Zəlim Kotsoyev hansı idman növündə qızıl medal qazandı?',topic:'Rio 2016',opts:[{t:'Cüdo',c:true},{t:'Güləş',c:false},{t:'Boks',c:false},{t:'Taekvondo',c:false}]},
-  {q:'Rio 2016-da Hidayət Heydərov hansı çəki kateqoriyasında müsabiqə apardı?',topic:'Rio 2016',opts:[{t:'−73 Kq',c:true},{t:'−66 Kq',c:false},{t:'−81 Kq',c:false},{t:'−100 Kq',c:false}]},
-  {q:'Rio 2016-da Zəlim Kotsoyev hansı çəki kateqoriyasında müsabiqə apardı?',topic:'Rio 2016',opts:[{t:'−100 Kq',c:true},{t:'−73 Kq',c:false},{t:'−90 Kq',c:false},{t:'−81 Kq',c:false}]},
-  {q:'Rio 2016-da Qaşım Maqomedov hansı idman növündə gümüş medal qazandı?',topic:'Rio 2016',opts:[{t:'Taekvondo — −58 Kq',c:true},{t:'Cüdo — −73 Kq',c:false},{t:'Boks — −92 Kq',c:false},{t:'Güləş — −67 Kq',c:false}]},
-  {q:'Rio 2016-da Loren Alfonso hansı idman növündə gümüş medal qazandı?',topic:'Rio 2016',opts:[{t:'Boks — −92 Kq',c:true},{t:'Taekvondo — −58 Kq',c:false},{t:'Güləş — −125 Kq',c:false},{t:'Cüdo — −100 Kq',c:false}]},
-  {q:'Rio 2016-da Həsrət Cəfərov hansı idman növündə bürünc medal qazandı?',topic:'Rio 2016',opts:[{t:'Güləş — Yunan-Roma güləşi, 67 Kq',c:true},{t:'Cüdo — −73 Kq',c:false},{t:'Boks — −92 Kq',c:false},{t:'Taekvondo — −58 Kq',c:false}]},
-  {q:'Rio 2016-da Giorgi Meşvildişvili hansı idman növündə bürünc medal qazandı?',topic:'Rio 2016',opts:[{t:'Güləş — Sərbəst güləş, 125 Kq',c:true},{t:'Cüdo — −100 Kq',c:false},{t:'Boks − 91 Kq',c:false},{t:'Güləş − 67 Kq',c:false}]},
-  {q:'Rio 2016-da Maqomedxan Maqomedov hansı idman növündə bürünc medal qazandı?',topic:'Rio 2016',opts:[{t:'Güləş — Sərbəst güləş, 97 Kq',c:true},{t:'Cüdo — −100 Kq',c:false},{t:'Boks — −92 Kq',c:false},{t:'Güləş − 125 Kq',c:false}]},
-
-  // ══ 2020 TOKİO ══
-  {q:'2020-ci il Tokio Olimpiyasında iştirak edən ölkələrin sayı neçədir?',topic:'Tokio 2020',opts:[{t:'205 ölkə',c:true},{t:'207 ölkə',c:false},{t:'204 ölkə',c:false},{t:'202 ölkə',c:false}]},
-  {q:'Tokio 2020-də Azərbaycandan neçə idmançı iştirak etdi?',topic:'Tokio 2020',opts:[{t:'44 idmançı',c:true},{t:'56 idmançı',c:false},{t:'53 idmançı',c:false},{t:'38 idmançı',c:false}]},
-  {q:'Tokio 2020-də Azərbaycan neçə medal qazandı?',topic:'Tokio 2020',opts:[{t:'7 medal',c:true},{t:'10 medal',c:false},{t:'5 medal',c:false},{t:'18 medal',c:false}]},
-  {q:'Tokio 2020-də Azərbaycan neçənci yerdə qərarlaşdı?',topic:'Tokio 2020',opts:[{t:'67-ci yer',c:true},{t:'39-cu yer',c:false},{t:'30-cu yer',c:false},{t:'61-ci yer',c:false}]},
-  {q:'Tokio 2020-də Azərbaycan üçün gümüş medal qazanan idmançı kimdir?',topic:'Tokio 2020',opts:[{t:'Mariya Stadnik — Sərbəst güləş',c:true},{t:'Haci Əliyev — Güləş',c:false},{t:'Alfonso Diogo — Güləş',c:false},{t:'Rafiq Hüseyn — Güləş',c:false}]},
-
-  // ══ MÜQAYİSƏLİ ══
-  {q:'Azərbaycan ən çox medal hansı Olimpiya oyunlarında qazandı?',topic:'Müqayisəli',opts:[{t:'Rio-de-Janeiro 2016 — 18 medal',c:true},{t:'London 2012 — 10 medal',c:false},{t:'Pekin 2008 — 7 medal',c:false},{t:'Tokio 2020 — 7 medal',c:false}]},
-  {q:'Azərbaycandan olimpiyadaya ən çox idmançı hansı ildə iştirak etdi?',topic:'Müqayisəli',opts:[{t:'Rio-de-Janeiro 2016 — 56 idmançı',c:true},{t:'London 2012 — 53 idmançı',c:false},{t:'Pekin 2008 — 44 idmançı',c:false},{t:'Afina 2004 — 38 idmançı',c:false}]},
-  {q:'Azərbaycandan ən az idmançı hansı olimpiyadaya iştirak etdi?',topic:'Müqayisəli',opts:[{t:'Atlanta 1996 — 23 idmançı',c:true},{t:'Sidney 2000 — 31 idmançı',c:false},{t:'Afina 2004 — 38 idmançı',c:false},{t:'Tokio 2020 — 44 idmançı',c:false}]},
-  {q:'Azərbaycan ən yüksək olimpiya reytinqinə (ən az sıraya) hansı ildə çatdı?',topic:'Müqayisəli',opts:[{t:'London 2012 — 30-cu yer',c:true},{t:'Rio 2016 — 39-cu yer',c:false},{t:'Pekin 2008 — 39-cu yer',c:false},{t:'Tokio 2020 — 67-ci yer',c:false}]},
-  {q:'Azərbaycan ilk dəfə hansı Olimpiya oyunlarında iştirak etdi?',topic:'Müqayisəli',opts:[{t:'Atlanta 1996',c:true},{t:'Sidney 2000',c:false},{t:'Afina 2004',c:false},{t:'Barselona 1992',c:false}]},
-  {q:'Azərbaycan üçün ən çox medal qazanılan idman növü hansıdır?',topic:'Müqayisəli',opts:[{t:'Güləş',c:true},{t:'Cüdo',c:false},{t:'Boks',c:false},{t:'Taekvondo',c:false}]},
-  {q:'Sidney 2000-də Zemfira Meftahaddinova hansı idman növündə qızıl medal qazandı?',topic:'Sidney 2000',opts:[{t:'Stend atıcılığı',c:true},{t:'Güləş',c:false},{t:'Cüdo',c:false},{t:'Boks',c:false}]},
-  {q:'Azərbaycan ən az medal hansı Olimpiya oyunlarında qazandı?',topic:'Müqayisəli',opts:[{t:'Atlanta 1996 — 1 medal',c:true},{t:'Tokio 2020 — 7 medal',c:false},{t:'Afina 2004 — 5 medal',c:false},{t:'Sidney 2000 — 3 medal',c:false}]}
+const questions = [
+  { q: "Məsafəni ən qısa müddətdə qət etmə qabiliyyəti idmanın hansı əsas hərəki qabiliyyətinə aiddir?", opts: ["Qüvvə","Dözümlülük","Sürət","Çeviklik","Güc"], ans: 2 },
+  { q: "Təkan verici hərəkətə, işıq və səs siqnallarına tez reaksiya vermə qabiliyyəti sürətin hansı növüdür?", opts: ["Maksimal sürət","Hərəkət sürəti","Reaksiya sürəti","Dözümlülük sürəti","Partlayış gücü"], ans: 2 },
+  { q: "İnsanın qəfil dəyişən şəraitə uyğun olaraq hərəkətlərin istiqamətini və tempini tez dəyişdirmə bacarığı necə adlanır?", opts: ["Sürət","Çeviklik","Güc dözümlülüyü","Qüvvə","Bədənin əyilmə qabiliyyəti"], ans: 1 },
+  { q: "Nüvə itələmə (Yadro itələmə) üzrə Beynəlxalq Atletika Federasiyalarının qaydalarına əsasən, kişilər üçün nüvənin çəkisi və optimal uçuş bucağı neçə olmalıdır?", opts: ["Çəki: 7,260 kq, Uçuş bucağı: 45-50 dərəcə","Çəki: 4 kq, Uçuş bucağı: 41-42 dərəcə","Çəki: 7,260 kq, Uçuş bucağı: 34,92 dərəcə","Çəki: 4 kq, Uçuş bucağı: 34,92 dərəcə","Çəki: 7,260 kq, Uçuş bucağı: 41-42 dərəcə"], ans: 4 },
+  { q: "I Avropa Oyunları talisman hansılardır?", opts: ["Nar və ceyran","Su və alov","Qarabağ atları","Cırtdan və bəbir","Tülkü balası"], ans: 0 },
+  { q: "Bir dəfəlik maksimal qüvvə tətbiq etməklə qaldırılan və ya itələnən yükün kütləsi ilə xarakterizə olunan güc növü hansıdır?", opts: ["Sürət gücü","Mütləq (maksimal) güc","Statik güc","Partlayış gücü","Güc dözümlülüyü"], ans: 1 },
+  { q: "2008-ci il Pekin XXIX Yay Olimpiya oyunlarında qızıl medal qazanan idmançımız kim olub?", opts: ["Rövşən Bayramov","Vitali Rəhimov","Elnur Məmmədli","Xətaq Qazyukov","Mövlud Mirəliyev"], ans: 2 },
+  { q: "Mümkün qədər qısa vaxt ərzində maksimum qüvvə təzahür etdirən hərəki qabiliyyətin tərkib komponentləri hansılardır?", opts: ["Sürətli qüvvə, sürət","Hərəkətin reaksiya tezliyi, tək hərəkətin icra tezliyi, maksimal qaçış sürəti","Oynaqların mütəhərrikliyi, əzələ-bağ aparatının elastikliyi","Koordinasiya, Hərəkətin icra çətinliyi, Hərəkətin icra vaxtı","Ümumi Dözümlülük, Sürət dözümlülüyü"], ans: 0 },
+  { q: "Aşağıdakılardan hansı Gimnastika növlərindən DEYİL?", opts: ["Aerobika gimnastikası","Parkur","Batut gimnastikası və tamplinq","Akrobatika gimnastikası","Su gimnastikası (Hidroaerobika)"], ans: 4 },
+  { q: "Əzələlərin gərginlik vəziyyətini uzun müddət saxlaya bilmə qabiliyyəti hansı hərəki qabiliyyətlə əlaqəlidir?", opts: ["Dözümlülük","Çeviklik","Sürət","Sürət-güc","Əyilmə qabiliyyəti"], ans: 3 },
+  { q: "Orqanizmin yorğunluğa qarşı müqavimət göstərərək, fiziki fəaliyyəti uzun müddət davam etdirmə bacarığı nə adlanır?", opts: ["Sürət","Qüvvə","Dözümlülük","Çeviklik","Güc"], ans: 2 },
+  { q: "Hər hansı idman növündə hərəkətin yarış şəraitinin tələblərinə uyğun rejimdə icrası zamanı özünü göstərir. 400 metrə qaçışda və ya üzmədə lazım olan, yüksək intensivlikli hərəkətləri nisbətən uzun müddət saxlaya bilmə qabiliyyəti dözümlülüyün hansı növünə aiddir?", opts: ["Ümumi dözümlülük","Dinamik dözümlülük","Xüsusi (Sürət) dözümlülük","Statik dözümlülük","Koordinasiya dözümlülüyü"], ans: 2 },
+  { q: "Oynaq və əzələlərdə hərəkətin maksimal amplitudada yerinə yetirilməsi imkanı hansı hərəki qabiliyyət ilə ölçülür?", opts: ["Çeviklik","Qüvvə","Bədənin əyilmə qabiliyyəti","Dözümlülük","Sürət"], ans: 2 },
+  { q: "Bədənin Əyilmə Qabiliyyətini inkişaf etdirmək üçün ən çox hansı məşq növü istifadə olunur?", opts: ["Ağırlıq qaldırma","Sprint qaçışları","Gimnastika hərəkətləri","Uzun məsafəyə qaçış","Partlayış hərəkətləri"], ans: 2 },
+  { q: "Oynaqların hərəkət amplitudası hərəkətin öz gücünə (əzələ gərginliyi hesabına) yerinə yetirilir, bu əyilmə qabiliyyətinin hansı növüdür?", opts: ["Passiv əyilmə","Maksimal əyilmə","Fəal əyilmə","Statik əyilmə","Dinamik əyilmə"], ans: 2 },
+  { q: "Fiziki tərbiyə dərsində \"Konusların ətrafında sürətlə qaçış\" tapşırığı əsasən hansı iki hərəki qabiliyyəti inkişaf etdirməyə yönəldilmişdir?", opts: ["Dözümlülük və Qüvvə","Güc və Əyilmə qabiliyyəti","Sürət və Çeviklik","Sürət və Qüvvə","Dözümlülük və Sürət"], ans: 2 },
+  { q: "Sürət-güc hansı iki hərəki qabiliyyətin sintezindən yaranır?", opts: ["Çeviklik və Dözümlülük","Bədənin əyilmə qabiliyyəti və Güc","Dözümlülük və Sürət","Qüvvə və Sürət","Qüvvə və Çeviklik"], ans: 3 },
+  { q: "6.75 metrlik xəttin arxasından atış zamanı rəqib oyunçuya foul edilərsə və atış uğursuz olarsa, neçə cərimə atışı verilir?", opts: ["1 cərimə atışı","2 cərimə atışı","3 cərimə atışı","Foulun növündən asılı olaraq dəyişir","Heç bir cərimə atışı verilməz, top rəqibə keçir"], ans: 2 },
+  { q: "Badmintonda servislər nə vaxt soldan vurulur?", opts: ["Cüt xallar zamanı (2,4,6...)","Servis dəyişəndə","Tək xallar zamanı (1, 3, 5...)","11 xala çatdıqda","Yalnız 20-20 hesabında"], ans: 2 },
+  { q: "Futbolda sərbəst zərbə hansı halda təyin edilmir?", opts: ["Təhlükəli oyun","Qəsdən maneəçilik","Rəqibi təhqir etmək","Oyundankənar vəziyyət zamanı","Qapıçı topu 8 saniyədən artıq özündə saxlayarsa"], ans: 4 },
+  { q: "Basketbolda cərimə atışı edən oyunçuya atış zamanı hansı vaxt limiti tətbiq edilir?", opts: ["3 saniyə","5 saniyə","8 saniyə","10 saniyə","24 saniyə"], ans: 1 },
+  { q: "Həndbolda qapıçı zərbəsi hansı halda verilir?", opts: ["Top tavanı vurduqda","Topa sahib olan komanda qaydanı pozduqda","Qapıçı topu öz qapı meydançasında nəzarət altına aldıqda","Səhv əvəzetmə olduqda","9 metrlik xəttdə qayda pozuntusu olduqda"], ans: 2 },
+  { q: "Voleybol komandasının tərkibi ilə bağlı hansı fikirlər doğrudur?\n1. Komanda 12 nəfər oyunçudan ibarətdir.\n2. Əsas heyət 8, ehtiyat heyət 6 oyunçudan ibarətdir.\n3. Hər komandada ən azı 2 libero oyunçu mütləq olmalıdır.\n4. Beynəlxalq yarışlarda 8 ehtiyat oyunçu iştirak edə bilər.\n5. Hər komandada 1 libero oyunçu mütləq olmalıdır.", opts: ["1, 2, 5","1, 4, 5","1, 3, 4","2, 4, 5","1, 2, 3"], ans: 1 },
+  { q: "Şah lövhədə necə hərəkət edir?", opts: ["Hər istiqamətdə istənilən sayda xana","Yalnız diaqonal boyu","Yalnız düz xətt boyu","Hər istiqamətdə yalnız bir xana","L hərfi şəklində"], ans: 3 },
+  { q: "Aşağıdakılardan hansı 3×3 basketbol qaydaları üçün SƏHVdir?", opts: ["Oyun 10 dəqiqə və ya 21 xal toplanana qədər davam edir","Hər komandanın 4 oyunçusu olur (3 meydanda, 1 ehtiyat)","Hər uğurlu atış 1 və ya 2 xal dəyərindədir","12 saniyəlik hücum vaxtı tətbiq olunur","Hakimin hava atışı ilə başlayır"], ans: 4 },
+  { q: "Blokun funksiyaları və Servisə qarşı blok qadağası haqqında hansı fikirlər doğrudur?\n1. Blokçu rəqibin hücum zərbəsini gözləməklə, əllərini tor üzərindən rəqib sahəyə uzada bilər.\n2. Blok, rəqibin hücumunu zəiflətmək məqsədi daşıyan müdafiə hərəkətidir.\n3. Rəqib komandanın Servis atışına blok qurmaq qadağandır.\n4. Blok Toxunuşu topa toxunmağın üçüncü haqqından biri kimi hesab edilir.\n5. Blok Toxunuşu komandanın topa ardıcıl toxunuşlarından biri sayılmır.", opts: ["1, 2, 4","2, 3, 4","1, 2, 3, 5","1, 3, 4, 5","2, 3, 5, 4"], ans: 2 },
+  { q: "Reaksiya tezliyi nədir?", opts: ["Əzələ gücünün qısa müddətdə maksimum sürətə çıxarılması","Xarici siqnala cavab olaraq hərəkətə başlamağa sərf olunan vaxt","Uzun müddət ərzində sürəti saxlama qabiliyyəti","Bir hərəkəti təkrarlamaq üçün tələb olunan minimal vaxt","Bədənin ağırlığını istifadə edərək sürət əldə etmə bacarığı"], ans: 1 },
+  { q: "Şahmat lövhəsinin mərkəz xanaları hansılardır?", opts: ["A1, h1, a8, h8","E1, e8, a1, h8","D4, d5, e4, e5","C3, c6, f3, f6","B2, g2, b7, g7"], ans: 2 },
+  { q: "Badmintonda cütlərdə yerdəyişməni hansı komanda icra edir?", opts: ["Servis qəbul edən komanda","Xal qazanan komanda","Öz servisindən xal qazanan komanda","Müdafiə edən komanda","Hər iki komanda"], ans: 2 },
+  { q: "Həndbolda bir oyun ərzində hər komandaya cəmi neçə taym-out hüququ verilir?", opts: ["2","3","4","5","1"], ans: 1 },
+  { q: "Maksimal qaçış sürətinə çatmaq üçün ən uyğun yaş dövrü hansıdır?", opts: ["7-10 yaş","10-14 yaş","14-16 yaş","16-18 yaş","18 yaşdan yuxarı"], ans: 1 },
+  { q: "3×3 basketbolda bir komanda hələ faul limitinə çatmayıbsa (məsələn, 3 faulu varsa), atış zamanı edilən faul nə ilə nəticələnir?", opts: ["Atışın növündən asılı olaraq cərimə atışları verilir","Rəqib komandaya topa sahib olma hüququ verilir","Heç bir cərimə atışı verilmir, sadəcə faul qeyd edilir","Yalnız 1 cərimə atışı verilir","Oyun davam edir"], ans: 0 },
+  { q: "Aşağıdakılardan hansı reaksiya tezliyini inkişaf etdirmək üçün istifadə edilə bilər?", opts: ["1000 metr qaçış","Şaquli tullanma","Müxtəlif çıxış vəziyyətindən startlar","500 metr üzgüçülük","Ştanq qaldırma"], ans: 2 },
+  { q: "Sürət qabiliyyətinin inkişafı üçün hansı resurslardan istifadə edilmir?", opts: ["Sürətlənmələr","Qısa məsafələrə təşkil edilən estafetlər","Qövsl, dairə, ilanvari qaçışlar","Yaxın məsafələrə qaçışlar","Kros qaçışları"], ans: 4 },
+  { q: "Bu vitamininin çatışmazlığı uşaqlarda dayaq-hərəkət aparatının deformasiyası, sümük boşluğunun yaranmasına səbəb olur (Raxit)", opts: ["C vitamini","A vitamini","D vitamini","B1 vitamini","B2 vitamini"], ans: 2 },
+  { q: "Orqanizmdə toxumaların inkişafını və bərpasını təmin edir. Böyüyən orqanizmin gündəlik tələbatı 35-40 qramdır", opts: ["Zülallar","Minerallar","Yağlar","Karbohidratlar","Su"], ans: 0 },
+  { q: "Bu xəstəlik A vitamininin çatışmazlığı nəticəsində yaranır.", opts: ["Beri-beri xəstəliyi","Qan təzyiqi","Toyuq korluğu","Epilepsiya","Qrip"], ans: 2 },
+  { q: "Atletikada estafet qaçışında idmançı çubuğu hansı zonada ötürməlidir?", opts: ["5 metrlik zona","10 metrlik zona","20 metrlik zona","50 metrlik zona","İstənilən yerdə ötürə bilər"], ans: 2 },
+  { q: "Şagird oyun zamanı liderlik nümayiş etdirir. Hansı məzmun xəttinə aiddir?", opts: ["I məzmun xətti","II məzmun xətti","III məzmun xətti","IV məzmun xətti","II və III məzmun xətti"], ans: 3 },
+  { q: "Ümuminkişaf hərəkətləri dərsin hansı hissəsində yerinə yetirilir?", opts: ["Giriş","Hazırlayıcı","Əsas","Tamamlayıcı","Giriş və tamamlayıcı"], ans: 1 },
+  { q: "Hansı fiziki tərbiyənin məzmun xəttinə aid deyil?", opts: ["İnformasiya təminatı və nəzəri biliklər","Hərəki bacarıq və vərdişlər","Hərəki qabiliyyətlər","Şəxsiyyətin mənəvi iradi xüsusiyyətlərinin formalaşdırılması","Sağlamlaşdırıcı vasitələrdən sistemli şəkildə istifadə"], ans: 4 },
+  { q: "Orqanizmin bioloji tamlığı təmin edən müxtəlif funksional sistemlərin qarşılıqlı ahəngdar fəaliyyətini əks etdirən vəziyyətdir", opts: ["Fiziki inkişaf","Funksional inkişaf","Sağlamlıq","Nəbz vurğuları","Ağciyərin həyat tutumu"], ans: 2 },
+  { q: "Bu üzv qandaşıyıcı sistemin hərəkətverici qüvvəsi sayılır:", opts: ["Ürək","Damar","Böyrək","Qaraciyər","Dalaq"], ans: 0 },
+  { q: "Qanın ağciyərlərdə oksigenlə zənginləşməsini və sonra orqanizmin üzv və toxumalarına göndərilməsini təmin edən orqan hansıdır?", opts: ["Qaraciyər","Ürək","Damar","Böyrək","Dalaq"], ans: 1 },
+  { q: "İcra üsulundan asılı olaraq Atletika atmaları neçə növə bölünür?", opts: ["4","2","5","3","4"], ans: 3 },
+  { q: "Orta bədən quruluşuna malik insanlarda gündəlik su tələbatı təxminən nə qədərdir?", opts: ["3 litr","5 litr","1 litr","2 litr","6 litr"], ans: 3 },
+  { q: "Atletikada qısa məsafəyə qaçışlara hansı məsafələr aiddir?", opts: ["100 m, 200 m, 400 m","800 m, 1500 m","3000 m, 5000 m","10 000 m","Yalnız 200 m"], ans: 0 },
+  { q: "Futbolda küncdən zərbə hansı halda təyin edilir?", opts: ["Top hücumçu tərəfindən qapı xəttini keçdikdə","Top müdafiəçi tərəfindən qapı xəttini keçdikdə","Top yan xətti keçdikdə","Top mərkəzi dairəni keçdikdə","Oyundan kənar vəziyyət zamanı"], ans: 1 },
+  { q: "Sınıqlar neçə cür olur?", opts: ["1","2","3","4","5"], ans: 1 },
+  { q: "Bu komanda ilə şagirdlər tez əsas duruş vəziyyətini alırlar", opts: ["Azad","Düzlən","Marş","Olmadı","Farağat"], ans: 4 },
+  { q: "Eksternat təhsil nədir?", opts: ["Azərbaycan Respublikasında müəyyən edilmiş təhsilalma formaları çərçivəsində evdə təhsil və fərdi təhsil hüququ.","Müxtəlif səbəblərdən ümumi təhsildən kənarda qalan şəxslərə təhsil almaq və ya ümumi təhsilin hər hansı bir səviyyəsini vaxtından əvvəl bitirmək hüququ verən forma.","Özünütəhsil yolu ilə biliklərə yiyələnmənin forması.","Dövlət təhsil sənədinin verilməsi ilə müşayiət olunmayan təhsil forması.","Dövlət təhsil sənədinin verilməsi ilə başa çatan təhsil forması."], ans: 1 },
+  { q: "Sinifdə diaqnostik qiymətləndirmə aparılmadıqda ümumi təhsilin təşkilinə dair verilmiş pedaqoji tələblərdən hansının prinsipi pozulmuş olur?", opts: ["inkişafyönümlülük","pedaqoji prosesin tamlığı","dəstəkləyici mühitin yaradılması","şagirdyönümlülük","şəxsiyyətyönümlülük"], ans: 3 },
+  { q: "Uşaqlar önümüzdəki imtahanlarda yüksək bal toplamaq üçün nə etmək olar? Bütün şagirdlərin fikirləri muhakimə edilmədən dinlənildi, sonda bu fikirlərin müzakirəsi həyata keçirildi. Müəllim bu zaman hansı iş üsulunu tətbiq etdi?", opts: ["Söz assosasiyası","BIBÖ","Anlayışın çıxarılması","Beyin həmləsi","Karusel"], ans: 3 },
+  { q: "\"Tədris ilinin əvvəlində müəllim müşahidə edir ki, şagirdlər sual verdikdə bir-birini dinləmir və bunun nəticəsində sinifdə səs-küy yaranır\". Bunun qarşısını almaq üçün müəllimin atdığı hansı addım effektivdir?", opts: ["Müəllim qayda hazırlamalı və bu qaydaların icrasına sərt şəkildə nəzarət etməlidir.","Müəllim prosedur hazırlamalı və prosedura uyğun şagirddə vərdiş formalaşdırmalıdır.","Müəllim şagirdlərə bu problemi özlərinin həll etmələri üçün istədikləri qədər vaxt verməlidir.","Müəllim nizam-intizama riayət etməyin vacibliyi mövzusunda sinif iclası keçirməlidir.","Müəllim valideynlərlə bu barədə danışıb onlarla birgə problemi həll etməlidir."], ans: 1 },
+  { q: "Hansı rəy konstruktivdir?", opts: ["Söylədiklərin doğrudur, məsələnin şərtini oxuyarkən bütün verilənləri özündə qeyd etsən, həll zamanı unutduğun heç nə qalmayacaq","Yazında maraqlı fikirlər olsa da, əvvəlcədən sizə təqdim olunan rubrikin birinci meyarına cavab vermir","Səhv cavablarının sayı düz cavablardan çoxdur. Diqqətli ol.","Müzakirədə fikirlərini aydın ifadə etdin, amma yoldaşlarına danışmağa fürsət vermirsən, belə olmaz.","Əşyanı səliqəli düzəltmisən, amma bəzi hissələrdə parçaları düzgün birləşdirməmisən."], ans: 0 },
+  { q: "Dərsin mövzusunu Elxan ilə müzakirə edən Nərgizə, müəllim irad bildirir və mövzunu Elxan ilə yox qız şagirdlər ilə birgə müzakirə etməyi məsləhət görür. \"Təhsilverənlərin etik davranış qaydaları\"nın hansı prinsipi pozulmuş olur?", opts: ["peşəkarlıq və fərdi məsuliyyət","loyallıq","qərəzsizlik","konfidensiallıq","ictimai etimad"], ans: 2 },
+  { q: "Yanlış fikri müəyyənləşdirin.", opts: ["Strateji uyğunlaşma – tapşırığın birbaşa əhəmiyyəti şagird üçün çox azdır","Xaos - şagirddə təhsilə qarşı mənfi münasibət formalaşır","Ənənəyə uymaq – şagirdin məqsədi minimum tələbi yerinə yetirməkdir","Geri çəkilmə - şagird tapşırığın həllində iştirak etmir, öyrənmə səthi baş tutur","Yüksək cəlbolunma – şagird tapşırığı özü üçün dəyərli və lazımlı bilir"], ans: 3 },
+  { q: "Şagird – \"imtahan nəticələrim aşağı olsa, insanlar mənə nə deyər?\" düşüncəsi ilə gecə-gündüz imtahana hazırlaşır. L. Kolberqin \"Mənəvi inkişaf\" nəzəriyyəsinə əsasən hansı mərhələdədir?", opts: ["İtaət və cəza","İndividualizm","Sosial müqavilə","Səlahiyyət və sosial nizamı qorumaq","Qəbulolunma"], ans: 4 },
+  { q: "Müəllim şagirdlərə \"güclü və zəif tərəflərinizi əks etdirən cədvəl qurun\" tapşırığını verir. Bu tapşırığı icra edən şagird emosional sahənin hansı mərhələsindədir?", opts: ["Təşkiletmə","Dəyərləndirmə","Xarakterizəetmə","Qəbuletmə","Cavabvermə"], ans: 0 },
+  { q: "Aşağıdakılardan hansı anlayışın çıxarılması üsuluna aiddir?", opts: ["Yaradıcı ideyaların bir araya gətirilməsi və bölüşülməsi baxımından faydalıdır.","Şagirdin bildikləri arasında nə dərəcədə düzgün əlaqə yarada bilib-bilmədiklərini yoxlamaq imkanı verir.","Refleksiya etmək üçün istifadə olunan effektiv üsuldur.","Bu üsulda qruplara bölünmüş şagirdlər öz mövqelərini arqumentlərlə müdafiə etməlidirlər.","Xəyali bir situasiyanı canlandıraraq mövzunun daha dərindən öyrənilməsini təmin edir."], ans: 1 }
 ];
 
-// ══ ENGINE ══
-let questions=[],cur=0,userAns=[],score=0,soundOn=true,audioCtx=null,revOpen=false;
-function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
-function beep(type){
-  if(!soundOn)return;
-  try{
-    const c=getCtx(),t=c.currentTime;
-    if(type==='correct'){[[440,0],[554,.1],[659,.2]].forEach(([f,d])=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.22,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.3);o.start(t+d);o.stop(t+d+.32)});}
-    else if(type==='wrong'){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sawtooth';o.frequency.setValueAtTime(280,t);o.frequency.exponentialRampToValueAtTime(140,t+.3);g.gain.setValueAtTime(.16,t);g.gain.exponentialRampToValueAtTime(.001,t+.35);o.start(t);o.stop(t+.37);}
-    else if(type==='next'){const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=480;o.type='sine';g.gain.setValueAtTime(.09,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.start(t);o.stop(t+.14);}
-    else if(type==='finish'){[[523,0],[659,.13],[784,.26],[1046,.39]].forEach(([f,d])=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(.2,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.35);o.start(t+d);o.stop(t+d+.37)});}
-  }catch(e){}
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let chosenIdx = {};
+let correctCount = 0;
+
+// Audio
+let audioCtx;
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
 }
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-function startQuiz(){
-  questions=shuffle(ALL_Q).map(q=>({q:q.q,topic:q.topic,opts:shuffle(q.opts)}));
-  userAns=new Array(questions.length).fill(null);
-  score=0;cur=0;revOpen=false;
-  document.getElementById('topScore').textContent='0';
-  document.getElementById('quizArea').style.display='block';
-  document.getElementById('results').classList.remove('show');
-  document.getElementById('cfWrap').innerHTML='';
-  buildGrid();render();
+function playCorrect() {
+  try {
+    const ctx = getCtx();
+    [[0,523],[0.13,659],[0.26,784]].forEach(([t,f]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type='sine'; o.frequency.value=f;
+      g.gain.setValueAtTime(0.28,ctx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.22);
+      o.start(ctx.currentTime+t); o.stop(ctx.currentTime+t+0.22);
+    });
+  } catch(e){}
 }
-function buildGrid(){
-  const grid=document.getElementById('qGrid');grid.innerHTML='';
-  questions.forEach((_,i)=>{const cell=document.createElement('button');cell.className='q-cell'+(i===0?' active':'');cell.textContent=i+1;cell.id='cell-'+i;cell.onclick=()=>goToQ(i);grid.appendChild(cell);});
+function playWrong() {
+  try {
+    const ctx = getCtx();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type='sawtooth';
+    o.frequency.setValueAtTime(220,ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(90,ctx.currentTime+0.32);
+    g.gain.setValueAtTime(0.22,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.32);
+    o.start(ctx.currentTime); o.stop(ctx.currentTime+0.32);
+  } catch(e){}
 }
-function updateGrid(){
-  questions.forEach((_,i)=>{const cell=document.getElementById('cell-'+i);if(!cell)return;cell.className='q-cell';if(i===cur)cell.classList.add('active');else if(userAns[i]!==null)cell.classList.add(questions[i].opts[userAns[i]].c?'answered-correct':'answered-wrong');});
+function playFinish() {
+  try {
+    const ctx = getCtx();
+    [523,659,784,1047,784,1047,1319].forEach((f,i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type='sine'; o.frequency.value=f;
+      const t=ctx.currentTime+i*0.13;
+      g.gain.setValueAtTime(0.22,t);
+      g.gain.exponentialRampToValueAtTime(0.001,t+0.18);
+      o.start(t); o.stop(t+0.18);
+    });
+  } catch(e){}
 }
-function render(){
-  const d=questions[cur];const L=['A','B','C','D'];
-  document.getElementById('qNumDisp').textContent=cur+1;
-  document.getElementById('qTotalDisp').textContent=questions.length;
-  document.getElementById('qTopic').textContent=d.topic;
-  document.getElementById('qTxt').textContent=d.q;
-  document.getElementById('pFill').style.width=((cur/questions.length)*100)+'%';
-  const wrap=document.getElementById('optsWrap');wrap.innerHTML='';
-  const answered=userAns[cur]!==null;
-  d.opts.forEach((opt,i)=>{
-    const btn=document.createElement('button');btn.className='opt';
-    if(answered){btn.disabled=true;if(i===userAns[cur])btn.classList.add(opt.c?'correct':'wrong');else if(opt.c&&!d.opts[userAns[cur]].c)btn.classList.add('show-correct');}
-    btn.innerHTML=`<span class="opt-lbl">${L[i]}</span><span class="opt-text">${opt.t}</span>`;
-    btn.onclick=()=>pick(i);wrap.appendChild(btn);
+
+// Build nav
+function buildNav() {
+  const g = document.getElementById('navGrid');
+  g.innerHTML = '';
+  for (let i = 0; i < questions.length; i++) {
+    const b = document.createElement('button');
+    b.className = 'nav-btn';
+    b.textContent = i+1;
+    b.id = 'nav_'+i;
+    b.onclick = () => goTo(i);
+    g.appendChild(b);
+  }
+}
+
+function updateNav() {
+  for (let i = 0; i < questions.length; i++) {
+    const b = document.getElementById('nav_'+i);
+    if (!b) continue;
+    b.className = 'nav-btn';
+    if (i === current) b.classList.add('current');
+    else if (answers[i] === true) b.classList.add('correct');
+    else if (answers[i] === false) b.classList.add('wrong');
+  }
+}
+
+function renderQ(idx) {
+  const q = questions[idx];
+  document.getElementById('qNumber').textContent = `Sual ${idx+1} / ${questions.length}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qCounter').textContent = `${idx+1} / ${questions.length}`;
+
+  const letters = ['A','B','C','D','E'];
+  const cont = document.getElementById('optionsContainer');
+  cont.innerHTML = '';
+
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    const isCorrect = (i === q.ans);
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span class="option-text">${opt}</span><span class="option-icon">${isCorrect ? '✓' : '✗'}</span>`;
+    if (answers[idx] !== null) {
+      btn.disabled = true;
+      if (isCorrect) btn.classList.add('correct');
+      if (answers[idx] === false && chosenIdx[idx] === i) btn.classList.add('wrong');
+    }
+    btn.onclick = (e) => handleAnswer(idx, i, btn, e);
+    cont.appendChild(btn);
   });
-  const fb=document.getElementById('fb');
-  if(answered){const chosen=d.opts[userAns[cur]];fb.className='feedback-bar show '+(chosen.c?'ok':'fail');document.getElementById('fbIcon').textContent=chosen.c?'✅':'❌';document.getElementById('fbTxt').textContent=chosen.c?'Düzgün cavab! Əla!':'Səhv cavab. Düzgün cavab yaşıl ilə işarələndi.';}
-  else{fb.className='feedback-bar';}
-  document.getElementById('btnBack').className='btn-back'+(cur>0?' show':'');
-  const nb=document.getElementById('btnNext');nb.className='btn-next'+(answered?' show':'');nb.textContent=cur===questions.length-1&&answered?'Nəticə →':'Növbəti →';
-  const card=document.getElementById('qCard');card.style.animation='none';void card.offsetHeight;card.style.animation='cardIn .35s cubic-bezier(.4,0,.2,1)';
-  updateGrid();
+
+  const fb = document.getElementById('feedbackBanner');
+  fb.className = 'feedback';
+  if (answers[idx] === true) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = '✅ Əla! Düzgün cavab!';
+  } else if (answers[idx] === false) {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ Yanlış! Düzgün cavab: <strong>${letters[q.ans]}) ${q.opts[q.ans]}</strong>`;
+  }
+
+  updateNav();
+  updateScore();
+
+  document.getElementById('btnBack').disabled = idx === 0;
+  const allDone = answers.every(a => a !== null);
+  document.getElementById('btnNext').textContent = (idx === questions.length-1 && allDone) ? 'Nəticə 🏆' : 'İrəli →';
+
+  const card = document.getElementById('questionCard');
+  card.style.animation = 'none'; card.offsetHeight; card.style.animation = 'slideIn 0.3s ease';
 }
-function goToQ(idx){if(idx<0||idx>=questions.length)return;cur=idx;render();beep('next');document.getElementById('qCard').scrollIntoView({behavior:'smooth',block:'nearest'});}
-function pick(idx){
-  if(userAns[cur]!==null)return;
-  userAns[cur]=idx;
-  if(questions[cur].opts[idx].c){score++;document.getElementById('topScore').textContent=score;beep('correct');}else beep('wrong');
-  render();
+
+function updateScore() {
+  const answered = answers.filter(a => a !== null).length;
+  document.getElementById('scorePill').textContent = `✓ ${correctCount} / ${answered}`;
+  document.getElementById('progressBar').style.width = (answered / questions.length * 100) + '%';
 }
-document.getElementById('btnNext').onclick=function(){beep('next');if(cur>=questions.length-1)showResults();else{cur++;render();document.getElementById('qCard').scrollIntoView({behavior:'smooth',block:'nearest'});}};
-document.getElementById('btnBack').onclick=function(){if(cur>0){cur--;render();beep('next');document.getElementById('qCard').scrollIntoView({behavior:'smooth',block:'nearest'});}};
-function showResults(){
-  document.getElementById('quizArea').style.display='none';
-  const res=document.getElementById('results');res.classList.add('show');res.scrollIntoView({behavior:'smooth'});
-  const tot=questions.length,pct=Math.round((score/tot)*100);
-  document.getElementById('resScore').textContent=score;document.getElementById('resTotal').textContent='/'+tot;
-  document.getElementById('rC').textContent=score;document.getElementById('rW').textContent=tot-score;document.getElementById('rP').textContent=pct+'%';
-  let emoji,title,sub;
-  if(pct>=90){emoji='🥇';title='Əla Nəticə!';sub='Olimpiya tarixini mükəmməl bilirsiniz!';}
-  else if(pct>=75){emoji='🥈';title='Çox Yaxşı!';sub='Güclü nəticə göstərdiniz!';}
-  else if(pct>=60){emoji='🥉';title='Yaxşı İş!';sub='Ortalamadan yüksək nəticə.';}
-  else if(pct>=40){emoji='📚';title='Orta Nəticə';sub='Daha çox öyrənmə lazımdır.';}
-  else{emoji='💪';title='Davam Et!';sub='Materialı yenidən nəzərdən keçirin.';}
-  document.getElementById('resEmoji').textContent=emoji;document.getElementById('resTitle').textContent=title;document.getElementById('resSub').textContent=sub;
-  beep('finish');if(pct>=60)confetti();
-  const list=document.getElementById('reviewList');list.innerHTML='';
-  questions.forEach((q,i)=>{
-    const ans=userAns[i],isOk=ans!==null&&q.opts[ans].c;
-    const item=document.createElement('div');item.className='review-item '+(ans===null?'w':(isOk?'c':'w'));
-    item.onclick=()=>{cur=i;document.getElementById('quizArea').style.display='block';document.getElementById('results').classList.remove('show');render();document.getElementById('qGrid').scrollIntoView({behavior:'smooth'});};
-    const short=q.q.length>72?q.q.slice(0,72)+'…':q.q;
-    item.innerHTML=`<span class="ri-num">${i+1}</span><span class="ri-icon">${ans===null?'⏭':(isOk?'✅':'❌')}</span><span class="ri-text">${short}</span>`;
-    list.appendChild(item);
-  });
+
+function handleAnswer(qIdx, chosen, btnEl, event) {
+  if (answers[qIdx] !== null) return;
+  const q = questions[qIdx];
+
+  // ripple
+  const rip = document.createElement('span');
+  rip.className = 'ripple';
+  const r = btnEl.getBoundingClientRect();
+  rip.style.left = (event.clientX - r.left - 20) + 'px';
+  rip.style.top = (event.clientY - r.top - 20) + 'px';
+  btnEl.appendChild(rip);
+  setTimeout(() => rip.remove(), 600);
+
+  const cont = document.getElementById('optionsContainer');
+  const allBtns = cont.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  const letters = ['A','B','C','D','E'];
+  const fb = document.getElementById('feedbackBanner');
+
+  if (chosen === q.ans) {
+    answers[qIdx] = true;
+    correctCount++;
+    btnEl.classList.add('correct');
+    fb.className = 'feedback correct';
+    fb.innerHTML = '✅ Əla! Düzgün cavab!';
+    playCorrect();
+  } else {
+    answers[qIdx] = false;
+    chosenIdx[qIdx] = chosen;
+    btnEl.classList.add('wrong');
+    allBtns[q.ans].classList.add('show-correct');
+    allBtns[q.ans].querySelector('.option-icon').textContent = '✓';
+    allBtns[q.ans].querySelector('.option-icon').style.opacity = '1';
+    fb.className = 'feedback wrong';
+    fb.innerHTML = `❌ Yanlış! Düzgün cavab: <strong>${letters[q.ans]}) ${q.opts[q.ans]}</strong>`;
+    playWrong();
+  }
+
+  updateNav();
+  updateScore();
+  if (answers.every(a => a !== null)) {
+    document.getElementById('btnNext').textContent = 'Nəticə 🏆';
+  }
 }
-function toggleReview(){revOpen=!revOpen;document.getElementById('reviewList').classList.toggle('open',revOpen);document.getElementById('revToggle').textContent=revOpen?'Gizlət':'Göstər';}
-function confetti(){
-  const wrap=document.getElementById('cfWrap');wrap.innerHTML='';
-  const colors=['#2a3fa0','#4a6aff','#d4920a','#1a7a3c','#c8341a','#8a3aa0'];
-  for(let i=0;i<100;i++){const p=document.createElement('div');p.className='cp';const sz=4+Math.random()*8;p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${sz}px;height:${sz}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${1.8+Math.random()*2.5}s;animation-delay:${Math.random()*1.5}s;`;wrap.appendChild(p);}
-  setTimeout(()=>wrap.innerHTML='',6000);
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next < 0) return;
+  if (next >= questions.length) {
+    if (answers.every(a => a !== null)) showResult();
+    return;
+  }
+  goTo(next);
 }
-document.getElementById('sndBtn').onclick=function(){soundOn=!soundOn;this.textContent=soundOn?'🔊':'🔇';};
-window.addEventListener('load',()=>{setTimeout(()=>{const l=document.getElementById('loading');l.style.opacity='0';setTimeout(()=>{l.style.display='none';startQuiz();},500);},1400);});
+
+function goTo(idx) {
+  current = idx;
+  renderQ(idx);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showResult() {
+  playFinish();
+  document.getElementById('mainArea').style.display = 'none';
+  document.getElementById('navSection').style.display = 'none';
+  const res = document.getElementById('resultScreen');
+  res.style.display = 'flex';
+  const wrong = answers.filter(a => a === false).length;
+  const skipped = answers.filter(a => a === null).length;
+  const pct = Math.round(correctCount / questions.length * 100);
+  document.getElementById('resultScore').textContent = `${correctCount} / ${questions.length}`;
+  document.getElementById('resultSub').textContent = `Uğur faizi: ${pct}%`;
+  document.getElementById('statCorrect').textContent = correctCount;
+  document.getElementById('statWrong').textContent = wrong;
+  document.getElementById('statSkipped').textContent = skipped;
+  document.getElementById('resultEmoji').textContent = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 50 ? '👍' : '😔';
+}
+
+function restartQuiz() {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  Object.keys(chosenIdx).forEach(k => delete chosenIdx[k]);
+  correctCount = 0;
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('mainArea').style.display = 'block';
+  document.getElementById('navSection').style.display = 'block';
+  buildNav();
+  renderQ(0);
+  window.scrollTo({top:0});
+}
+
+buildNav();
+renderQ(0);
 </script>
 </body>
 </html>
