@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basketbol · 3x3 · Voleybol Testi</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-light: #eff6ff;
+    --primary-dark: #1e40af;
+    --success: #16a34a;
+    --success-light: #f0fdf4;
+    --success-border: #86efac;
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+    --danger-border: #fca5a5;
+    --bg: #f1f5f9;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --nav-size: 46px;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  .header {
+    background: white;
+    border-bottom: 2px solid var(--border);
+    padding: 13px 22px 17px;
+    position: sticky; top: 0; z-index: 200;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+    position: relative;
+  }
+  .header-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary-dark); flex: 1; }
+  .score-pill {
+    background: var(--primary-light); color: var(--primary-dark);
+    font-weight: 800; font-size: 0.9rem;
+    padding: 5px 16px; border-radius: 999px;
+    border: 2px solid var(--primary); white-space: nowrap;
+  }
+  .progress-wrap { width: 100%; height: 4px; background: var(--border); position: absolute; bottom: 0; left: 0; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #2563eb, #60a5fa); transition: width 0.4s ease; }
+
+  /* NAV */
+  .nav-section { background: white; border-bottom: 1px solid var(--border); padding: 12px 18px; }
+  .nav-label { font-size: 0.68rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 9px; }
+  .nav-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+  .nav-btn {
+    width: var(--nav-size); height: var(--nav-size);
+    border: 2px solid var(--border); background: white;
+    border-radius: 8px; font-family: 'Nunito', sans-serif;
+    font-weight: 800; font-size: 0.78rem; color: var(--muted);
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .nav-btn.current { border-color: var(--primary); background: var(--primary); color: white; }
+  .nav-btn.correct { border-color: var(--success); background: var(--success-light); color: var(--success); }
+  .nav-btn.wrong { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+
+  /* MAIN */
+  .main { max-width: 800px; margin: 0 auto; padding: 26px 14px 60px; }
+  .question-card {
+    background: white; border-radius: var(--radius);
+    padding: 26px; box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    border: 2px solid var(--border); animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  .q-number { font-size: 0.7rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 9px; }
+  .q-text { font-size: 1rem; font-weight: 700; line-height: 1.65; color: var(--text); margin-bottom: 20px; white-space: pre-wrap; }
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .option-btn {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px; border: 2px solid var(--border);
+    border-radius: 10px; background: white; cursor: pointer;
+    font-family: 'Nunito', sans-serif; font-size: 0.92rem;
+    font-weight: 600; color: var(--text); text-align: left;
+    transition: all 0.15s; position: relative; overflow: hidden;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-light); transform: translateX(3px); }
+  .option-btn:disabled { cursor: default; }
+  .option-letter {
+    width: 30px; height: 30px; border-radius: 6px;
+    background: var(--bg); display: flex; align-items: center;
+    justify-content: center; font-weight: 800; font-size: 0.82rem;
+    color: var(--muted); flex-shrink: 0; transition: all 0.15s;
+  }
+  .option-text { flex: 1; }
+  .option-icon { font-size: 1.15rem; flex-shrink: 0; opacity: 0; transition: opacity 0.2s; }
+
+  .option-btn.correct { border-color: var(--success); background: var(--success-light); animation: correctPop 0.38s ease; }
+  .option-btn.correct .option-letter { background: var(--success); color: white; }
+  .option-btn.correct .option-icon { opacity: 1; }
+  @keyframes correctPop { 0%{transform:scale(1)} 40%{transform:scale(1.03)} 100%{transform:scale(1)} }
+
+  .option-btn.wrong { border-color: var(--danger); background: var(--danger-light); animation: wrongShake 0.38s ease; }
+  .option-btn.wrong .option-letter { background: var(--danger); color: white; }
+  .option-btn.wrong .option-icon { opacity: 1; }
+  @keyframes wrongShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+
+  .option-btn.show-correct { border-color: var(--success); background: var(--success-light); }
+  .option-btn.show-correct .option-letter { background: var(--success); color: white; }
+  .option-btn.show-correct .option-icon { opacity: 1; }
+
+  .feedback { margin-top: 14px; padding: 11px 16px; border-radius: 10px; font-weight: 700; font-size: 0.92rem; align-items: center; gap: 9px; display: none; }
+  .feedback.correct { background: var(--success-light); border: 2px solid var(--success-border); color: var(--success); display: flex; }
+  .feedback.wrong { background: var(--danger-light); border: 2px solid var(--danger-border); color: var(--danger); display: flex; }
+
+  .nav-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; gap: 10px; }
+  .btn { padding: 11px 26px; border-radius: 10px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.92rem; cursor: pointer; transition: all 0.15s; border: none; display: flex; align-items: center; gap: 7px; }
+  .btn-back { background: white; color: var(--muted); border: 2px solid var(--border); }
+  .btn-back:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+  .btn-back:disabled { opacity: 0.3; cursor: default; }
+  .btn-next { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(37,99,235,0.32); }
+  .btn-next:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .q-counter { font-size: 0.83rem; font-weight: 700; color: var(--muted); }
+
+  /* RESULT */
+  .result-screen { display: none; flex-direction: column; align-items: center; padding: 56px 20px; text-align: center; }
+  .result-emoji { font-size: 5rem; margin-bottom: 14px; animation: bounce 0.6s ease; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+  .result-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--text); margin-bottom: 8px; }
+  .result-score { font-size: 3.2rem; font-weight: 900; color: var(--primary); margin-bottom: 6px; }
+  .result-sub { font-size: 1rem; color: var(--muted); margin-bottom: 28px; font-weight: 600; }
+  .result-stats { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; justify-content: center; }
+  .stat-box { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 16px 24px; min-width: 110px; }
+  .stat-val { font-size: 1.9rem; font-weight: 900; }
+  .stat-val.green { color: var(--success); }
+  .stat-val.red { color: var(--danger); }
+  .stat-val.orange { color: #f59e0b; }
+  .stat-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-top: 3px; }
+  .btn-restart { background: var(--primary); color: white; border: none; padding: 13px 38px; border-radius: 12px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.97rem; cursor: pointer; box-shadow: 0 4px 16px rgba(37,99,235,0.32); transition: all 0.15s; }
+  .btn-restart:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+  .ripple { position: absolute; border-radius: 50%; width: 40px; height: 40px; background: rgba(255,255,255,0.42); animation: rippleAnim 0.5s linear; pointer-events: none; }
+  @keyframes rippleAnim { from{transform:scale(0);opacity:1} to{transform:scale(8);opacity:0} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">🏀 Basketbol · 3x3 · Voleybol Testi</div>
+  <div class="score-pill" id="scorePill">✓ 0 / 0</div>
+  <div class="progress-wrap"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
+</div>
+
+<div class="nav-section" id="navSection">
+  <div class="nav-label">Suallar arasında keçid</div>
+  <div class="nav-grid" id="navGrid"></div>
+</div>
+
+<div class="main" id="mainArea">
+  <div class="question-card" id="questionCard">
+    <div class="q-number" id="qNumber"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="feedback" id="feedbackBanner"></div>
+  </div>
+  <div class="nav-controls">
+    <button class="btn btn-back" id="btnBack" onclick="navigate(-1)">← Geri</button>
+    <span class="q-counter" id="qCounter"></span>
+    <button class="btn btn-next" id="btnNext" onclick="navigate(1)">İrəli →</button>
+  </div>
+</div>
+
+<div class="result-screen" id="resultScreen">
+  <div class="result-emoji" id="resultEmoji">🏆</div>
+  <div class="result-title">Test Tamamlandı!</div>
+  <div class="result-score" id="resultScore"></div>
+  <div class="result-sub" id="resultSub"></div>
+  <div class="result-stats">
+    <div class="stat-box"><div class="stat-val green" id="statCorrect">0</div><div class="stat-label">✅ Düzgün</div></div>
+    <div class="stat-box"><div class="stat-val red" id="statWrong">0</div><div class="stat-label">❌ Yanlış</div></div>
+    <div class="stat-box"><div class="stat-val orange" id="statSkipped">0</div><div class="stat-label">⏭ Cavabsız</div></div>
+  </div>
+  <button class="btn-restart" onclick="restartQuiz()">🔄 Yenidən Başla</button>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DÜZGÜN CAVABLAR (0-indexed):
+// 1-E=4, 2-C=2, 3-C=2, 4-E=4, 5-A=0, 6-C=2,
+// 7-B=1, 8-C=2, 9-E=4, 10-B=1, 11-B=1, 12-B=1,
+// 13-E=4, 14-D=3, 15-B=1, 16-C=2, 17-E=4, 18-B=1,
+// 19-C=2, 20-D=3, 21-E=4, 22-A=0, 23-D=3, 24-B=1,
+// 25-D=3, 26-E=4, 27-B=1, 28-D=3, 29-B=1, 30-C=2,
+// 31-E=4, 32-B=1, 33-A=0, 34-C=2, 35-A=0, 36-E=4,
+// 37-C=2, 38-A=0, 39-B=1, 40-B=1
+// ─────────────────────────────────────────────
+const questions = [
+  {
+    q: "3x3 basketbol oyununda hücum edən komandanın oyunçusuna texniki fol verilərsə və həmin an hücum vaxtının bitməsinə 7 saniyə qalmışdırsa, oyunun davam etdirilməsi proseduru necə tənzimlənir?",
+    opts: [
+      "A) Rəqibə 1 sərbəst atış verilir, top rəqibə verilir və hücum vaxtı sıfırlanır.",
+      "B) Rəqibə 1 sərbəst atış verilir və hücum vaxtı qaldığı yerdən (7 saniyə) davam etdirilir.",
+      "C) Fol alan oyunçu oyundan kənarlaşdırılır, rəqibə 1 atış verilir.",
+      "D) Rəqibə 2 sərbəst atış verilir və topa yiyələnmə hüququ rəqibə keçir.",
+      "E) Rəqibə 1 sərbəst atış verilir və hücum vaxtı 12 saniyəyə bərpa olunur."
+    ], ans: 4
+  },
+  {
+    q: "Voleybol oyununda libero ön zonada olarkən topu barmaqları ilə yuxarıdan ötürür. Hücumçu həmin topa torun üst kənar səviyyəsindən tamamilə yuxarıda olarkən hücum vuruşu edir. Bu epizodla bağlı hakimin qərarı necə olmalıdır?",
+    opts: [
+      "A) Bu hərəkət yalnız libero arxa zonada olarkən qadağandır.",
+      "B) Oyun dayandırılmır, vuruş qaydalar çərçivəsindədir.",
+      "C) Hücum vuruşu tamamlandığı an rəqibə xal və servis hüququ verilir.",
+      "D) Top rəqib meydançasına düşərsə xal verilir, düşməzsə oyun davam edir.",
+      "E) Libero ön zonada barmaqla ötürmə verə bilməz, dərhal fit çalınır."
+    ], ans: 2
+  },
+  {
+    q: "Basketbol və 3x3 basketbol oyunlarında komanda limitləri və taym-aut qaydaları ilə bağlı fərqli məqamlardan hansı doğrudur?",
+    opts: [
+      "A) Basketbolda komanda foulu limiti hər dövrədə 4-dür, 3x3 basketbolda isə 6-cı fouldan sonra cərimə atışları (2 atış) başlayır.",
+      "B) Basketbolda hər hissədə 1 taym-aut, 3x3 basketbolda isə hər oyunçuya 1 taym-aut düşür.",
+      "C) Basketbolda əlavə vaxtda (overtaym) taym-aut verilmir, 3x3-də isə 1 taym-aut verilir.",
+      "D) Basketbolda 4-cü dövrədə komanda foulu sıfırlanmır, 3x3-də isə hər check-ball zamanı sıfırlanır.",
+      "E) Hər iki oyunda oyunçu 5 fouldan sonra meydandan kənarlaşdırılır."
+    ], ans: 2
+  },
+  {
+    q: "Basketbol oyununda öz arxa zonasında topa yiyələnən komanda topu rəqib zonaya keçirmək üçün hansı müddət limitinə riayət etməlidir və bu qayda pozularsa nə baş verir?",
+    opts: [
+      "A) 10 saniyə ərzində mərkəzi xətti keçməlidir, əks halda xəbərdarlıq edilir.",
+      "B) 5 saniyə ərzində keçirməlidir, əks halda mübahisəli top təyin edilir.",
+      "C) 24 saniyə ərzində hücum etməlidir, zonaya keçmə limiti yoxdur.",
+      "D) 12 saniyə ərzində keçirməlidir, əks halda rəqibə 1 cərimə atışı verilir.",
+      "E) 8 saniyə ərzində keçirməlidir, əks halda top rəqib komandaya verilir."
+    ], ans: 4
+  },
+  {
+    q: "3x3 basketbol oyununda əsas vaxt 19:19 hesabı ilə bitmişdir. Əlavə vaxtda (overtaym) qalibi müəyyən etmək üçün tətbiq olunan qayda hansıdır?",
+    opts: [
+      "A) Kim birinci xal qazanarsa, o komanda qalib gəlir (Qızıl xal).",
+      "B) Əlavə vaxtda 2 xalı hansı komanda tez qazanarsa, o komanda qalib sayılır.",
+      "C) Əlavə vaxtda fərq 3 xal olana qədər oyun davam edir.",
+      "D) Əlavə vaxtda hər komandaya 3 sərbəst atış verilir.",
+      "E) Əlavə vaxt 5 dəqiqə davam edir, daha çox xal toplayan qalib gəlir."
+    ], ans: 0
+  },
+  {
+    q: "Voleybol oyununda müstəsna oyunçu əvəzetməsi (zədələnmə zamanı) qaydası hansı halda və necə tətbiq edilir?",
+    opts: [
+      "A) Komandanın əvəzetmə limiti bitdikdə komandaya dərhal texniki məğlubiyyət verilir.",
+      "B) Zədələnən oyunçunu yalnız eyni səviyədə olan digər oyunçu əvəz edə bilər.",
+      "C) Zədələnən oyunçunu istənilən oyunçu (libero istisna) əvəz edə bilər.",
+      "D) Zədələnən oyunçuya tibbi yardım üçün 10 dəqiqə vaxt verilir və oyun dayandırılır.",
+      "E) İstisna əvəzetmə zamanı oyunçu sağalarsa, həmin setdə yenidən oyuna qayıda bilər."
+    ], ans: 2
+  },
+  {
+    q: "Basketbol oyununda 8 saniyə qaydasının pozulması hansı situasiyada qeydə alınır?",
+    opts: [
+      "A) Oyunçu topu 8 saniyə ərzində əlində tutub heç bir hərəkət etmədikdə (driblinq və ya ötürmə).",
+      "B) Topu öz arxa zonasında qazanan komanda 8 saniyə ərzində topu ön zonaya keçirmədikdə.",
+      "C) Komanda topa sahib olduqdan sonra 8 saniyə ərzində rəqib səbətə atış etmədikdə.",
+      "D) Topu yan xətdən oyuna daxil edən oyunçu 8 saniyə ərzində topu meydançaya daxil etmədikdə.",
+      "E) Sərbəst atış zamanı oyunçu 8 saniyə ərzində atışı yerinə yetirmədikdə."
+    ], ans: 1
+  },
+  {
+    q: "Voleybol, Basketbol və 3x3 Basketbol oyunlarının başlanma prosedurları müqayisə edildikdə, hansı oyunlarda ilk sahiblik və ya meydança seçimi püşkatma ilə müəyyən edilir?",
+    opts: [
+      "A) Basketbol və 3x3 Basketbol.",
+      "B) Yalnız 3x3 Basketbol.",
+      "C) Hər üç idman növündə.",
+      "D) Voleybol və 3x3 Basketbol.",
+      "E) Yalnız Voleybol."
+    ], ans: 2
+  },
+  {
+    q: "3x3 Basketbol oyununda əvəzetmə proseduru zamanı oyunçuların etməli olduğu məcburi hərəkət hansıdır?",
+    opts: [
+      "A) Əvəzetmə yalnız \"check-ball\" zamanı hakimin fiti ilə həyata keçirilir.",
+      "B) Baş məşqçi hakimlər masasına işarə verdikdən sonra dəyişiklik edilir.",
+      "C) Oyun dayanan kimi əvəzetmə edən oyunçu birbaşa meydana daxil olmalıdır.",
+      "D) Əvəzə girən oyunçu hakimdən icazə alaraq masaya yaxınlaşmalıdır.",
+      "E) Əvəzə girən oyunçu mütləq meydanı tərk edən komanda yoldaşına toxunmalıdır."
+    ], ans: 4
+  },
+  {
+    q: "Voleybol oyununda hakim oyunçuya eyni əldə qırmızı və sarı kartı birlikdə (üst-üstə) göstərərsə, bu hansı cəzanı bildirir?",
+    opts: [
+      "A) Rəqibə 1 xal və servis hüququ verilməsi (xəbərdarlıq).",
+      "B) Oyunçunun oyundan tamamilə diskvalifikasiya edilməsi (meydançanı tərk edir).",
+      "C) Oyunçunun kapitanlıq hüququnun əlindən alınması.",
+      "D) Oyunçunun həmin setdən xaric edilməsi (oyun sahəsini tərk etmir).",
+      "E) Komandaya texniki məğlubiyyət verilməsi."
+    ], ans: 1
+  },
+  {
+    q: "Basketbol oyununda baş məşqçinin texniki fol alması ilə bağlı aşağıdakı fikirlərdən hansı doğrudur?",
+    opts: [
+      "A) Texniki fol alan məşqçi yalnız kapitan vasitəsilə hakimlə əlaqə yarada bilər.",
+      "B) Məşqçi 2 texniki fol aldıqda oyunun keçirildiyi məkandan xaric edilir.",
+      "C) Məşqçi 1 texniki fol aldıqda dərhal oyundan kənarlaşdırılır.",
+      "D) Məşqçiyə verilən texniki fol komanda foullarının sayına təsir etmir.",
+      "E) Hər texniki fola görə rəqib komandaya 2 cərimə atışı və topa yiyələnmə verilir."
+    ], ans: 1
+  },
+  {
+    q: "Basketbol və 3x3 Basketbol oyunlarında əsas vaxt heç-heçə bitdikdə oynanılan əlavə vaxtın (overtaym) qalibinin müəyyənləşməsi qaydası necə fərqlənir?",
+    opts: [
+      "A) Basketbolda əlavə vaxtda 1 xal verilir, 3x3-də məğluba 2 xal, qaydalar eynidir.",
+      "B) Basketbolda 5 dəqiqə oynanılır, 3x3 basketbolda ilk 2 xalı qazanan qalib gəlir.",
+      "C) Hər iki oyunda əlavə vaxt 5 dəqiqə davam edir və sonda çox xal toplayan qalib olur.",
+      "D) Basketbolda \"qızıl xal\" qaydası tətbiq olunur, 3x3-də isə vaxta baxılır.",
+      "E) 3x3 basketbolda 1 xal, basketbolda 5 xal fərqi yaranana qədər oyun davam edir."
+    ], ans: 1
+  },
+  {
+    q: "Voleybol oyununda Libero oyunçusunun hücum hərəkətləri ilə bağlı qadağa hansı variantda düzgün təsvir edilmişdir?",
+    opts: [
+      "A) Libero heç bir halda topu rəqib tərəfə ata bilməz.",
+      "B) Libero servisdən gələn topu barmaqla qəbul edərsə, hücum sayıla bilməz.",
+      "C) Libero ön zonaya keçərsə, heç bir halda topa toxuna bilməz.",
+      "D) Libero yalnız arxa zonada olarkən top tordan yuxarı səviyyədə olarsa sıçrayaraq hücum vuruşu edə bilər.",
+      "E) Top torun üst kənar səviyyəsindən tamamilə yuxarıda olarkən libero hücum vuruşu edə bilməz."
+    ], ans: 4
+  },
+  {
+    q: "3x3 Basketbol oyununda \"check-ball\" zamanı müdafiəçi ilə topu ötürən oyunçu arasında minimum nə qədər məsafə olmalıdır?",
+    opts: [
+      "A) 1.5 metr.",
+      "B) Qol məsafəsi qədər.",
+      "C) Minimum 1 metr.",
+      "D) Minimum 2 metr.",
+      "E) Məsafə tələbi yoxdur, sadəcə təmas olmamalıdır."
+    ], ans: 3
+  },
+  {
+    q: "Basketbol oyununda ikinci hissənin (oyunun) bitməsinə 2 dəqiqə və ya daha az vaxt qaldıqda, komandanın istifadə olunmamış 3 taym-autu varsa, neçə taym-autdan istifadə edə bilər?",
+    opts: [
+      "A) Taym-autların hamısı silinir.",
+      "B) Yalnız 1 taym-autdan istifadə edə bilər, digərləri silinir.",
+      "C) Məşqçi istədiyi vaxt istifadə edə bilər, məhdudiyyət yoxdur.",
+      "D) 2 taym-autdan istifadə edə bilər.",
+      "E) Hər 3 taym-autdan istifadə edə bilər."
+    ], ans: 1
+  },
+  {
+    q: "Basketbol və 3x3 Basketbol oyunlarında oyunçu əvəzetməsi prosedurundakı əsas fərq nədən ibarətdir?",
+    opts: [
+      "A) Basketbolda əvəzetməyə say məhdudiyyəti qoyulur (hər hissədə 3), 3x3-də isə məhdudiyyət yoxdur.",
+      "B) 3x3 basketbolda əvəzetmə üçün oyunun dayanmasına ehtiyac yoxdur, Basketbolda isə oyun dayanmalıdır.",
+      "C) 3x3-də oyunçu dəyişikliyi yalnız \"check-ball\" zamanı edilir, Basketbolda isə istənilən ölü topda.",
+      "D) Basketbolda əvəzə girən oyunçu oyuna daxil olmaq üçün hakimin işarəsini gözləyir, 3x3-də isə top ölü olduqda komanda yoldaşına toxunaraq daxil olur.",
+      "E) Basketbolda əvəzetmə üçün hakimdən icazə tələb olunmur, 3x3-də isə mütləq masa hakiminə bildirilməlidir."
+    ], ans: 2
+  },
+  {
+    q: "Voleybol oyununda bir rallinin sonunda Libero (L1) oyun meydançasını tərk edərək 6 nömrəli zonadakı oyunçu ilə yerini dəyişir. Komanda dərhal növbəti ralli başlamadan ikinci Liberonu (L2) meydana daxil etmək istəyir. Qaydalara əsasən doğru addım hansıdır?",
+    opts: [
+      "A) L1 meydanı tərk etdikdən sonra həmin setdə bir daha oyuna qayıda bilməz, yalnız L2 oynaya bilər.",
+      "B) Liberolar arası əvəzetmə adi oyunçu dəyişikliyi sayıldığı üçün masa hakimi icazə verməlidir.",
+      "C) Baş məşqçi taym-aut götürərsə, ralli oynamadan liberoları dəyişmək mümkündür.",
+      "D) İkinci libero dərhal meydana daxil ola bilər, çünki komandanın iki liberosu var.",
+      "E) Liberonun yenidən əvəz edilməsi üçün arada mütləq bir ralli (oyun epizodu) oynanılmalıdır."
+    ], ans: 4
+  },
+  {
+    q: "Basketbol oyununda 5 saniyə və 8 saniyə qaydaları arasındakı tətbiq fərqi hansı variantda doğru verilmişdir?",
+    opts: [
+      "A) 5 saniyə qaydası hücum zonasında, 8 saniyə qaydası isə yalnız müdafiə zonasında passiv oyun zamanı tətbiq olunur.",
+      "B) 8 saniyə qaydası topu arxa zonadan ön zonaya keçirmək üçün, 5 saniyə qaydası isə rəqib təzyiqi altında topu saxlamaq və ya ötürmək üçün tətbiq edilir.",
+      "C) Hər iki qayda pozuntusunda rəqibə 1 cərimə atışı verilir, lakin 8 saniyədə top komandada qalır.",
+      "D) 8 saniyə qaydası oyunçu topu əlində tutub saxladıqda, 5 saniyə qaydası isə driblinq edərkən tətbiq olunur.",
+      "E) 5 saniyə qaydası cərimə atışını yerinə yetirmək üçün, 8 saniyə qaydası isə topu yan xətdən oyuna daxil etmək üçün verilir."
+    ], ans: 1
+  },
+  {
+    q: "3x3 basketbol oyununda komandalar oyuna başlamaq üçün püşkatma keçirirlər. Püşkü qazanan A komandası oyunun əvvəlində topa sahib olmağı seçir. Oyunun əsas vaxtı bərabərliklə bitərsə, əlavə vaxt (overtaym) necə başlayacaq?",
+    opts: [
+      "A) A komandası oyuna başladığı üçün əlavə vaxta da A komandası başlayacaq.",
+      "B) Əlavə vaxt \"hava atışı\" (mübahisəli top) ilə başlayacaq.",
+      "C) B komandası əlavə vaxta başlamaq üçün pozisyon haqqına sahib olacaq.",
+      "D) Hakimlər masasında ox işarəsi hansı tərəfi göstərirsə, o komanda başlayacaq.",
+      "E) Yenidən püşkatma keçiriləcək və qalib gələn tərəf başlayacaq."
+    ], ans: 2
+  },
+  {
+    q: "Voleybol oyununda servis yerinə yetirən oyunçu topu havaya atır, lakin atışın uğursuz olduğunu düşünərək topa vurmur və topun yerə düşməsinə icazə verir. Hakim bu epizodda hansı qərarı verməlidir?",
+    opts: [
+      "A) Əgər top oyunçunun bədəninə toxunmadan yerə düşərsə, xəta sayılmır.",
+      "B) Oyunçuya şifahi xəbərdarlıq edilir və servis yenidən başladılır.",
+      "C) Hakimin icazəsi ilə servis 3 saniyə ərzində təkrarlanmalıdır.",
+      "D) Oyunçuya təkrar servis atmaq üçün icazə verilir (1 dəfə).",
+      "E) Bu hərəkət qayda pozuntusudur, rəqibə xal və servis hüququ verilir."
+    ], ans: 3
+  },
+  {
+    q: "Basketbol və Voleybol oyunlarında komanda oyuna çıxmaqdan imtina edərsə və ya qaydalara uyğun heyət təqdim etməzsə (texniki məğlubiyyət), oyunun rəsmi hesabı protokolda necə qeydə alınır?",
+    opts: [
+      "A) Basketbol: Cari hesab saxlanılır; Voleybol: 3-0 (oyun).",
+      "B) Basketbol: 10-0; Voleybol: 21-0 (hər set).",
+      "C) Basketbol: 30-0; Voleybol: 15-0 (hər set).",
+      "D) Basketbol: 0-2 (xal); Voleybol: 0-3 (xal).",
+      "E) Basketbol: 20-0; Voleybol: 25-0 (hər set), 3-0 (oyun)."
+    ], ans: 4
+  },
+  {
+    q: "Voleybol oyununda ön xətt oyunçusu rəqibin servisini qarşılayarkən, top hələ torun üzərində olarkən ona blok quraraq toxunur. Hakim bu epizodu necə qiymətləndirməlidir?",
+    opts: [
+      "A) Servisə blok qurmaq qadağandır, rəqibə xal verilir.",
+      "B) Əgər blokçu topa toxunmasaydı (təşəbbüs), xəta sayılmazdı, toxunduğu üçün xətadır.",
+      "C) Oyun davam edir, ön xətt oyunçusunun blok qurmaq hüququ var.",
+      "D) Top torun rəqib tərəfindədirsə blok düzgündür, öz tərəfindədirsə xətadır.",
+      "E) Blokçu topu aktiv şəkildə aşağı vurmursa, passiv blok icazəlidir."
+    ], ans: 0
+  },
+  {
+    q: "Basketbol oyununda bir oyunçunun oyundan kənarlaşdırılması (diskalifikasiya) üçün tələb olunan texniki və ya qeyri-idman follarının kombinasiyası hansı variantda səhv göstərilmişdir?",
+    opts: [
+      "A) 1 diskalifikasiyaedici fol.",
+      "B) 2 texniki fol.",
+      "C) 1 texniki fol + 1 qeyri-idman folu.",
+      "D) 4 fərdi fol (adi).",
+      "E) 2 qeyri-idman folu."
+    ], ans: 3
+  },
+  {
+    q: "Voleybol, Basketbol və 3x3 Basketbol oyunlarında bir komandaya verilən taym-aut sayı və müddəti ilə bağlı hansı müqayisə doğrudur?",
+    opts: [
+      "A) 3x3 basketbolda taym-aut yoxdur, digərlərində var.",
+      "B) Voleybolda hər setdə 2, Basketbolda ümumi 5, 3x3-də isə 1 taym-aut (30 san) verilir.",
+      "C) Basketbolda hər periodda 2 taym-aut, 3x3-də isə hər 5 dəqiqədən bir TV taym-autu var.",
+      "D) Hər üç oyunda taym-aut müddəti 1 dəqiqədir.",
+      "E) Voleybolda taym-aut 30 saniyə, Basketbolda isə 30 saniyədir."
+    ], ans: 1
+  },
+  {
+    q: "Voleybol oyununda \"köməkli vuruş\" qayda pozuntusu hansı halda qeydə alınır?",
+    opts: [
+      "A) Oyunçu topu xilas etmək üçün reklam lövhələrinin üzərinə çıxarsa.",
+      "B) İki oyunçu eyni anda topa toxunarsa (toqquşma baş verərsə).",
+      "C) Oyunçu topa vurduqdan sonra tarazlığını itirib blok qurarsa.",
+      "D) Oyunçu topa zərbə vurmaq üçün torun dirəyindən tutaraq dəstək alarsa.",
+      "E) Libero ön zonada topu barmaqla qaldırdıqdan sonra hücumçu zərbə vurarsa."
+    ], ans: 3
+  },
+  {
+    q: "Basketbol və 3x3 Basketbol oyunlarında \"5 saniyə qaydası\"nın tətbiqindəki əsas fərq nədən ibarətdir?",
+    opts: [
+      "A) Basketbolda yalnız topu oyuna daxil edərkən, 3x3-də isə yalnız cərimə atışında tətbiq edilir.",
+      "B) Basketbolda hücum vaxtı bitərkən, 3x3-də isə topu \"check-ball\" edərkən tətbiq edilir.",
+      "C) Basketbolda 5 saniyə qaydası pozulduqda mübahisəli top, 3x3-də isə texniki fol verilir.",
+      "D) 3x3 basketbolda 5 saniyə qaydası yoxdur, yalnız Basketbolda var.",
+      "E) Basketbolda topu əlində tutub saxlayan oyunçuya, 3x3-də isə topu qazandıqdan sonra arxası səbətə driblinq edən oyunçuya tətbiq edilir."
+    ], ans: 4
+  },
+  {
+    q: "Voleybol oyununda servis yerinə yetirilərkən edilən hansı hərəkət qayda pozuntusu hesab edilmir?",
+    opts: [
+      "A) Oyunçu topa vurarkən ayağı ilə arxa xətti tapdalayarsa.",
+      "B) Oyunçu topa vurduqdan sonra meydançanın daxilinə torun alt hissəsinde (xəttin önünə) düşərsə.",
+      "C) Servis zamanı top antenaya toxunarsa.",
+      "D) Oyunçu topu havaya atıb tutarsa (vuruş etməzsə).",
+      "E) Oyunçu topu əlindən buraxmadan (əlindən) zərbə vurarsa."
+    ], ans: 1
+  },
+  {
+    q: "Basketbol oyununda top oyunçunun əlində olarkən 24 saniyəlik hücum vaxtı bitir və siqnal səslənir. Oyunçu siqnaldan sonra topu əlindən buraxır. Hakim bu vəziyyətdə hansı qərarı verməlidir?",
+    opts: [
+      "A) Oyun dayandırılır və \"hava atışı\" (mübahisəli top) təyin edilir.",
+      "B) Hakim dərhal texniki fol verir.",
+      "C) Atış dəqiq olarsa xal sayılır, olmazsa oyun davam edir.",
+      "D) Top havada olarkən siqnal səslənərsə oyun dayanmır, lakin əldə ikən səslənərsə hücum vaxtı pozuntusudur (top rəqibə verilir).",
+      "E) Müdafiəçi topa toxunarsa oyun davam edir, toxunmazsa xəta sayılır."
+    ], ans: 3
+  },
+  {
+    q: "Voleybol oyununda qaydalara əsasən Libero oyunçusunun statusu ilə bağlı aşağıdakı fikirlərdən hansı doğrudur?",
+    opts: [
+      "A) Libero həm komanda kapitanı, həm də oyun kapitanı ola bilər.",
+      "B) Libero heç vaxt komanda kapitanı ola bilməz.",
+      "C) Liberonun forması digər oyunçularla eyni rəngdə ola bilər (əgər kapitan olarsa).",
+      "D) Libero yalnız ehtiyat oyunçular skamyasında olarkən kapitan ola bilər.",
+      "E) Libero kapitan olarsa, mütləq servis yerinə yetirməlidir."
+    ], ans: 1
+  },
+  {
+    q: "3x3 Basketbol oyununda \"TV yayımı\" (canlı yayım) olan rəsmi oyunlarda əlavə taym-autların götürülməsi qaydası necədir?",
+    opts: [
+      "A) Hər komandaya əlavə 2 taym-aut verilir, istənilən vaxt istifadə edilə bilər.",
+      "B) Yalnız məşqçilər TV taym-autu tələb edə bilər.",
+      "C) Oyunun 6:59 və 3:59 dəqiqələrində (göstəricidən sonra) ilk ölü topda tv fasilə götürülə bilər.",
+      "D) Canlı yayım oyunlarında komandaların taym-aut götürmək hüququ yoxdur.",
+      "E) TV taym-autları yalnız hakimlər tərəfindən oyunun sonunda təyin edilir."
+    ], ans: 2
+  },
+  {
+    q: "Basketbol oyununda oyunun 1-2 periodlar arasında və 2-ci və 3-cü periodlarda arasındakı fasilə müddətləri hansı variantda düzgün göstərilmişdir?",
+    opts: [
+      "A) 1-2 arası: 5 dəqiqə; Böyük fasilə: 10 dəqiqə.",
+      "B) 1-2 arası: 3 dəqiqə; Böyük fasilə: 12 dəqiqə.",
+      "C) 1-2 arası: 1 dəqiqə; Böyük fasilə: 20 dəqiqə.",
+      "D) Hər period arası fasilə eynidir (2 dəqiqə).",
+      "E) 1-2 arası: 2 dəqiqə; Böyük fasilə: 15 dəqiqə."
+    ], ans: 4
+  },
+  {
+    q: "Voleybol oyununda topun \"oyunda\" və \"oyunda deyil\" olması anlarını müəyyən edən amil hansıdır?",
+    opts: [
+      "A) Top antenaya dəydikdə oyunda sayılır, yerə dəydikdə ölü sayılır.",
+      "B) Hakim fit çaldığı an top oyunda sayılır; servis üçün fit çaldıqdan sonra vuruş anından etibarən top oyundadır.",
+      "C) Top oyunçunun əlindən çıxdığı an ölüdür, yerə dəydiyi an ölüdür.",
+      "D) Top torun üzərindən keçdiyi an oyundadır, xətti keçdiyi an ölüdür.",
+      "E) Servis atılan an top oyundadır, hakim fit çalan kimi oyun dayanmır, epizodun bitməsini gözləyir."
+    ], ans: 1
+  },
+  {
+    q: "3x3 Basketbol oyununda oyunun başlanğıcında komanda tam tərkibdə (3 oyunçu) meydançada hazır deyilsə, hakim hansı müddətdən sonra həmin komandaya texniki məğlubiyyət (w-o) verir?",
+    opts: [
+      "A) 15 dəqiqə.",
+      "B) 2 dəqiqə.",
+      "C) 5 dəqiqə.",
+      "D) 3 dəqiqə.",
+      "E) 10 dəqiqə."
+    ], ans: 0
+  },
+  {
+    q: "Voleybol oyununda hakim oyunçuya eyni epizodda qırmızı və sarı kartları ayrı-ayrı (hərəsini bir əlində tutaraq) göstərərsə, bu hansı cəzanı bildirir?",
+    opts: [
+      "A) Komandaya texniki məğlubiyyət verilir.",
+      "B) Rəqibə 1 xal verilir, oyunçu oyunda qalır.",
+      "C) Oyunçu oyundan diskvalifikasiya edilir və meydanı tərk etməlidir.",
+      "D) Oyunçu setdən xaric edilir.",
+      "E) Komandanın kapitanı oyundan çıxarılır."
+    ], ans: 2
+  },
+  {
+    q: "3x3 Basketbol oyununda bütün kateqoriyalarda (kişilər və qadınlar) istifadə olunan rəsmi topun ölçüsü və çəkisi necə müəyyən edilmişdir?",
+    opts: [
+      "A) Ölçüsü 6 nömrəli (çevrəsi 720-740 mm), çəkisi 580-620 qr-dır.",
+      "B) Ölçüsü və çəkisi standart basketbol topu (7 nömrə) ilə eynidir.",
+      "C) Ölçüsü 5 nömrəli, çəkisi daha ağırdır.",
+      "D) Kişilər üçün 7, qadınlar üçün 6 nömrəli topdan istifadə edilir.",
+      "E) Ölçüsü 7 nömrəli, çəkisi 6 nömrəli top standartındadır."
+    ], ans: 0
+  },
+  {
+    q: "Basketbol oyununda hücum edən komanda topu səbətə atdıqdan sonra top halqaya dəyir və hücum edən komanda topa yenidən yiyələnir (hücum ribaundu). Bu zaman hücum vaxtı neçə saniyəyə qurulmalıdır?",
+    opts: [
+      "A) 12 saniyə.",
+      "B) Vaxt sıfırlanmır, qaldığı yerdən davam edir.",
+      "C) 24 saniyə.",
+      "D) 18 saniyə.",
+      "E) 14 saniyə."
+    ], ans: 4
+  },
+  {
+    q: "Voleybol oyununda komandanın əvəzetmə limiti bitdikdən sonra meydandakı oyunçulardan biri zədələnir. Hakim \"istisna əvəzetmə\"yə icazə vermir (məsələn, zədələnən liberodursa və ya ehtiyat yoxdursa) və zədənin bərpası üçün 3 dəqiqə vaxt ayırır. Bu müddət bitdikdən sonra oyunçu oyuna qayıda bilmirsə, oyunun nəticəsi necə olur?",
+    opts: [
+      "A) Rəqib komandaya seçim haqqı verilir: ya qələbə, ya da 5 nəfərlə davam etmək.",
+      "B) Komanda qalan oyunçularla (5 nəfər) oyuna davam edir.",
+      "C) Komanda natamam hesab olunur və komandaya texniki məğlubiyyət verilir.",
+      "D) Baş hakim oyunu təxirə salır.",
+      "E) Həmin set rəqibə verilir, növbəti setdə zədəli oyunçu əvəz edilir."
+    ], ans: 2
+  },
+  {
+    q: "3x3 Basketbol oyununda komanda oyunun nəticəsinə etiraz etmək istəyir. Bu zaman komanda kapitanı protokolu imzaladıqdan sonra növbəti hansı addım atılmalıdır?",
+    opts: [
+      "A) 30 dəqiqə ərzində yazılı açıqlama təqdim edilməli və 200 dollar güvənc depoziti qoyulmalıdır.",
+      "B) 24 saat ərzində FİBA-ya rəsmi məktub göndərilməlidir.",
+      "C) 1 saat ərzində təşkilat komitəsinə müraciət edilməli və heç bir ödəniş tələb olunmur.",
+      "D) Etiraz yalnız oyun zamanı edilə bilər, oyun bitdikdən sonra qəbul edilmir.",
+      "E) Oyun bitən kimi dərhal 500 dollar ödənilməli və video təkrar tələb edilməlidir."
+    ], ans: 0
+  },
+  {
+    q: "Basketbol oyununda \"3 saniyə\" qaydasının pozulması halı hansı vəziyyətdə qeydə alınır?",
+    opts: [
+      "A) Topsuz hücumçu 3 saniyə ərzində mərkəzi xətti keçmədikdə.",
+      "B) Hücum zamanı mövqe üstünlüyünə malik olan topsuz hücumçu rəqib səbətin altındakı məhdud sahədə 3 saniyədən çox dayandıqda.",
+      "C) Oyunçu topu yan xətdən oyuna daxil edərkən 3 saniyə ərzində pas vermədikdə.",
+      "D) Müdafiəçi öz səbətinin altındakı məhdud sahədə 3 saniyədən çox dayandıqda.",
+      "E) Hücumçu topu 3 saniyədən çox əlində saxladıqda (driblinq etmədən)."
+    ], ans: 1
+  },
+  {
+    q: "Voleybol oyununda komanda yerdəyişmə səhvi edərsə və hakim bunu aşkarlayarsa, tətbiq edilən cəza proseduru necədir?",
+    opts: [
+      "A) Yalnız servis atan komanda səhv edərsə cəzalandırılır, qarşılayan komanda cəzalandırılmır.",
+      "B) Rəqib komandaya 1 xal verilir və servis atma hüququ rəqibə keçir.",
+      "C) Səhv edən komandanın qazandığı son xal silinir və servis təkrar edilir.",
+      "D) Yerdəyişmə səhvi edən oyunçuya sarı kart verilir.",
+      "E) Oyun dayandırılır, oyunçular düzgün yerlərinə qaytarılır, lakin xal və ya servis cəzası verilmir."
+    ], ans: 1
+  }
+];
+
+// STATE
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let chosenIdx = {};
+let correctCount = 0;
+
+// AUDIO
+let audioCtx;
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playCorrect() {
+  try {
+    const ctx = getCtx();
+    [[0,523],[0.13,659],[0.26,784]].forEach(([t,f])=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(0.28,ctx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.22);
+      o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.22);
+    });
+  } catch(e){}
+}
+function playWrong() {
+  try {
+    const ctx=getCtx();
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.type='sawtooth';
+    o.frequency.setValueAtTime(220,ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(90,ctx.currentTime+0.32);
+    g.gain.setValueAtTime(0.22,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.32);
+    o.start(ctx.currentTime);o.stop(ctx.currentTime+0.32);
+  } catch(e){}
+}
+function playFinish() {
+  try {
+    const ctx=getCtx();
+    [523,659,784,1047,784,1047,1319].forEach((f,i)=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.type='sine';o.frequency.value=f;
+      const t=ctx.currentTime+i*0.13;
+      g.gain.setValueAtTime(0.22,t);
+      g.gain.exponentialRampToValueAtTime(0.001,t+0.18);
+      o.start(t);o.stop(t+0.18);
+    });
+  } catch(e){}
+}
+
+function buildNav() {
+  const g=document.getElementById('navGrid'); g.innerHTML='';
+  for(let i=0;i<questions.length;i++){
+    const b=document.createElement('button');
+    b.className='nav-btn'; b.textContent=i+1; b.id='nav_'+i;
+    b.onclick=()=>goTo(i); g.appendChild(b);
+  }
+}
+function updateNav() {
+  for(let i=0;i<questions.length;i++){
+    const b=document.getElementById('nav_'+i); if(!b)continue;
+    b.className='nav-btn';
+    if(i===current) b.classList.add('current');
+    else if(answers[i]===true) b.classList.add('correct');
+    else if(answers[i]===false) b.classList.add('wrong');
+  }
+}
+function updateScore() {
+  const answered=answers.filter(a=>a!==null).length;
+  document.getElementById('scorePill').textContent=`✓ ${correctCount} / ${answered}`;
+  document.getElementById('progressBar').style.width=(answered/questions.length*100)+'%';
+}
+
+function renderQ(idx) {
+  const q=questions[idx];
+  document.getElementById('qNumber').textContent=`Sual ${idx+1} / ${questions.length}`;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent=`${idx+1} / ${questions.length}`;
+
+  const cont=document.getElementById('optionsContainer'); cont.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    const isCorrect=(i===q.ans);
+    btn.innerHTML=`<span class="option-letter">${opt.charAt(0)}</span><span class="option-text">${opt.slice(3)}</span><span class="option-icon">${isCorrect?'✓':'✗'}</span>`;
+    if(answers[idx]!==null){
+      btn.disabled=true;
+      if(isCorrect) btn.classList.add('correct');
+      if(answers[idx]===false && chosenIdx[idx]===i) btn.classList.add('wrong');
+    }
+    btn.onclick=(e)=>handleAnswer(idx,i,btn,e);
+    cont.appendChild(btn);
+  });
+
+  const fb=document.getElementById('feedbackBanner');
+  fb.className='feedback';
+  if(answers[idx]===true){
+    fb.className='feedback correct'; fb.innerHTML='✅ Əla! Düzgün cavab!';
+  } else if(answers[idx]===false){
+    const correctText=q.opts[q.ans];
+    fb.className='feedback wrong';
+    fb.innerHTML=`❌ Yanlış! Düzgün cavab: <strong>${correctText}</strong>`;
+  }
+
+  updateNav(); updateScore();
+  document.getElementById('btnBack').disabled=idx===0;
+  const allDone=answers.every(a=>a!==null);
+  document.getElementById('btnNext').textContent=(idx===questions.length-1&&allDone)?'Nəticə 🏆':'İrəli →';
+
+  const card=document.getElementById('questionCard');
+  card.style.animation='none'; card.offsetHeight; card.style.animation='slideIn 0.3s ease';
+}
+
+function handleAnswer(qIdx,chosen,btnEl,event) {
+  if(answers[qIdx]!==null) return;
+  const q=questions[qIdx];
+
+  const rip=document.createElement('span'); rip.className='ripple';
+  const r=btnEl.getBoundingClientRect();
+  rip.style.left=(event.clientX-r.left-20)+'px'; rip.style.top=(event.clientY-r.top-20)+'px';
+  btnEl.appendChild(rip); setTimeout(()=>rip.remove(),600);
+
+  const allBtns=document.getElementById('optionsContainer').querySelectorAll('.option-btn');
+  allBtns.forEach(b=>b.disabled=true);
+
+  const fb=document.getElementById('feedbackBanner');
+  if(chosen===q.ans){
+    answers[qIdx]=true; correctCount++;
+    btnEl.classList.add('correct');
+    fb.className='feedback correct'; fb.innerHTML='✅ Əla! Düzgün cavab!';
+    playCorrect();
+  } else {
+    answers[qIdx]=false; chosenIdx[qIdx]=chosen;
+    btnEl.classList.add('wrong');
+    allBtns[q.ans].classList.add('show-correct');
+    allBtns[q.ans].querySelector('.option-icon').textContent='✓';
+    allBtns[q.ans].querySelector('.option-icon').style.opacity='1';
+    const correctText=q.opts[q.ans];
+    fb.className='feedback wrong';
+    fb.innerHTML=`❌ Yanlış! Düzgün cavab: <strong>${correctText}</strong>`;
+    playWrong();
+  }
+
+  updateNav(); updateScore();
+  if(answers.every(a=>a!==null)) document.getElementById('btnNext').textContent='Nəticə 🏆';
+}
+
+function navigate(dir) {
+  const next=current+dir;
+  if(next<0) return;
+  if(next>=questions.length){ if(answers.every(a=>a!==null)) showResult(); return; }
+  goTo(next);
+}
+function goTo(idx) {
+  current=idx; renderQ(idx); window.scrollTo({top:0,behavior:'smooth'});
+}
+function showResult() {
+  playFinish();
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('navSection').style.display='none';
+  const res=document.getElementById('resultScreen'); res.style.display='flex';
+  const wrong=answers.filter(a=>a===false).length;
+  const skipped=answers.filter(a=>a===null).length;
+  const pct=Math.round(correctCount/questions.length*100);
+  document.getElementById('resultScore').textContent=`${correctCount} / ${questions.length}`;
+  document.getElementById('resultSub').textContent=`Uğur faizi: ${pct}%`;
+  document.getElementById('statCorrect').textContent=correctCount;
+  document.getElementById('statWrong').textContent=wrong;
+  document.getElementById('statSkipped').textContent=skipped;
+  document.getElementById('resultEmoji').textContent=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'😔';
+}
+function restartQuiz() {
+  current=0; answers=new Array(questions.length).fill(null);
+  Object.keys(chosenIdx).forEach(k=>delete chosenIdx[k]); correctCount=0;
+  document.getElementById('resultScreen').style.display='none';
+  document.getElementById('mainArea').style.display='block';
+  document.getElementById('navSection').style.display='block';
+  buildNav(); renderQ(0); window.scrollTo({top:0});
+}
+
+buildNav(); renderQ(0);
+</script>
+</body>
+</html>
