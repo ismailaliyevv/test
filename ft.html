@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiziki Tərbiyə</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary:#2563eb;--primary-light:#eff6ff;--primary-dark:#1e40af;
+    --success:#16a34a;--success-light:#f0fdf4;--success-border:#86efac;
+    --danger:#dc2626;--danger-light:#fef2f2;--danger-border:#fca5a5;
+    --bg:#f1f5f9;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;
+    --nav-size:44px;--radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  .header{background:white;border-bottom:2px solid var(--border);padding:13px 22px 17px;position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:12px;box-shadow:0 2px 14px rgba(0,0,0,0.07);}
+  .header-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--primary-dark);flex:1;}
+  .score-pill{background:var(--primary-light);color:var(--primary-dark);font-weight:800;font-size:0.9rem;padding:5px 16px;border-radius:999px;border:2px solid var(--primary);white-space:nowrap;}
+  .progress-wrap{width:100%;height:4px;background:var(--border);position:absolute;bottom:0;left:0;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);transition:width 0.4s ease;}
+  .nav-section{background:white;border-bottom:1px solid var(--border);padding:12px 18px;}
+  .nav-label{font-size:0.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:9px;}
+  .nav-grid{display:flex;flex-wrap:wrap;gap:5px;}
+  .nav-btn{width:var(--nav-size);height:var(--nav-size);border:2px solid var(--border);background:white;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.75rem;color:var(--muted);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;}
+  .nav-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);}
+  .nav-btn.current{border-color:var(--primary);background:var(--primary);color:white;}
+  .nav-btn.correct{border-color:var(--success);background:var(--success-light);color:var(--success);}
+  .nav-btn.wrong{border-color:var(--danger);background:var(--danger-light);color:var(--danger);}
+  .main{max-width:800px;margin:0 auto;padding:26px 14px 60px;}
+  .question-card{background:white;border-radius:var(--radius);padding:26px;box-shadow:0 2px 20px rgba(0,0,0,0.07);border:2px solid var(--border);animation:slideIn 0.3s ease;}
+  @keyframes slideIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .q-number{font-size:0.7rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:9px;}
+  .q-text{font-size:1rem;font-weight:700;line-height:1.65;color:var(--text);margin-bottom:20px;white-space:pre-wrap;}
+  .options{display:flex;flex-direction:column;gap:9px;}
+  .option-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;border:2px solid var(--border);border-radius:10px;background:white;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:600;color:var(--text);text-align:left;transition:all 0.15s;position:relative;overflow:hidden;}
+  .option-btn:hover:not(:disabled){border-color:var(--primary);background:var(--primary-light);transform:translateX(3px);}
+  .option-btn:disabled{cursor:default;}
+  .option-letter{width:30px;height:30px;border-radius:6px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.82rem;color:var(--muted);flex-shrink:0;transition:all 0.15s;}
+  .option-text{flex:1;}
+  .option-icon{font-size:1.15rem;flex-shrink:0;opacity:0;transition:opacity 0.2s;}
+  .option-btn.correct{border-color:var(--success);background:var(--success-light);animation:correctPop 0.38s ease;}
+  .option-btn.correct .option-letter{background:var(--success);color:white;}
+  .option-btn.correct .option-icon{opacity:1;}
+  @keyframes correctPop{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
+  .option-btn.wrong{border-color:var(--danger);background:var(--danger-light);animation:wrongShake 0.38s ease;}
+  .option-btn.wrong .option-letter{background:var(--danger);color:white;}
+  .option-btn.wrong .option-icon{opacity:1;}
+  @keyframes wrongShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+  .option-btn.show-correct{border-color:var(--success);background:var(--success-light);}
+  .option-btn.show-correct .option-letter{background:var(--success);color:white;}
+  .option-btn.show-correct .option-icon{opacity:1;}
+  .feedback{margin-top:14px;padding:11px 16px;border-radius:10px;font-weight:700;font-size:0.92rem;align-items:center;gap:9px;display:none;}
+  .feedback.correct{background:var(--success-light);border:2px solid var(--success-border);color:var(--success);display:flex;}
+  .feedback.wrong{background:var(--danger-light);border:2px solid var(--danger-border);color:var(--danger);display:flex;}
+  .nav-controls{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;}
+  .btn{padding:11px 26px;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.92rem;cursor:pointer;transition:all 0.15s;border:none;display:flex;align-items:center;gap:7px;}
+  .btn-back{background:white;color:var(--muted);border:2px solid var(--border);}
+  .btn-back:hover:not(:disabled){border-color:var(--primary);color:var(--primary);background:var(--primary-light);}
+  .btn-back:disabled{opacity:0.3;cursor:default;}
+  .btn-next{background:var(--primary);color:white;box-shadow:0 4px 12px rgba(37,99,235,0.32);}
+  .btn-next:hover{background:var(--primary-dark);transform:translateY(-1px);}
+  .q-counter{font-size:0.83rem;font-weight:700;color:var(--muted);}
+  .result-screen{display:none;flex-direction:column;align-items:center;padding:56px 20px;text-align:center;}
+  .result-emoji{font-size:5rem;margin-bottom:14px;animation:bounce 0.6s ease;}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+  .result-title{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--text);margin-bottom:8px;}
+  .result-score{font-size:3.2rem;font-weight:900;color:var(--primary);margin-bottom:6px;}
+  .result-sub{font-size:1rem;color:var(--muted);margin-bottom:28px;font-weight:600;}
+  .result-stats{display:flex;gap:16px;margin-bottom:28px;flex-wrap:wrap;justify-content:center;}
+  .stat-box{background:white;border:2px solid var(--border);border-radius:var(--radius);padding:16px 24px;min-width:110px;}
+  .stat-val{font-size:1.9rem;font-weight:900;}
+  .stat-val.green{color:var(--success);}
+  .stat-val.red{color:var(--danger);}
+  .stat-val.orange{color:#f59e0b;}
+  .stat-label{font-size:0.78rem;font-weight:700;color:var(--muted);margin-top:3px;}
+  .btn-restart{background:var(--primary);color:white;border:none;padding:13px 38px;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.97rem;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,0.32);transition:all 0.15s;}
+  .btn-restart:hover{background:var(--primary-dark);transform:translateY(-2px);}
+  .ripple{position:absolute;border-radius:50%;width:40px;height:40px;background:rgba(255,255,255,0.42);animation:rippleAnim 0.5s linear;pointer-events:none;}
+  @keyframes rippleAnim{from{transform:scale(0);opacity:1}to{transform:scale(8);opacity:0}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-title">📚 Fiziki Tərbiyə 07.12.2025</div>
+  <div class="score-pill" id="scorePill">✓ 0 / 0</div>
+  <div class="progress-wrap"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
+</div>
+<div class="nav-section" id="navSection">
+  <div class="nav-label">Suallar arasında keçid</div>
+  <div class="nav-grid" id="navGrid"></div>
+</div>
+<div class="main" id="mainArea">
+  <div class="question-card" id="questionCard">
+    <div class="q-number" id="qNumber"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="feedback" id="feedbackBanner"></div>
+  </div>
+  <div class="nav-controls">
+    <button class="btn btn-back" id="btnBack" onclick="navigate(-1)">← Geri</button>
+    <span class="q-counter" id="qCounter"></span>
+    <button class="btn btn-next" id="btnNext" onclick="navigate(1)">İrəli →</button>
+  </div>
+</div>
+<div class="result-screen" id="resultScreen">
+  <div class="result-emoji" id="resultEmoji">🏆</div>
+  <div class="result-title">Test Tamamlandı!</div>
+  <div class="result-score" id="resultScore"></div>
+  <div class="result-sub" id="resultSub"></div>
+  <div class="result-stats">
+    <div class="stat-box"><div class="stat-val green" id="statCorrect">0</div><div class="stat-label">✅ Düzgün</div></div>
+    <div class="stat-box"><div class="stat-val red" id="statWrong">0</div><div class="stat-label">❌ Yanlış</div></div>
+    <div class="stat-box"><div class="stat-val orange" id="statSkipped">0</div><div class="stat-label">⏭ Cavabsız</div></div>
+  </div>
+  <button class="btn-restart" onclick="restartQuiz()">🔄 Yenidən Başla</button>
+</div>
+<script>
+// PDF-dən götürülmüş düzgün cavablar (0-indexed)
+// 1-C=2, 2-C=2, 3-C=2, 4-Məhdudiyyətyoxdur=4, 5-B=1, 6-A=0, 7-A=0, 8-C=2,
+// 9-B=1, 10-D=3, 11-E=4, 12-E=4, 13-D=3, 14-D=3, 15-B=1, 16-A=0,
+// 17-B=1, 18-C=2, 19-B=1, 20-B=1, 21-D=3, 22-A=0, 23-C=2, 24-D=3,
+// 25-B=1, 26-D=3, 27-B=1, 28-C=2, 29-D=3, 30-B=1, 31-A=0, 32-A=0,
+// 33-B=1, 34-E=4, 35-A=0, 36-E=4, 37-C=2, 38-C=2, 39-C=2, 40-E=4,
+// 41-C=2, 42-D=3, 43-B=1, 44-C=2, 45-D=3, 46-C=2, 47-A=0, 48-A=0,
+// 49-E=4, 50-C=2, 51-E=4, 52-B=1, 53-C=2, 54-A=0, 55-C=2, 56-A=0,
+// 57-A=0, 58-B=1, 59-B=1, 60-E=4
+
+const questions = [
+  {q:"Badminton idman oyununda meydan seçimi və servis başlanması nəyə əsasən təyin olunur?",opts:["A) Hakimin göstərişinə əsasən","B) Oyunçunun razılığına əsasən","C) Püşk atma yolu ilə","D) Hava atışı ilə","E) Meydan sahibi volanı oyuna daxil edir"],ans:2},
+  {q:"Dərsdə voleybol topunun şagirdin üzünə dəyməsi nəticəsində baş verən burun qanaxması zamanı müəllimin göstərdiyi ilkin tibbi yardım qaydalarına aid deyil:",opts:["A) Şagirdin burnunu 5-10 dəq sıxıb saxlamaq","B) Başın biraz önə əyərək qanın az miqdarda axmasına nail olmaq","C) Burun dəliyinə pambıq tıxamaq","D) Burnun üst hissəsinə ənsə sümüyü üzərinə soyuq kompres qoymaq"],ans:2},
+  {q:"2020-ci il Yay Olimpiya oyunlarına əlavə edilmiş karate idman növü üzrə idmançılarımız neçə medal qazanmışdır?",opts:["A) 3 gümüş","B) 1 gümüş və 1 bürünc","C) 2 gümüş","D) 1 qızıl və 1 gümüş","E) 1 qızıl, 1 gümüş, 1 bürünc"],ans:2},
+  {q:"3×3 basketbol idman oyununda neçə oyunçu dəyişikliyi etmək olar?",opts:["A) 1","B) 2","C) 3","D) 4","Məhdudiyyət yoxdur"],ans:4},
+  {q:"Həndbola aid hansı fikir səhvdir?",opts:["A) Oyunçu topu çiləyərək maksimum 3 addım ata bilər","B) 7 metrlik zərbəni yerinə yetirən oyunçu əlində topla zərbə üçün, düzgün vəziyyəti aldıqda, qapıçının əvəz edilməsinə icazə verilmir","C) Top oyuna daxil edilərkən bir və ya iki əllə daxil edə bilər","D) Yan xətdən topu başlarkən mütləq xətti tapdalamaq lazımdır","E) Bir komandanın 6-sı sahə, 1-i qapıda olan 7 oyunçu ilə iki komanda oynadığı bir idman növüdür."],ans:1},
+  {q:"Xarici müqaviməti dəf etmək və ona qarşı əks əlaqə göstərmək?",opts:["A) Qüvvə","B) Sürət","C) Çeviklik","D) Dözümlülük","E) Kordinasiya"],ans:0},
+  {q:"Komandalı fəaliyyət zamanı şagird oyun qaydalarına riayət edir, öz hərəkətlərində korreksiyalar aparır. Aşağıdakılardan hansına aiddir?",opts:["A) 4-cü məzmun xətti, şəxsiyyətin mənəvi və iradi keyfiyyətləri","B) 2-ci məzmun xətti, hərəki bacarıq və vərdişlər","C) 3-cü məzmun xətti, hərəki qabiliyyətlər","D) 1-ci məzmun xətti, informasiya təminatı və nəzəri biliklər","E) 4-cü məzmun xətti, hərəki qabiliyyətlər"],ans:0},
+  {q:"Şahmat oyununda rəqib fiqurunu diaqonal vura bilməyən fiqur hansıdır?",opts:["A) Fil","B) Piyada","C) Top","D) Şah","E) Vəzir"],ans:2},
+  {q:"Oyunçu meydana gəlməzsə 15 dəq gözlənilir, minimum 5 oyunçu olmazsa, basketbolda hakim nə qərar verir?",opts:["A) Vaxt əlavə edilir","B) Komanda texniki məğlubiyyət alır","C) Oyun təxirə salınır","D) 5 dəq əlavə verilir","E) 1 saat gözlənilir"],ans:1},
+  {q:"Qüvvə qabiliyyətinə aid deyil:",opts:["A) Mütləq","B) Nisbi","C) Ümumi","D) Aerob"],ans:3},
+  {q:"Voleybol idman oyununda yerdəyişmə zamanı 1 nömrəli oyunçu neçənci zonaya keçir?",opts:["A) 3","B) 4","C) 2","D) 5","E) 6"],ans:4},
+  {q:"Futbol idman oyunundan fərqli olaraq futzal idman oyununa aid olan qaydanı qeyd edin:",opts:["A) Hər ikisində sarı və qırmızı kartlardan istifadə olunur","B) Topla oynanılır","C) Ayaqla oynanılır","D) Top yan xətdən əllə oyuna daxil edilir.","E) Ofsayd yoxdur"],ans:4},
+  {q:"Şagird hərəki fəaliyyət zamanı inadkarlıq və cəsarət nümayiş edir. Burada şagird hansı məzmun xəttini reallaşdırır?",opts:["A) 1m/x","B) 2m/x","C) 3m/x","D) 4m/x","E) heç birini"],ans:3},
+  {q:"Sürət-gücdən fərqli olaraq çeviklik hansı hərəki qabiliyyət ilə əlaqəlidir?",opts:["A) Sürət","B) Sürət-güc","C) Qüvvə","D) BƏQ","E) Kordinasiya"],ans:3},
+  {q:"Futbolda hansı qayda pozuntusu zamanı hakim cərimə zərbəsi qeydə alır?",opts:["A) Qapıçı öz komanda yoldaşının şüurlu şəkildə ayaqla ona ötürdüyü topa bilərəkdən öz cərimə meydançasında əllə müdaxilə edərsə","B) Konkat vasitəsilə rəqibi yıxarsa","C) Rəqibin hərəkətinə kontaksız əngəlləyərsə","D) Qapıçıya topu əlindən buraxmağa mane olarsa","E) Qapıçı penalti zərbəsini geri qaytararsa"],ans:1},
+  {q:"BƏQ-in təzahür formaları hansılardır:\n1. Oynaqların mütəhərrikliyi\n2. Statik\n3. Dinamik\n4. Əzələ-bağ aparatının elastikliyi\n5. Fəal\n6. Qeyri-fəal",opts:["A) 2,3","B) 1,4","C) 5,6","D) 2,6","E) 3,4"],ans:0},
+  {q:"Aşağıdakılardan hansı doğrudur:",opts:["A) 100 m qaçış sürəti yuxarı startdan başlayır","B) 100 m və 400 m qaçış aşağı startdan başlayır","C) 800 m aşağı start sayılır","D) Aşağı startdan qəlibdən istifadə olunmur"],ans:1},
+  {q:"Bu gimnastika hərəkəti yerinə yetirilərkən kişilərdən fərqli olaraq qadınlar üçün alətin hündürlüyü və eni fərqli, uzunluqları isə bərabərdir, qaçış hissəsinin uzunluğu 25 m, eni isə 1 m-dir.",opts:["A) Müxtəlif hündürlüklü qollar","B) Dayaqlı tullanma","C) Gimnastika tiri","D) Paralel qollar","E) Şüvüllə tullanma"],ans:2},
+  {q:"Məktəblərdə komandalı oyunlar hansı hərəki qabiliyyəti inkşaf etdirir?",opts:["A) Qüvvə","B) Çeviklik","C) Sürət","D) BƏQ","E) Güc"],ans:1},
+  {q:"Hərəkət texnikasını təkmilləşdirmək üçün dərsin əsas hissəsində istifadə edilən metod hansıdır?",opts:["A) Nəzarət","B) Təkrar","C) Rəvan","D) İnterval","E) Piramida"],ans:1},
+  {q:"IV məzmun xəttinə aiddir:",opts:["A) Hərəki qabiliyyətlərin baza hazırlığının təmin edilməsi","B) İdman növlərində texniki-taktiki fəaliyyətin təkmilləşdirilməsi","C) Hərəkətləri, oyunları onların təyinatı haqqında məlumat verə bilmir","D) Hərəkət və oyun qaydalarına riayət edir və məqbul davranış sergiləyir"],ans:3},
+  {q:"Mürəkkəb hərəkətlər necə öyrədilir?",opts:["A) Hissə-hissə","B) Tam","C) Qismən","D) Bütövlükdə"],ans:0},
+  {q:"Müxtəlif çıxış vəziyyətindən sürətlənmə ilə startlar dərsin hansı hissəsində tətbiq edilir?",opts:["A) Giriş","B) Hazırlayıcı","C) Əsas","D) Tamamlayıcı"],ans:2},
+  {q:"…………… formalaşması hərəkətlərin icrası zamanı baş verir?",opts:["A) İnformasiya təminatı və nəzəri biliklər","B) Hərəki qabiliyyətlər","C) Şəxsiyyətin mənəvi-iradi xüsusiyyətləri","D) Hərəki bacarıq və vərdişlər"],ans:3},
+  {q:"Oturmuş vəziyyətdə, dizlər yerdə topun uzağa atılması sürət-güc hərəki qabiliyyətinin hansı ətraf əzələsini inkişaf etdirir?",opts:["A) Aşağı ətrafları","B) Yuxarı ətrafları","C) Bədənin ön əzələsi","D) Bədənin arxa əzələsi"],ans:1},
+  {q:"Aşağıdakılardan hansı gimnastikaya daxil deyil:",opts:["A) Turnikdə hərəkətlər","B) Akrobatika","C) Gürzlərle hərəkətlər","D) Qantelərle hərəkətlər"],ans:3},
+  {q:"Bu vitaminin çatışmaması qan damarlarının xüsusən də kapilyar damarların sıradan çıxmasına gətirib çıxarır. Bu da kapilyar damar sisteminin keçiriciliyinin və kövrəkliyinin artmasına gətirib çıxarır:",opts:["A) E vitamini","B) C vitamini","C) A1 vitamini","D) B1 vitamini","E) D vitamini"],ans:1},
+  {q:"Futbol oyununda 11 metrlik cərimə zərbəsi vurulan zaman hücum edən komandanın oyunçusu cərimə meydançasına daxil olarsa nə baş verər?",opts:["A) Hakim cərimə meydanına daxil olan oyunçunu sarı kartla cəzalandırır və qapıçı qapı zərbəsi ilə topu oyuna daxil edir","B) Qol olarsa qeydə alınır, olmazsa zərbə təkrar edilir","C) Qol olarsa qeydə alınmır və zərbə yenidən təkrarlanır","D) Hakim cərimə meydanına daxil olan oyunçunu sarı kartla cəzalandırır və topu digər komandanın oyunçusu mərkəzdən oyuna daxil edir.","E) Penalti ləğv olunur"],ans:2},
+  {q:"Buraya dərsin əsas hissəsi üçün seçilmiş kömək, əsas, hazırlayıcı hərəkətlər və qiymətləndirmə normativlərinə daxil edilmiş hərəkətlər aiddir:",opts:["A) Əsas hərəkətlər","B) Kömək hərəkətlər","C) Xüsusi hərəkətlər","D) Xüsusi resurslar","E) Ümumi resurslar"],ans:3},
+  {q:"Struktur cəhətdən əsas hərəkətə uyğun olan, dərsin əsas hissəsində tətbiq ediləcək, oyun, hərəkət, kompleksi və s. icra edəcək əsas əzələ qruplarının qızışdırılması və uğurlu icraya hazırlaşdırılması məqsədilə istifadə olunan hərəkətlərdir:",opts:["A) Əsas hərəkətlər","B) Hazırlayıcı hərəkətlər","C) Xüsusi hərəkətlər","D) Tətbiqi hərəkətlər","E) Bərpaedici hərəkətlər"],ans:1},
+  {q:"Hərəki vəzifələrin həllinə yönəlmiş, insanın məkan və zaman daxilində məqsədli yerdəyişməsidir:",opts:["A) Hərəki fəaliyyət","B) Hərəki bacarıq","C) Hərəki vərdiş","D) Hərəkət","E) Diqqət"],ans:0},
+  {q:"İnsan orqanizmində fəaliyyət göstərən bütün orqan və funksional sistemlərin norma daxilində ahəngdar fəaliyyəti kimi başa düşülür:",opts:["A) Fiziki rifah","B) Mənəvi rifah","C) Sosial rifah","D) Fiziki kamillik","E) Düşüncə"],ans:0},
+  {q:"Əzələ bağ aparatının vəziyyətinə görə zəif, yarım zəif şagirdlər, anadan şikəst doğulan şagirdlər və s. hansı tibbi qrupa daxildir:",opts:["A) Əsas tibbi qrup","B) Hazırlayıcı tibbi qrup","C) Xüsusi tibbi qrup","D) Şəxsi tibbi qrup","E) Bioloji tibbi qrup"],ans:1},
+  {q:"Verilənlərdən biri yanlışdır:",opts:["A) Qiymətləndirmə üçün şagirdin izlənilməsi- Dərsin bütün hissəsi- Müəllim fəaliyyəti","B) Dərsin məqsədini izah edir- Giriş hissəsi- Müəllim fəaliyyəti","C) Əzələləri boşaldır- Tamamlayıcı hissə- Şagird fəaliyyəti","D) Yarış komandalarında yer alır- Əsas hissə- Şagird fəaliyyəti","E) Ev tapşırığı verir- Tamamlayıcı hissə- Şagird fəaliyyəti"],ans:4},
+  {q:"\"Sağlamdır\" diaqnozu verilmiş məktəblilərin hamısı hansı tibbi qrupa daxil edilir:",opts:["A) Əsas tibbi qrup","B) Hazırlayıcı tibbi qrup","C) Xüsusi tibbi qrup","D) Şəxsi tibbi qrup","E) Bioloji tibbi qrup"],ans:0},
+  {q:"Şagird sağlamlığının mühüm göstəricilərindən biri də infeksion xəstəliklərə qarşı davamlılığıdır. Şagirdin tez-tez xəstələnməsi onun orqanizminin müqavimət göstəricisinin, başqa sözlə sağlamlığının qənaətbəxş səviyyədə olmadığının əlamətidir. İnsan sağlamlığının hansı meyarına aiddir?",opts:["A) İrsi amil","B) Fiziki inkişaf","C) Funksional inkişaf","D) Psixoloji inkişaf","E) Xəstəliklərə qarşı dayanıqlılıq"],ans:4},
+  {q:"….. qrup vitaminlərin çatışmaması əzələlərdə oksidləşmə prosesini pozur, böyüyən orqanizmin normal inkişafı ləngiyr:",opts:["A) B1 və C","B) B12 və K","C) A və E","D) B12","E) D"],ans:2},
+  {q:"İnsan orqanizmində hansı vitamin çatışmaması nəticəsində hemeralopiya xəstəliyi yaranır?",opts:["A) D","B) K","C) A","D) C","E) B6"],ans:2},
+  {q:"BƏQ üzrə 6-cı siniflərdə istifadə edilə biləcək KSQ meyarı hansıdır?\n1. Hündür turnikdə sallanmış vəziyyətdən dartınma (oğlanlar)\n2. Oturaraq dizləri bükmədən irəliyə əyilmə\n3. Alçaq turnikdə uzanaraq sallanmış vəziyyətdən dartınma (qızlar)\n4. Körpü vəziyyəti\n5. Uzanaraq dayaqdan qolların açılıb-bükülməsi (oğlanlar)\n6. Ayaqlar bir yerdə duruşdan irəliyə əyilmə\n7. Gimnastika skamyasında əllərlə dayaqdan qolların bükülüb-açılması\n8. Ayaqlar aralı duruşdan gimmastika ağacını baş üzərindən arxaya aparmaq",opts:["A) 1,2,5,7","B) 1,3,5,7","C) 2,4,6,8","D) 2,4,5,8","E) 2,3,6,7"],ans:2},
+  {q:"Tədris vahidinə aid hərəkətləri nümunələrə müvafiq icra edir. Qiymətləndirmə meyarını müəyyən edin:",opts:["A) 1","B) 2","C) 3","D) 4","E) 5"],ans:4},
+  {q:"Paris 2024 Yay Olimpiya oyunlarında Alfonsa Dominqes hansı idman növündə çıxış etmişdir?",opts:["A) Güləş","B) Cüdo","C) Boks","D) Karate","E) Taekvondo"],ans:2},
+  {q:"4×100 metrdə ən qısa məsafəni neçənci etapda qaçan idmançı qət edir?",opts:["A) 1","B) 2","C) 3","D) 4","E) Heç biri"],ans:3},
+  {q:"800 m qaçışda idmançılar neçə metr öz zolağında qaçdıqdan sonra birinci zolağa keçirlər?",opts:["A) Start xəttindən 50 m qaçdıqdan sonra","B) 100 m öz qaçış zolağında qaçdıqdan sonra","C) 150 m öz qaçış zolağında qaçdıqdan sonra","D) Start verilən kimi","E) 800 m məsafəyə qaçışlarda atlet qaçış zolağını dəyişmir"],ans:1},
+  {q:"Aşağıda göstərilən çıxışlardan hansılar həm kişi, həm də qadın idman gimnastikasında istifadə olunur?",opts:["A) Paralel qollar, turnik","B) Dəstəli at, dayaqlı tullanma","C) Xalça üzərindəsərbəst hərəkətlər, dayaqlı tullanma","D) Halqalar, gimnastika tiri","E) Xalça üzərindəsərbəst hərəkətlər, halqalar"],ans:2},
+  {q:"Basketbol idman oyununda 6.75m-lik xəttin daxilindəbasketfol olarsa hakimin qərarı?",opts:["A) 1xal, 1 cərimə","B) 2xal, 2 cərimə","C) 3xal, 1 cərimə","D) 2xal, 1 cərimə","E) 2 cərimə"],ans:3},
+  {q:"Basketbolda oyun zamanı topun səbətə düşməsi hansı hallarda 3 xal olaraq qiymətləndirilir?",opts:["A) Cərimə xəttindən atıldıqda","B) Səbətin altından atıldıqda","C) 6.75 m-lik zonadan arxada atıldıqda","D) 6.75 m-lik xəttin daxili basketbol olduqda","E) Sürətli hücum zamanı vurulduqda"],ans:2},
+  {q:"Beynəlxalq Basketbol Federasiyası (FİBA) neçənci ildə yaradılıb?",opts:["A) 1932-ci ildə","B) 1936-cı ildə","C) 1952-ci ildə","D) 1992-ci ildə","E) 1920-ci ildə"],ans:0},
+  {q:"3×3 basketbolda qövs içərisindəatış zamanı fol olarsa, top səbətdən keçməzsə neçə sərbəst atış verilir?",opts:["A) 1","B) 2","C) 3","D) 4","E) Verilmir"],ans:0},
+  {q:"3×3 basketbol idman oyununda oyunçu neçə diskalifə folu etsə oyundan kənarlaşar?",opts:["A) 5","B) 4","C) 3","D) 2","E) 1"],ans:4},
+  {q:"Voleybol haqqında verilənlərdən hansının doğru olduğunu müəyyən edin:",opts:["A) Oyunda blok hər iki tərəf üçün qeyri-qanuni hesab edilir","B) Hər bir oyunçunun servisdən topu oyuna daxil etməsinə 5 san vaxt verilir","C) Top tavan və antena daydıkda oyundan çıxmış sayılır","D) Bir komandanın meydanda maksimum 2 liberosu ola bilər","E) Ön zonanın oyunçuları blokqurmada iştirak edə bilməz"],ans:2},
+  {q:"Altstandartla bağlı verilmiş fikirlərdən yanlış olanı müəyyən edin:",opts:["A) Altstandart müəllimin dərs zamanı hansı üsuldan istifadə edəcəyini müəyyən edir","B) Altstandart dərsin məqsədini müəyyən etməyə kömək edir","C) Altstandart sinifdən-sinfə dəyişsə də, məzmun etibarilə dəyişmir","D) Altstandart inteqrativliyi təmin edir","E) Altstandart tələb olunan bacarıq formalaşdıqda, daha mürəkkəb bacarıq formalaşdırmaq üçün dəyişir"],ans:4},
+  {q:"Biri formativ qiymətləndirməyə aiddir",opts:["A) Şagirdin ilkin səviyyəsini müəyyən edir","B) Şagirdlərde özünüqiymətləndirmə bacarığını inkşaf etdirir","C) Şagirdə diferensial yanaşmağa imkan verir","D) Müəllimə təlimdə çevik dəyişiklik aparmağa şərait yaradır.","E) Şagirdin məzmun standartlarına nə qədər yiyələndiyini ölçür"],ans:1},
+  {q:"Şagird uğur qazanmaq üçün edəcəyi fəaliyyətin ardıcıllığını bilir. Bu biliyin hansı növüdür?",opts:["A) Konseptual","B) Prosessual","C) Metakoqnitiv","D) Spesifik","E) Terminologiya"],ans:2},
+  {q:"Müəllim sinfi daha yaxşı idarə etmək üçün müxtəlif qaydalar tərtib edir və sinfə yeni gələn şagird bu qaydalara əməl etmir. Müəllim isə bu şagirdin valideyninə şikayət məktubu yollayır. Bu halda müəllim Biheyverizm nəzəriyyəsinə görə nədən istifadə etmiş olur?",opts:["A) Müsbət cəzalandırma","B) Neqativ gücləndirmə","C) Aktivləşdirmə","D) Müsbət gücləndirmə","E) Negativ cəzalandırma"],ans:0},
+  {q:"Hansı fəaliyyət skafoldinq deyil?",opts:["A) Tapşırığı yerinə yetirməzdən əvvəl şagirdlərin əvvəlki biliklərinin müəyyənləşdirilməsi","B) Əsaslı mühakimə yürütmək üçün şagirdə əlavə informasiyanın araşdırılmasında kömək edilməsi","C) Məsələni izah etmək üçün elmi üslubdan istifadəyə üstünlük verilməsi","D) Problemin həlli yollarının müəyyənləşdirilməsi üçün şagirdlərin müzakirəyə cəlb olunması","E) İfadə yazarkən dinlənilən mətnin vizuallaşdırılmasının istənilməsi"],ans:2},
+  {q:"Müəllim maddi imkanı daha çox olan şagirdlərə daha çox diqqət və qayğı göstərirsə bu zaman hansı etik davranışı pozmuş olur?",opts:["A) Qərəzsizlik","B) Qanunun aliliyi","C) İctimai etimad","D) Loyallıq","E) Konfidensiallıq"],ans:0},
+  {q:"Şagird müzakirə zamanı hər kəsin fikrini sona qədər dinləyir. Heç kimin sözünü kəsməyən şagird sonda öz qərarını düzgün şəkildə verir.\nŞagird Affektiv sahənin hansı mərhələsindədir?",opts:["A) Təşkiletmə","B) Xarakterizəetmə","C) Cavabverme","D) Dəyərləndirmə","E) Qəbuletmə"],ans:0},
+  {q:"Müəllim mövzunu keçərkən video-çarxdan və simulyasiyadan istifadə etdi. Robert Qanyeyə görə müəllim öyrənmənin hansı addımını reallaşdırmış oldu?",opts:["A) Təlim nəticələrini elan etmək","B) Dərsin mövzusunu təqdim etmək","C) Öyrənməni təmin etmək","D) Bilik və bacarıqların tətbiqini təmin etmək","E) Əks-əlaqə qurmaq"],ans:1},
+  {q:"Müəllim dərs zamanı şagirdlərə düşüncələrini sinif ilə bölüşmək şəraiti yaradan, həm də onları dinamik saxlayaraq əyləncəli şəkildə aparılan bir iş üsulundan istifadə etdi. Bu hansı iş üsuludur?",opts:["A) Mən kimem?","B) Sinif küncləri","C) Auksion","D) Ziqzaq","E) Karusel"],ans:1},
+  {q:"Aşağıdakı fikirlərdən biri Lev Viqotskinin \"Sosial inkişaf\" nəzəriyyəsinə görə uyğunluğu pozur:",opts:["A) İnkişaf mərhələlər şəklinde getmir","B) Uşaqlar öyrənmə zamanı daha bilikli bir şəxs tərəfindən kömək almalıdırlar","C) İnkişafda sosial-mədəni həyatın rolu böyükdür","D) Yaxın inkişaf zonası, skafoldinq əsas proseslər sayılır","E) Uşağın inkişafında nitqin rolu minimaldır"],ans:4}
+];
+
+let current=0,answers=new Array(questions.length).fill(null),chosenIdx={},correctCount=0;
+
+let audioCtx;
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function playCorrect(){try{const ctx=getCtx();[[0,523],[0.13,659],[0.26,784]].forEach(([t,f])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.28,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.22);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.22);});}catch(e){}}
+function playWrong(){try{const ctx=getCtx();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sawtooth';o.frequency.setValueAtTime(220,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(90,ctx.currentTime+0.32);g.gain.setValueAtTime(0.22,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.32);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.32);}catch(e){}}
+function playFinish(){try{const ctx=getCtx();[523,659,784,1047,784,1047,1319].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.value=f;const t=ctx.currentTime+i*0.13;g.gain.setValueAtTime(0.22,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.18);o.start(t);o.stop(t+0.18);});}catch(e){}}
+
+function buildNav(){const g=document.getElementById('navGrid');g.innerHTML='';for(let i=0;i<questions.length;i++){const b=document.createElement('button');b.className='nav-btn';b.textContent=i+1;b.id='nav_'+i;b.onclick=()=>goTo(i);g.appendChild(b);}}
+function updateNav(){for(let i=0;i<questions.length;i++){const b=document.getElementById('nav_'+i);if(!b)continue;b.className='nav-btn';if(i===current)b.classList.add('current');else if(answers[i]===true)b.classList.add('correct');else if(answers[i]===false)b.classList.add('wrong');}}
+function updateScore(){const answered=answers.filter(a=>a!==null).length;document.getElementById('scorePill').textContent=`✓ ${correctCount} / ${answered}`;document.getElementById('progressBar').style.width=(answered/questions.length*100)+'%';}
+
+function renderQ(idx){
+  const q=questions[idx];
+  document.getElementById('qNumber').textContent=`Sual ${idx+1} / ${questions.length}`;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCounter').textContent=`${idx+1} / ${questions.length}`;
+  const cont=document.getElementById('optionsContainer');cont.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');btn.className='option-btn';
+    btn.innerHTML=`<span class="option-letter">${opt.charAt(0)}</span><span class="option-text">${opt.slice(3)}</span><span class="option-icon">${i===q.ans?'✓':'✗'}</span>`;
+    if(answers[idx]!==null){btn.disabled=true;if(i===q.ans)btn.classList.add('correct');if(answers[idx]===false&&chosenIdx[idx]===i)btn.classList.add('wrong');}
+    btn.onclick=(e)=>handleAnswer(idx,i,btn,e);cont.appendChild(btn);
+  });
+  const fb=document.getElementById('feedbackBanner');fb.className='feedback';
+  if(answers[idx]===true){fb.className='feedback correct';fb.innerHTML='✅ Əla! Düzgün cavab!';}
+  else if(answers[idx]===false){fb.className='feedback wrong';fb.innerHTML=`❌ Yanlış! Düzgün cavab: <strong>${q.opts[q.ans]}</strong>`;}
+  updateNav();updateScore();
+  document.getElementById('btnBack').disabled=idx===0;
+  document.getElementById('btnNext').textContent=(idx===questions.length-1&&answers.every(a=>a!==null))?'Nəticə 🏆':'İrəli →';
+  const card=document.getElementById('questionCard');card.style.animation='none';card.offsetHeight;card.style.animation='slideIn 0.3s ease';
+}
+
+function handleAnswer(qIdx,chosen,btnEl,event){
+  if(answers[qIdx]!==null)return;
+  const q=questions[qIdx];
+  const rip=document.createElement('span');rip.className='ripple';const r=btnEl.getBoundingClientRect();rip.style.left=(event.clientX-r.left-20)+'px';rip.style.top=(event.clientY-r.top-20)+'px';btnEl.appendChild(rip);setTimeout(()=>rip.remove(),600);
+  const allBtns=document.getElementById('optionsContainer').querySelectorAll('.option-btn');allBtns.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('feedbackBanner');
+  if(chosen===q.ans){answers[qIdx]=true;correctCount++;btnEl.classList.add('correct');fb.className='feedback correct';fb.innerHTML='✅ Əla! Düzgün cavab!';playCorrect();}
+  else{answers[qIdx]=false;chosenIdx[qIdx]=chosen;btnEl.classList.add('wrong');allBtns[q.ans].classList.add('show-correct');allBtns[q.ans].querySelector('.option-icon').textContent='✓';allBtns[q.ans].querySelector('.option-icon').style.opacity='1';fb.className='feedback wrong';fb.innerHTML=`❌ Yanlış! Düzgün cavab: <strong>${q.opts[q.ans]}</strong>`;playWrong();}
+  updateNav();updateScore();
+  if(answers.every(a=>a!==null))document.getElementById('btnNext').textContent='Nəticə 🏆';
+}
+
+function navigate(dir){const next=current+dir;if(next<0)return;if(next>=questions.length){if(answers.every(a=>a!==null))showResult();return;}goTo(next);}
+function goTo(idx){current=idx;renderQ(idx);window.scrollTo({top:0,behavior:'smooth'});}
+function showResult(){
+  playFinish();document.getElementById('mainArea').style.display='none';document.getElementById('navSection').style.display='none';
+  const res=document.getElementById('resultScreen');res.style.display='flex';
+  const wrong=answers.filter(a=>a===false).length,skipped=answers.filter(a=>a===null).length,pct=Math.round(correctCount/questions.length*100);
+  document.getElementById('resultScore').textContent=`${correctCount} / ${questions.length}`;
+  document.getElementById('resultSub').textContent=`Uğur faizi: ${pct}%`;
+  document.getElementById('statCorrect').textContent=correctCount;
+  document.getElementById('statWrong').textContent=wrong;
+  document.getElementById('statSkipped').textContent=skipped;
+  document.getElementById('resultEmoji').textContent=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'😔';
+}
+function restartQuiz(){
+  current=0;answers=new Array(questions.length).fill(null);Object.keys(chosenIdx).forEach(k=>delete chosenIdx[k]);correctCount=0;
+  document.getElementById('resultScreen').style.display='none';document.getElementById('mainArea').style.display='block';document.getElementById('navSection').style.display='block';
+  buildNav();renderQ(0);window.scrollTo({top:0});
+}
+buildNav();renderQ(0);
+</script>
+</body>
+</html>
