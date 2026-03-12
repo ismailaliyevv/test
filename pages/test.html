@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test — TestHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--border:#2a2a3a;--accent:#6c63ff;--accent2:#ff6584;--accent3:#43e97b;--text:#f0f0ff;--muted:#8888aa;--gold:#ffd700;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.back-btn{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.88rem;padding:7px 14px;border:1px solid var(--border);border-radius:8px;transition:all 0.2s;}
+.back-btn:hover{border-color:var(--accent);color:var(--accent);}
+.test-title-bar{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.score-pill{background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.3);color:var(--accent);padding:5px 14px;border-radius:999px;font-size:0.85rem;font-weight:700;}
+
+/* Loading */
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HTML TEST MODE */
+#htmlTestFrame{display:none;width:100%;border:none;margin-top:60px;}
+
+/* GOOGLE FORMS MODE */
+.forms-wrapper{padding:80px 20px 40px;max-width:900px;margin:0 auto;}
+.forms-header{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px;}
+.forms-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:8px;}
+.forms-meta{display:flex;gap:20px;color:var(--muted);font-size:0.88rem;}
+.forms-embed{width:100%;border:none;border-radius:16px;background:white;}
+
+/* INLINE TEST MODE (custom questions) */
+.test-wrapper{padding:80px 20px 60px;max-width:820px;margin:0 auto;}
+.progress-bar{width:100%;height:4px;background:var(--border);border-radius:2px;margin-bottom:32px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#8b7fff);transition:width 0.4s;}
+.nav-grid{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:24px;}
+.nav-grid-title{font-size:0.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+.nav-grid-btns{display:flex;flex-wrap:wrap;gap:6px;}
+.nav-q{width:38px;height:38px;border-radius:8px;border:2px solid var(--border);background:var(--surface2);color:var(--muted);font-size:0.78rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.nav-q.current{border-color:var(--accent);background:var(--accent);color:white;}
+.nav-q.correct{border-color:var(--accent3);background:rgba(67,233,123,0.15);color:var(--accent3);}
+.nav-q.wrong{border-color:var(--accent2);background:rgba(255,101,132,0.12);color:var(--accent2);}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:20px;}
+.q-num{font-size:0.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+.q-text{font-size:1rem;font-weight:600;line-height:1.65;margin-bottom:22px;white-space:pre-wrap;}
+.options{display:flex;flex-direction:column;gap:10px;}
+.opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;border:2px solid var(--border);border-radius:12px;background:var(--surface2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:500;color:var(--text);text-align:left;transition:all 0.15s;}
+.opt-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(108,99,255,0.08);transform:translateX(3px);}
+.opt-btn:disabled{cursor:default;}
+.opt-letter{width:30px;height:30px;border-radius:7px;background:var(--border);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8rem;flex-shrink:0;}
+.opt-btn.correct{border-color:var(--accent3);background:rgba(67,233,123,0.08);}
+.opt-btn.correct .opt-letter{background:var(--accent3);color:#0a0a0f;}
+.opt-btn.wrong{border-color:var(--accent2);background:rgba(255,101,132,0.08);}
+.opt-btn.wrong .opt-letter{background:var(--accent2);color:white;}
+.opt-btn.show-ans{border-color:var(--accent3);background:rgba(67,233,123,0.08);}
+.opt-btn.show-ans .opt-letter{background:var(--accent3);color:#0a0a0f;}
+.feedback{margin-top:14px;padding:12px 16px;border-radius:10px;font-weight:600;font-size:0.9rem;display:none;}
+.fb-correct{background:rgba(67,233,123,0.1);border:1px solid rgba(67,233,123,0.3);color:var(--accent3);display:flex;}
+.fb-wrong{background:rgba(255,101,132,0.1);border:1px solid rgba(255,101,132,0.3);color:var(--accent2);display:flex;}
+.nav-controls{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
+.btn-nav{padding:11px 24px;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;border:none;}
+.btn-prev{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+.btn-prev:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+.btn-prev:disabled{opacity:0.3;cursor:default;}
+.btn-next{background:var(--accent);color:white;box-shadow:0 4px 16px rgba(108,99,255,0.3);}
+.btn-next:hover{transform:translateY(-1px);}
+
+/* RESULT SCREEN */
+.result-screen{display:none;min-height:100vh;padding:100px 20px;max-width:700px;margin:0 auto;text-align:center;}
+.result-emoji{font-size:5rem;margin-bottom:16px;animation:bounce 0.6s ease;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+.result-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:8px;}
+.result-score{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;}
+.result-sub{color:var(--muted);margin-bottom:32px;}
+.result-stats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;}
+.rstat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 24px;min-width:110px;}
+.rstat-val{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;}
+.rstat-val.green{color:var(--accent3);} .rstat-val.red{color:var(--accent2);} .rstat-val.blue{color:var(--accent);}
+.rstat-label{font-size:0.78rem;color:var(--muted);margin-top:4px;}
+.result-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-retry{background:var(--accent);color:white;border:none;padding:13px 28px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.97rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.btn-retry:hover{transform:translateY(-2px);}
+.btn-home{background:var(--surface2);color:var(--text);border:1px solid var(--border);padding:13px 28px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.97rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
+.btn-home:hover{border-color:var(--accent);color:var(--accent);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <a href="../index.html" class="back-btn">← Geri</a>
+    <span class="test-title-bar" id="testTitleBar">Yüklənir...</span>
+  </div>
+  <div class="topbar-right">
+    <div class="score-pill" id="scorePill">0 / 0</div>
+  </div>
+</div>
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="spinner"></div>
+  <p style="color:var(--muted)">Test yüklənir...</p>
+</div>
+
+<!-- Google Forms mode -->
+<div class="forms-wrapper" id="formsWrapper" style="display:none">
+  <div class="forms-header">
+    <div class="forms-title" id="formsTitle"></div>
+    <div class="forms-meta">
+      <span id="formsMeta1"></span>
+      <span id="formsMeta2"></span>
+    </div>
+  </div>
+  <iframe id="formsFrame" class="forms-embed" height="1200" frameborder="0" marginheight="0" marginwidth="0">Yüklənir...</iframe>
+</div>
+
+<!-- HTML test mode (iframe) -->
+<iframe id="htmlTestFrame" style="height:calc(100vh - 60px)"></iframe>
+
+<!-- Custom inline test mode -->
+<div class="test-wrapper" id="testWrapper" style="display:none">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="nav-grid">
+    <div class="nav-grid-title">Suallar arasında keçid</div>
+    <div class="nav-grid-btns" id="navGrid"></div>
+  </div>
+  <div class="q-card" id="qCard">
+    <div class="q-num" id="qNum"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optsList"></div>
+    <div class="feedback" id="feedbackBox"></div>
+  </div>
+  <div class="nav-controls">
+    <button class="btn-nav btn-prev" id="btnPrev" onclick="navigate(-1)">← Geri</button>
+    <span style="color:var(--muted);font-size:0.88rem" id="qCounter"></span>
+    <button class="btn-nav btn-next" id="btnNext" onclick="navigate(1)">İrəli →</button>
+  </div>
+</div>
+
+<!-- Result screen -->
+<div class="result-screen" id="resultScreen">
+  <div class="result-emoji" id="rEmoji">🏆</div>
+  <div class="result-title">Test Tamamlandı!</div>
+  <div class="result-score" id="rScore"></div>
+  <div class="result-sub" id="rSub"></div>
+  <div class="result-stats">
+    <div class="rstat"><div class="rstat-val green" id="rCorrect">0</div><div class="rstat-label">✅ Düzgün</div></div>
+    <div class="rstat"><div class="rstat-val red" id="rWrong">0</div><div class="rstat-label">❌ Yanlış</div></div>
+    <div class="rstat"><div class="rstat-val blue" id="rTotal">0</div><div class="rstat-label">📝 Cəmi</div></div>
+  </div>
+  <div class="result-btns">
+    <button class="btn-retry" onclick="restartTest()">🔄 Yenidən</button>
+    <a class="btn-home" href="dashboard.html">📊 Hesabım</a>
+    <a class="btn-home" href="../index.html">🏠 Ana Səhifə</a>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+const testId = new URLSearchParams(window.location.search).get('id');
+let testData = null;
+let questions = [];
+let current = 0;
+let answers = [];
+let chosen = {};
+let correctCount = 0;
+
+// Ses effektləri
+let audioCtx;
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function playCorrect(){try{const ctx=getCtx();[[0,523],[0.13,659],[0.26,784]].forEach(([t,f])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.25,ctx.currentTime+t);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+t+0.2);o.start(ctx.currentTime+t);o.stop(ctx.currentTime+t+0.2)});}catch(e){}}
+function playWrong(){try{const ctx=getCtx();const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sawtooth';o.frequency.setValueAtTime(200,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(80,ctx.currentTime+0.3);g.gain.setValueAtTime(0.2,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.3);o.start(ctx.currentTime);o.stop(ctx.currentTime+0.3);}catch(e){}}
+function playFinish(){try{const ctx=getCtx();[523,659,784,1047].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.value=f;const t=ctx.currentTime+i*0.15;g.gain.setValueAtTime(0.2,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.2);o.start(t);o.stop(t+0.2)});}catch(e){}}
+
+onAuthChange(async (user) => {
+  await loadSiteTheme();
+  if (!user) { window.location.href = 'login.html?redirect=test&id=' + testId; return; }
+  if (!testId) { window.location.href = '../index.html'; return; }
+
+  // Test yüklə
+  const doc = await db.collection('tests').doc(testId).get();
+  if (!doc.exists) { alert('Test tapılmadı'); window.location.href = '../index.html'; return; }
+  testData = { id: doc.id, ...doc.data() };
+
+  document.title = testData.title + ' — TestHub';
+  document.getElementById('testTitleBar').textContent = testData.title;
+
+  // Ödəniş yoxla
+  if (testData.isPaid) {
+    const userData = await getCurrentUserData();
+    if (!userData.purchasedTests?.includes(testId)) {
+      window.location.href = 'payment.html?id=' + testId; return;
+    }
+  }
+
+  document.getElementById('loadingScreen').style.display = 'none';
+
+  // Test tipi: 'html', 'forms', 'inline'
+  if (testData.type === 'forms' && testData.formsUrl) {
+    loadFormsTest();
+  } else if (testData.type === 'html' && testData.htmlFile) {
+    loadHtmlTest();
+  } else if (testData.questions && testData.questions.length > 0) {
+    questions = testData.questions;
+    answers = new Array(questions.length).fill(null);
+    loadInlineTest();
+  } else {
+    alert('Bu test hələ konfiqurasiya edilməyib');
+  }
+});
+
+function loadFormsTest() {
+  const w = document.getElementById('formsWrapper');
+  w.style.display = 'block';
+  document.getElementById('formsTitle').textContent = testData.title;
+  document.getElementById('formsMeta1').textContent = '❓ ' + (testData.questionCount || '?') + ' sual';
+  document.getElementById('formsMeta2').textContent = '⏱ ' + (testData.duration || '?') + ' dəq';
+  document.getElementById('formsFrame').src = testData.formsUrl;
+}
+
+function loadHtmlTest() {
+  const frame = document.getElementById('htmlTestFrame');
+  frame.style.display = 'block';
+  frame.src = testData.htmlFile;
+}
+
+function loadInlineTest() {
+  document.getElementById('testWrapper').style.display = 'block';
+  buildNav();
+  renderQuestion(0);
+}
+
+function buildNav() {
+  const grid = document.getElementById('navGrid');
+  grid.innerHTML = '';
+  questions.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'nav-q'; b.textContent = i + 1; b.id = 'nav_' + i;
+    b.onclick = () => goTo(i);
+    grid.appendChild(b);
+  });
+}
+
+function updateNav() {
+  questions.forEach((_, i) => {
+    const b = document.getElementById('nav_' + i);
+    if (!b) return;
+    b.className = 'nav-q';
+    if (i === current) b.classList.add('current');
+    else if (answers[i] === true) b.classList.add('correct');
+    else if (answers[i] === false) b.classList.add('wrong');
+  });
+}
+
+function updateScore() {
+  const answered = answers.filter(a => a !== null).length;
+  document.getElementById('scorePill').textContent = correctCount + ' / ' + answered;
+  document.getElementById('progressFill').style.width = (answered / questions.length * 100) + '%';
+}
+
+function renderQuestion(idx) {
+  const q = questions[idx];
+  document.getElementById('qNum').textContent = 'Sual ' + (idx + 1) + ' / ' + questions.length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qCounter').textContent = (idx + 1) + ' / ' + questions.length;
+
+  const opts = document.getElementById('optsList');
+  opts.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    const letter = opt.charAt(0);
+    btn.innerHTML = `<span class="opt-letter">${letter}</span><span>${opt.slice(3)}</span>`;
+    if (answers[idx] !== null) {
+      btn.disabled = true;
+      if (i === q.ans) btn.classList.add('show-ans');
+      if (answers[idx] === false && chosen[idx] === i) btn.classList.add('wrong');
+    }
+    btn.onclick = () => handleAnswer(idx, i, btn);
+    opts.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback';
+  if (answers[idx] === true) { fb.className = 'feedback fb-correct'; fb.innerHTML = '✅ Əla! Düzgün cavab!'; }
+  else if (answers[idx] === false) { fb.className = 'feedback fb-wrong'; fb.innerHTML = '❌ Yanlış! Düzgün: <strong>' + q.opts[q.ans] + '</strong>'; }
+
+  document.getElementById('btnPrev').disabled = idx === 0;
+  document.getElementById('btnNext').textContent = (idx === questions.length - 1 && answers.every(a => a !== null)) ? 'Nəticə 🏆' : 'İrəli →';
+
+  const card = document.getElementById('qCard');
+  card.style.animation = 'none'; card.offsetHeight; card.style.animation = '';
+
+  updateNav(); updateScore();
+}
+
+function handleAnswer(qIdx, chosen_, btn) {
+  if (answers[qIdx] !== null) return;
+  const q = questions[qIdx];
+  const allBtns = document.getElementById('optsList').querySelectorAll('.opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('feedbackBox');
+
+  if (chosen_ === q.ans) {
+    answers[qIdx] = true; correctCount++;
+    btn.classList.add('correct');
+    fb.className = 'feedback fb-correct'; fb.innerHTML = '✅ Əla! Düzgün cavab!';
+    playCorrect();
+  } else {
+    answers[qIdx] = false; chosen[qIdx] = chosen_;
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('show-ans');
+    fb.className = 'feedback fb-wrong'; fb.innerHTML = '❌ Yanlış! Düzgün: <strong>' + q.opts[q.ans] + '</strong>';
+    playWrong();
+  }
+  updateNav(); updateScore();
+  if (answers.every(a => a !== null)) document.getElementById('btnNext').textContent = 'Nəticə 🏆';
+}
+
+function navigate(dir) {
+  const next = current + dir;
+  if (next < 0) return;
+  if (next >= questions.length) {
+    if (answers.every(a => a !== null)) showResult();
+    return;
+  }
+  goTo(next);
+}
+
+function goTo(idx) {
+  current = idx;
+  renderQuestion(idx);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function showResult() {
+  playFinish();
+  document.getElementById('testWrapper').style.display = 'none';
+  const rs = document.getElementById('resultScreen');
+  rs.style.display = 'block';
+  const wrong = answers.filter(a => a === false).length;
+  const pct = Math.round(correctCount / questions.length * 100);
+  document.getElementById('rScore').textContent = pct + '%';
+  document.getElementById('rSub').textContent = 'Uğur faiziniz';
+  document.getElementById('rCorrect').textContent = correctCount;
+  document.getElementById('rWrong').textContent = wrong;
+  document.getElementById('rTotal').textContent = questions.length;
+  document.getElementById('rEmoji').textContent = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 50 ? '👍' : '😔';
+
+  // Nəticəni Firestore-a yaz
+  if (auth.currentUser) {
+    try {
+      await db.collection('results').add({
+        userId: auth.currentUser.uid,
+        testId: testId,
+        testTitle: testData.title,
+        correct: correctCount,
+        wrong,
+        total: questions.length,
+        percentage: pct,
+        completedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      await db.collection('tests').doc(testId).update({
+        completions: firebase.firestore.FieldValue.increment(1)
+      });
+    } catch(e) { console.error(e); }
+  }
+}
+
+function restartTest() {
+  current = 0; correctCount = 0;
+  answers = new Array(questions.length).fill(null);
+  Object.keys(chosen).forEach(k => delete chosen[k]);
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('testWrapper').style.display = 'block';
+  buildNav(); renderQuestion(0);
+  window.scrollTo({ top: 0 });
+}
+</script>
+</body>
+</html>
