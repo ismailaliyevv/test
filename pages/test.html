@@ -181,7 +181,18 @@ function playFinish(){try{const ctx=getCtx();[523,659,784,1047].forEach((f,i)=>{
 
 onAuthChange(async (user) => {
   await loadSiteTheme();
-  if (!user) { window.location.href = 'login.html?redirect=test&id=' + testId; return; }
+  if (!user) {
+  // Giriş etməyib — pulsuz testlərə icazə ver
+  const testDoc = await db.collection('tests').doc(testId).get();
+  if (!testDoc.exists) { window.location.href = '../index.html'; return; }
+  const testData = { id: testDoc.id, ...testDoc.data() };
+  if (testData.isPaid) {
+    window.location.href = 'login.html?redirect=test&id=' + testId; return;
+  }
+  // Pulsuz test — davam et
+  initTest(testData, null);
+  return;
+}
   if (!testId) { window.location.href = '../index.html'; return; }
 
   // Test yüklə
