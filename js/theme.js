@@ -1,6 +1,5 @@
 // ═══════════════════════════════════════
 //  TESTHUB — THEME & FONT SİSTEMİ
-//  Admin paneldən idarə olunur
 // ═══════════════════════════════════════
 
 const THEMES = {
@@ -109,14 +108,12 @@ const FONTS = {
   }
 };
 
-// Mövzu tətbiq et
 function applyTheme(key) {
   const t = THEMES[key]; if(!t) return;
   Object.entries(t.vars).forEach(([k,v]) => document.documentElement.style.setProperty(k,v));
   document.documentElement.setAttribute('data-theme', key);
 }
 
-// Font tətbiq et
 function applyFont(key) {
   const f = FONTS[key]; if(!f) return;
   let link = document.getElementById('_themeFont');
@@ -127,14 +124,32 @@ function applyFont(key) {
   document.body.style.fontFamily = f.body;
 }
 
-// Firebase-dən yüklə və tətbiq et
+// sessionStorage cache ilə — hər səhifədə Firestore sorğusu getmir
 async function loadSiteTheme() {
   try {
-    const doc = await db.collection('settings').doc('theme').get();
-    const d = doc.exists ? doc.data() : {};
-    applyTheme(d.theme || 'nature');
-    applyFont(d.font || 'playfair');
+    // Əvvəlcə cache-dən tez yüklə
+    const cached = sessionStorage.getItem('_siteTheme');
+    if (cached) {
+      const d = JSON.parse(cached);
+      applyTheme(d.theme || 'nature');
+      applyFont(d.font || 'playfair');
+    } else {
+      // Cache yoxdursa default tətbiq et, Firestore gözləmə
+      applyTheme('nature');
+      applyFont('playfair');
+    }
+    // Arxa planda Firestore-dan yüklə və cache-i yenilə (3 saniyə timeout)
+    const timeout = new Promise((_, reject) => setTimeout(() => reject('timeout'), 3000));
+    const fetchTheme = db.collection('settings').doc('theme').get();
+    const doc = await Promise.race([fetchTheme, timeout]);
+    if (doc && doc.exists) {
+      const d = doc.data();
+      sessionStorage.setItem('_siteTheme', JSON.stringify(d));
+      applyTheme(d.theme || 'nature');
+      applyFont(d.font || 'playfair');
+    }
   } catch(e) {
+    // Xəta olsa default mövzu qalır — səhifə açılır
     applyTheme('nature');
     applyFont('playfair');
   }
