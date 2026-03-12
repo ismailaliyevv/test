@@ -1,7 +1,3 @@
-// 🔥 FIREBASE KONFİQURASİYA
-// Firebase Console-dan öz məlumatlarınızı buraya yapışdırın
-// https://console.firebase.google.com
-
 const firebaseConfig = {
   apiKey: "AIzaSyBZ6l3woo-GnN2V1E_4TiURDwbxobGP_To",
   authDomain: "testsayt-e0c20.firebaseapp.com",
@@ -12,12 +8,8 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 
 const ADMIN_EMAILS = ["ismayilzzz54@gmail.com"];
-
-function isAdmin(email) {
-  return ADMIN_EMAILS.includes(email);
-}
+function isAdmin(email){ return ADMIN_EMAILS.includes(email); }
