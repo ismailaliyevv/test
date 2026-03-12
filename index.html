@@ -3,554 +3,254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TestHub — Bilik Platforması</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>TestHub</title>
+<link id="_themeFont" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0a0a0f;
-  --surface: #13131a;
-  --surface2: #1c1c28;
-  --border: #2a2a3a;
-  --accent: #6c63ff;
-  --accent2: #ff6584;
-  --accent3: #43e97b;
-  --text: #f0f0ff;
-  --muted: #8888aa;
-  --gold: #ffd700;
+:root{
+  --bg:#f8f9f4;--bg2:#eff4ec;--surface:#fff;--surface2:#f4f7f2;
+  --border:#dde8d8;--border2:#c8d8c0;
+  --accent:#2d6a4f;--accent2:#40916c;--accent3:#74c69d;
+  --accent-light:#d8f3dc;--accent-pale:#edf7f0;
+  --text:#1a2615;--text2:#2e4228;--muted:#7a8c74;
+  --nav-bg:rgba(248,249,244,0.96);--card-shadow:rgba(45,106,79,0.10);
+  --btn-text:#fff;--gold:#c9a84c;--danger:#c0392b;
+  --font-heading:'Playfair Display',serif;
+  --font-body:'Outfit',sans-serif;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* BG animasiya */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: 
-    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(108,99,255,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,101,132,0.08) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
-}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--accent) 5%,transparent) 1px,transparent 0);background-size:26px 26px;pointer-events:none;z-index:0;}
 
 /* NAV */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 40px;
-  background: rgba(10,10,15,0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.5rem; font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.nav-links { display: flex; gap: 8px; align-items: center; }
-.nav-links a {
-  color: var(--muted); text-decoration: none;
-  padding: 8px 16px; border-radius: 8px;
-  font-size: 0.9rem; font-weight: 500;
-  transition: all 0.2s;
-}
-.nav-links a:hover { color: var(--text); background: var(--surface2); }
-.btn-nav-login {
-  background: var(--surface2) !important;
-  border: 1px solid var(--border) !important;
-  color: var(--text) !important;
-}
-.btn-nav-register {
-  background: var(--accent) !important;
-  color: white !important;
-  font-weight: 600 !important;
-}
-.btn-nav-register:hover { opacity: 0.9; transform: translateY(-1px); }
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:66px;background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .35s;}
+.logo{font-family:var(--font-heading);font-size:1.45rem;font-weight:900;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:7px;}
+.logo::before{content:'◆';font-size:.8rem;color:var(--accent3);}
+.nav-links{display:flex;gap:5px;align-items:center;}
+.nav-links a{color:var(--muted);text-decoration:none;padding:7px 15px;border-radius:8px;font-size:.88rem;font-weight:500;transition:all .2s;}
+.nav-links a:hover{color:var(--text);background:var(--accent-pale);}
+.nl-login{border:1.5px solid var(--border2)!important;color:var(--text2)!important;}
+.nl-login:hover{border-color:var(--accent)!important;color:var(--accent)!important;background:var(--accent-pale)!important;}
+.nl-reg{background:var(--accent)!important;color:var(--btn-text)!important;font-weight:700!important;box-shadow:0 4px 14px var(--card-shadow);}
+.nl-reg:hover{opacity:.9;transform:translateY(-1px);}
+.user-nav{display:flex;align-items:center;gap:8px;}
+.u-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--btn-text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;}
+.u-name{font-size:.88rem;font-weight:600;color:var(--text2);}
+.u-logout{background:none;border:1.5px solid var(--border2);color:var(--muted);padding:5px 13px;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:.78rem;transition:all .2s;}
+.u-logout:hover{border-color:var(--danger);color:var(--danger);}
 
 /* HERO */
-.hero {
-  position: relative; z-index: 1;
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 120px 20px 80px;
-}
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(108,99,255,0.15);
-  border: 1px solid rgba(108,99,255,0.3);
-  border-radius: 999px;
-  padding: 6px 16px;
-  font-size: 0.82rem; font-weight: 600;
-  color: #a89fff;
-  margin-bottom: 28px;
-  animation: fadeUp 0.6s ease both;
-}
-.hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); display: inline-block; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:108px 20px 80px;}
+.hero-shape{position:absolute;z-index:0;border-radius:50%;pointer-events:none;}
+.s1{width:500px;height:500px;top:-80px;right:-120px;background:radial-gradient(circle,var(--accent-light),transparent 70%);opacity:.6;}
+.s2{width:360px;height:360px;bottom:0;left:-80px;background:radial-gradient(circle,var(--accent-pale),transparent 70%);opacity:.7;}
+.hero-tag{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;background:var(--accent-pale);border:1.5px solid var(--accent-light);border-radius:999px;padding:6px 18px;font-size:.8rem;font-weight:700;color:var(--accent2);margin-bottom:30px;animation:fadeUp .5s ease both;}
+.htdot{width:7px;height:7px;border-radius:50%;background:var(--accent3);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes lineIn{to{transform:scaleX(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.hero h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(2.8rem, 7vw, 5.5rem);
-  font-weight: 800;
-  line-height: 1.08;
-  margin-bottom: 24px;
-  animation: fadeUp 0.6s 0.1s ease both;
-}
-.hero h1 .gradient {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--gold) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.hero-sub {
-  font-size: 1.15rem; color: var(--muted);
-  max-width: 560px; line-height: 1.7;
-  margin-bottom: 40px;
-  animation: fadeUp 0.6s 0.2s ease both;
-}
-.hero-btns {
-  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
-  animation: fadeUp 0.6s 0.3s ease both;
-}
-.btn-primary {
-  background: linear-gradient(135deg, var(--accent), #8b7fff);
-  color: white; border: none;
-  padding: 14px 32px; border-radius: 12px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1rem; font-weight: 600;
-  cursor: pointer; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: all 0.2s;
-  box-shadow: 0 8px 32px rgba(108,99,255,0.35);
-}
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(108,99,255,0.5); }
-.btn-secondary {
-  background: var(--surface2); color: var(--text);
-  border: 1px solid var(--border);
-  padding: 14px 32px; border-radius: 12px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1rem; font-weight: 500;
-  cursor: pointer; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: all 0.2s;
-}
-.btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+h1.hero-h{position:relative;z-index:1;font-family:var(--font-heading);font-size:clamp(2.8rem,7vw,5.8rem);font-weight:900;line-height:1.05;color:var(--text);margin-bottom:10px;animation:fadeUp .5s .08s ease both;}
+h1.hero-h em{font-style:italic;color:var(--accent);position:relative;}
+h1.hero-h em::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:3px;background:var(--accent3);border-radius:2px;transform:scaleX(0);transform-origin:left;animation:lineIn .5s .9s ease both;}
+.hero-sub{position:relative;z-index:1;font-size:1.05rem;color:var(--muted);max-width:510px;line-height:1.75;margin:18px auto 38px;animation:fadeUp .5s .16s ease both;}
+.hero-btns{position:relative;z-index:1;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .5s .24s ease both;}
+.btn-p{background:var(--accent);color:var(--btn-text);border:none;padding:13px 30px;border-radius:11px;font-family:var(--font-body);font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s;box-shadow:0 6px 20px var(--card-shadow);}
+.btn-p:hover{opacity:.9;transform:translateY(-2px);}
+.btn-o{background:var(--surface);color:var(--text);border:1.5px solid var(--border2);padding:13px 30px;border-radius:11px;font-family:var(--font-body);font-size:.95rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s;}
+.btn-o:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
+.hero-stats{position:relative;z-index:1;display:flex;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-top:56px;box-shadow:0 4px 24px var(--card-shadow);animation:fadeUp .5s .32s ease both;}
+.hstat{padding:18px 34px;text-align:center;border-right:1px solid var(--border);}
+.hstat:last-child{border-right:none;}
+.hstat-v{font-family:var(--font-heading);font-size:1.9rem;font-weight:900;color:var(--accent);}
+.hstat-l{font-size:.75rem;color:var(--muted);margin-top:3px;font-weight:500;}
 
-/* STATS */
-.stats {
-  display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
-  margin-top: 64px;
-  animation: fadeUp 0.6s 0.4s ease both;
-}
-.stat { text-align: center; }
-.stat-num {
-  font-family: 'Syne', sans-serif;
-  font-size: 2rem; font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
-
-/* TESTS SECTION */
-.section {
-  position: relative; z-index: 1;
-  max-width: 1200px; margin: 0 auto;
-  padding: 80px 20px;
-}
-.section-header {
-  text-align: center; margin-bottom: 52px;
-}
-.section-tag {
-  font-size: 0.78rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.15em;
-  color: var(--accent); margin-bottom: 12px;
-}
-.section-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  font-weight: 800; margin-bottom: 14px;
-}
-.section-sub { color: var(--muted); font-size: 1rem; line-height: 1.6; }
+/* SECTIONS */
+.divider{height:1px;background:var(--border);}
+.sec{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:80px 24px;}
+.sec-tag{display:inline-block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--accent2);background:var(--accent-pale);border:1px solid var(--accent-light);padding:4px 12px;border-radius:6px;margin-bottom:12px;}
+.sec-title{font-family:var(--font-heading);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;color:var(--text);margin-bottom:10px;line-height:1.15;}
+.sec-sub{color:var(--muted);font-size:.97rem;line-height:1.7;max-width:480px;}
+.sec-head{margin-bottom:48px;}
 
 /* TEST CARDS */
-.tests-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-}
-.test-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 28px;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-.test-card::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(108,99,255,0.05), transparent);
-  opacity: 0; transition: opacity 0.3s;
-}
-.test-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-.test-card:hover::before { opacity: 1; }
-.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
-.card-icon {
-  width: 48px; height: 48px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem;
-}
-.card-badge {
-  font-size: 0.72rem; font-weight: 700;
-  padding: 4px 10px; border-radius: 999px;
-}
-.badge-free { background: rgba(67,233,123,0.15); color: var(--accent3); border: 1px solid rgba(67,233,123,0.3); }
-.badge-paid { background: rgba(255,215,0,0.12); color: var(--gold); border: 1px solid rgba(255,215,0,0.25); }
-.card-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.1rem; font-weight: 700;
-  margin-bottom: 8px; line-height: 1.35;
-}
-.card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
-.card-meta {
-  display: flex; gap: 16px;
-  font-size: 0.8rem; color: var(--muted);
-  margin-bottom: 20px;
-}
-.card-meta span { display: flex; align-items: center; gap: 5px; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; }
-.card-price {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.2rem; font-weight: 800;
-}
-.price-free { color: var(--accent3); }
-.price-paid { color: var(--gold); }
-.btn-card {
-  background: var(--accent); color: white; border: none;
-  padding: 9px 20px; border-radius: 10px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.85rem; font-weight: 600;
-  cursor: pointer; text-decoration: none;
-  transition: all 0.2s;
-}
-.btn-card:hover { opacity: 0.85; transform: translateY(-1px); }
-.btn-card-locked { background: var(--surface2) !important; color: var(--muted) !important; }
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px;}
+.tcard{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:26px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden;}
+.tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent3));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.tcard:hover{border-color:var(--accent3);transform:translateY(-4px);box-shadow:0 16px 48px var(--card-shadow);}
+.tcard:hover::before{transform:scaleX(1);}
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.tc-icon{width:46px;height:46px;border-radius:11px;background:var(--accent-pale);display:flex;align-items:center;justify-content:center;font-size:1.4rem;border:1px solid var(--accent-light);}
+.tc-badge{font-size:.68rem;font-weight:800;padding:4px 10px;border-radius:6px;}
+.b-free{background:var(--accent-pale);color:var(--accent2);border:1px solid var(--accent-light);}
+.b-paid{background:color-mix(in srgb,var(--gold) 12%,transparent);color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 28%,transparent);}
+.tc-title{font-family:var(--font-heading);font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:7px;line-height:1.3;}
+.tc-desc{font-size:.84rem;color:var(--muted);line-height:1.65;margin-bottom:16px;}
+.tc-meta{display:flex;gap:12px;font-size:.76rem;color:var(--muted);margin-bottom:16px;flex-wrap:wrap;}
+.tc-foot{display:flex;align-items:center;justify-content:space-between;}
+.tc-price{font-family:var(--font-heading);font-size:1.15rem;font-weight:900;}
+.pf{color:var(--accent2);}.pp{color:var(--gold);}
+.btn-tc{background:var(--accent);color:var(--btn-text);border:none;padding:8px 18px;border-radius:9px;font-family:var(--font-body);font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-tc:hover{opacity:.85;}
+.btn-tc-lock{background:var(--bg2)!important;color:var(--muted)!important;border:1px solid var(--border)!important;}
 
 /* FEATURES */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
-.feature-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-}
-.feature-icon { font-size: 2rem; margin-bottom: 14px; }
-.feature-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 1rem; font-weight: 700;
-  margin-bottom: 8px;
-}
-.feature-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.fcard{background:var(--surface);border:1.5px solid var(--border);border-radius:15px;padding:24px;transition:all .2s;}
+.fcard:hover{border-color:var(--accent-light);box-shadow:0 8px 24px var(--card-shadow);}
+.f-icon{width:42px;height:42px;border-radius:10px;background:var(--accent-pale);border:1px solid var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:14px;}
+.f-title{font-family:var(--font-heading);font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:7px;}
+.f-desc{font-size:.83rem;color:var(--muted);line-height:1.65;}
 
 /* FOOTER */
-footer {
-  position: relative; z-index: 1;
-  border-top: 1px solid var(--border);
-  padding: 40px 20px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-.footer-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.3rem; font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin-bottom: 12px;
-}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36px 24px;text-align:center;background:var(--surface);}
+.f-logo{font-family:var(--font-heading);font-size:1.25rem;font-weight:900;color:var(--accent);margin-bottom:8px;}
+.f-logo::before{content:'◆ ';font-size:.75rem;color:var(--accent3);}
+footer p{color:var(--muted);font-size:.82rem;}
 
-/* USER NAV (logged in) */
-.user-nav {
-  display: flex; align-items: center; gap: 10px;
-}
-.user-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 0.9rem;
-  cursor: pointer;
-}
-.user-name { font-size: 0.9rem; font-weight: 500; color: var(--text); }
-.btn-logout {
-  background: none; border: 1px solid var(--border);
-  color: var(--muted); padding: 6px 14px;
-  border-radius: 8px; cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.82rem; transition: all 0.2s;
-}
-.btn-logout:hover { border-color: var(--accent2); color: var(--accent2); }
+/* LOADING */
+#lo{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .3s;}
+.spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
 
-/* DIVIDER */
-.divider {
-  width: 100%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-  margin: 0;
-}
-
-/* Loading */
-#loadingOverlay {
-  position: fixed; inset: 0; background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9999; transition: opacity 0.3s;
-}
-.spinner {
-  width: 40px; height: 40px;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-@media (max-width: 600px) {
-  nav { padding: 14px 20px; }
-  .nav-links a:not(.btn-nav-register):not(.btn-nav-login) { display: none; }
+@media(max-width:680px){
+  nav{padding:0 16px;}
+  .nav-links a:not(.nl-reg):not(.nl-login){display:none;}
+  .hero-stats{flex-direction:column;}
+  .hstat{border-right:none;border-bottom:1px solid var(--border);}
+  .hstat:last-child{border-bottom:none;}
 }
 </style>
 </head>
 <body>
+<div id="lo"><div class="spin"></div></div>
 
-<div id="loadingOverlay"><div class="spinner"></div></div>
-
-<!-- NAV -->
 <nav>
-  <div class="nav-logo">TestHub</div>
+  <a href="index.html" class="logo">TestHub</a>
   <div class="nav-links" id="navLinks">
     <a href="#tests">Testlər</a>
-    <a href="pages/login.html" class="btn-nav-login">Giriş</a>
-    <a href="pages/register.html" class="btn-nav-register">Qeydiyyat</a>
+    <a href="pages/login.html" class="nl-login">Giriş</a>
+    <a href="pages/register.html" class="nl-reg">Qeydiyyat</a>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-badge"><span></span> Azərbaycanın ən yaxşı test platforması</div>
-  <h1>Biliklərinizi <span class="gradient">Test Edin</span><br>İrəliləyin</h1>
+  <div class="hero-shape s1"></div>
+  <div class="hero-shape s2"></div>
+  <div class="hero-tag"><span class="htdot"></span> Azərbaycanın test platforması</div>
+  <h1 class="hero-h">Bilikləri <em>Sına</em>,<br>İrəliləyin</h1>
   <p class="hero-sub">Fiziki Tərbiyə, Basketbol, Voleybol və daha çox mövzuda peşəkar testlər. Öyrən, sına, inkişaf et.</p>
   <div class="hero-btns">
-    <a href="#tests" class="btn-primary">🎯 Testlərə Bax</a>
-    <a href="pages/register.html" class="btn-secondary">📝 Pulsuz Qeydiyyat</a>
+    <a href="#tests" class="btn-p">◆ Testlərə Bax</a>
+    <a href="pages/register.html" class="btn-o">Pulsuz Qeydiyyat →</a>
   </div>
-  <div class="stats">
-    <div class="stat"><div class="stat-num" id="statTests">0</div><div class="stat-label">Test</div></div>
-    <div class="stat"><div class="stat-num" id="statUsers">0</div><div class="stat-label">İstifadəçi</div></div>
-    <div class="stat"><div class="stat-num" id="statCompleted">0</div><div class="stat-label">Tamamlanmış</div></div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- TESTS -->
-<section class="section" id="tests">
-  <div class="section-header">
-    <div class="section-tag">📚 Testlər</div>
-    <h2 class="section-title">Bütün Testlər</h2>
-    <p class="section-sub">Pulsuz və ödənişli testlərimizi kəşf edin</p>
-  </div>
-  <div class="tests-grid" id="testsGrid">
-    <!-- JS ilə doldurulacaq -->
-    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
-      <div class="spinner" style="margin:0 auto 16px"></div>
-      Testlər yüklənir...
-    </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-v" id="sT">0</div><div class="hstat-l">Test</div></div>
+    <div class="hstat"><div class="hstat-v" id="sU">0</div><div class="hstat-l">İstifadəçi</div></div>
+    <div class="hstat"><div class="hstat-v" id="sC">0</div><div class="hstat-l">Tamamlanmış</div></div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- FEATURES -->
-<section class="section">
-  <div class="section-header">
-    <div class="section-tag">✨ Xüsusiyyətlər</div>
-    <h2 class="section-title">Niyə TestHub?</h2>
+<section class="sec" id="tests">
+  <div class="sec-head">
+    <div class="sec-tag">📚 Testlər</div>
+    <h2 class="sec-title">Bütün Testlər</h2>
+    <p class="sec-sub">Pulsuz və ödənişli testlərimizi kəşf edin</p>
   </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <div class="feature-title">Ani Nəticə</div>
-      <div class="feature-desc">Hər cavabdan sonra dərhal feedback. Düzgün və yanlış cavabları görün.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📊</div>
-      <div class="feature-title">Statistika</div>
-      <div class="feature-desc">Öz nəticələrinizi izləyin. Hansı mövzuda zəif olduğunuzu bilin.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🔒</div>
-      <div class="feature-title">Güvənli Giriş</div>
-      <div class="feature-desc">Firebase ilə qorunan hesabınız. Məlumatlarınız həmişə təhlükəsiz.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📱</div>
-      <div class="feature-title">Hər Cihazda</div>
-      <div class="feature-desc">Telefon, tablet, kompüter — istənilən cihazdan işləyin.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🆓</div>
-      <div class="feature-title">Pulsuz Testlər</div>
-      <div class="feature-desc">Bir çox test tamamilə pulsuzdur. Qeydiyyat etmədən də başlaya bilərsiniz.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🏆</div>
-      <div class="feature-title">Sertifikat</div>
-      <div class="feature-desc">Yüksək nəticə əldə edənlər sertifikat ala bilər (tezliklə).</div>
-    </div>
+  <div class="tgrid" id="testsGrid">
+    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div class="spin" style="margin:0 auto 14px"></div>Yüklənir...</div>
   </div>
 </section>
+
+<div class="divider"></div>
+
+<div style="background:var(--bg2);position:relative;z-index:1;">
+<div class="sec">
+  <div class="sec-head">
+    <div class="sec-tag">✨ Xüsusiyyətlər</div>
+    <h2 class="sec-title">Niyə TestHub?</h2>
+  </div>
+  <div class="fgrid">
+    <div class="fcard"><div class="f-icon">⚡</div><div class="f-title">Ani Nəticə</div><div class="f-desc">Hər cavabdan sonra dərhal feedback alın.</div></div>
+    <div class="fcard"><div class="f-icon">📊</div><div class="f-title">Statistika</div><div class="f-desc">Nəticələrinizi izləyin, inkişafınızı görün.</div></div>
+    <div class="fcard"><div class="f-icon">🔒</div><div class="f-title">Güvənli</div><div class="f-desc">Firebase ilə qorunan hesabınız.</div></div>
+    <div class="fcard"><div class="f-icon">📱</div><div class="f-title">Hər Cihazda</div><div class="f-desc">Telefon, tablet, kompüterdən işləyin.</div></div>
+    <div class="fcard"><div class="f-icon">🆓</div><div class="f-title">Pulsuz Testlər</div><div class="f-desc">Bir çox test tamamilə pulsuzdur.</div></div>
+    <div class="fcard"><div class="f-icon">🏆</div><div class="f-title">Tarixçə</div><div class="f-desc">Bütün keçmiş nəticələriniz saxlanılır.</div></div>
+  </div>
+</div>
+</div>
 
 <footer>
-  <div class="footer-logo">TestHub</div>
+  <div class="f-logo">TestHub</div>
   <p>© 2025 TestHub. Bütün hüquqlar qorunur.</p>
 </footer>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="js/firebase-config.js"></script>
 <script src="js/auth.js"></script>
+<script src="js/theme.js"></script>
 <script>
-// Sayaç animasiyası
-function animateCount(el, target) {
-  let current = 0;
-  const step = Math.ceil(target / 40);
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
-    el.textContent = current + (target >= 1000 ? '+' : '');
-    if (current >= target) clearInterval(timer);
-  }, 40);
+function cnt(el,n){let c=0,s=Math.ceil(n/40),t=setInterval(()=>{c=Math.min(c+s,n);el.textContent=c+(n>=100?'+':'');if(c>=n)clearInterval(t);},40);}
+
+function mkCard(t,pur){
+  const ip=t.isPaid,io=!ip||pur?.includes(t.id);
+  return `<div class="tcard" onclick="goTest('${t.id}',${ip},${io})">
+    <div class="tc-top"><div class="tc-icon">${t.icon||'📝'}</div>
+    <span class="tc-badge ${ip?'b-paid':'b-free'}">${ip?'💎 Ödənişli':'🆓 Pulsuz'}</span></div>
+    <div class="tc-title">${t.title}</div>
+    <div class="tc-desc">${t.description||'Test haqqında məlumat.'}</div>
+    <div class="tc-meta"><span>❓${t.questionCount||'?'} sual</span><span>⏱${t.duration||'?'} dəq</span><span>👁${t.views||0}</span></div>
+    <div class="tc-foot">
+      <div class="tc-price ${ip?'pp':'pf'}">${ip?(io?'✓ Alınıb':t.price+'₼'):'Pulsuz'}</div>
+      <a class="btn-tc ${!io&&ip?'btn-tc-lock':''}">${io?'▶ Başla':ip?'🔒 Al':'▶ Başla'}</a>
+    </div>
+  </div>`;
 }
 
-// Test kartı HTML
-function createTestCard(test, userPurchased) {
-  const isPaid = test.isPaid;
-  const isOwned = !isPaid || userPurchased?.includes(test.id);
-  const icon = test.icon || '📝';
-  const colorMap = {
-    'fiziki': '#6c63ff', 'basketbol': '#ff6584', 'voleybol': '#43e97b',
-    'default': '#ffd700'
-  };
-  const color = colorMap[test.category] || colorMap.default;
-
-  return `
-    <div class="test-card" onclick="openTest('${test.id}', ${isPaid}, ${isOwned})">
-      <div class="card-top">
-        <div class="card-icon" style="background:${color}20">${icon}</div>
-        <span class="card-badge ${isPaid ? 'badge-paid' : 'badge-free'}">${isPaid ? '💎 Ödənişli' : '🆓 Pulsuz'}</span>
-      </div>
-      <div class="card-title">${test.title}</div>
-      <div class="card-desc">${test.description || 'Test haqqında məlumat yoxdur.'}</div>
-      <div class="card-meta">
-        <span>❓ ${test.questionCount || '?'} sual</span>
-        <span>⏱ ${test.duration || '?'} dəq</span>
-        <span>👁 ${test.views || 0} baxış</span>
-      </div>
-      <div class="card-footer">
-        <div class="card-price ${isPaid ? 'price-paid' : 'price-free'}">
-          ${isPaid ? (isOwned ? '✓ Alınıb' : test.price + ' ₼') : 'Pulsuz'}
-        </div>
-        <a class="btn-card ${!isOwned && isPaid ? 'btn-card-locked' : ''}" 
-           onclick="event.stopPropagation()">
-          ${isOwned ? '▶ Başla' : isPaid ? '🔒 Al' : '▶ Başla'}
-        </a>
-      </div>
-    </div>`;
+function goTest(id,ip,io){
+  if(!auth.currentUser){window.location.href='pages/login.html?redirect=test&id='+id;return;}
+  if(ip&&!io){window.location.href='pages/payment.html?id='+id;return;}
+  window.location.href='pages/test.html?id='+id;
 }
 
-// Testləri yüklə
-async function loadTests() {
-  try {
-    const snapshot = await db.collection('tests').where('isActive', '==', true).get();
-    const tests = [];
-    snapshot.forEach(doc => tests.push({ id: doc.id, ...doc.data() }));
-
-    // Statistika
-    const usersSnap = await db.collection('users').get();
-    animateCount(document.getElementById('statTests'), tests.length);
-    animateCount(document.getElementById('statUsers'), usersSnap.size);
-    animateCount(document.getElementById('statCompleted'), tests.reduce((a, t) => a + (t.completions || 0), 0));
-
-    const grid = document.getElementById('testsGrid');
-    if (tests.length === 0) {
-      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
-        <div style="font-size:3rem;margin-bottom:16px">📭</div>
-        <p>Hələ test əlavə edilməyib</p></div>`;
-      return;
-    }
-
-    let userData = null;
-    if (auth.currentUser) userData = await getCurrentUserData();
-
-    grid.innerHTML = tests.map(t => createTestCard(t, userData?.purchasedTests)).join('');
-
-    // View count artır
-    tests.forEach(async t => {
-      await db.collection('tests').doc(t.id).update({ views: firebase.firestore.FieldValue.increment(1) }).catch(() => {});
-    });
-  } catch (e) {
-    console.error(e);
-  }
+async function loadTests(){
+  try{
+    const ts=await db.collection('tests').where('isActive','==',true).get();
+    const tests=ts.docs.map(d=>({id:d.id,...d.data()}));
+    const us=await db.collection('users').get();
+    cnt(document.getElementById('sT'),tests.length);
+    cnt(document.getElementById('sU'),us.size);
+    cnt(document.getElementById('sC'),tests.reduce((a,t)=>a+(t.completions||0),0));
+    const g=document.getElementById('testsGrid');
+    if(!tests.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div style="font-size:3rem;margin-bottom:12px">📭</div><p>Hələ test yoxdur</p></div>';return;}
+    let ud=null;if(auth.currentUser)ud=await getCurrentUserData();
+    g.innerHTML=tests.map(t=>mkCard(t,ud?.purchasedTests)).join('');
+  }catch(e){console.error(e);}
 }
 
-// Test aç
-function openTest(testId, isPaid, isOwned) {
-  if (!auth.currentUser) {
-    window.location.href = 'pages/login.html?redirect=test&id=' + testId;
-    return;
-  }
-  if (isPaid && !isOwned) {
-    window.location.href = 'pages/payment.html?id=' + testId;
-    return;
-  }
-  window.location.href = 'pages/test.html?id=' + testId;
-}
-
-// Auth vəziyyəti
-onAuthChange(async (user) => {
-  const navLinks = document.getElementById('navLinks');
-  document.getElementById('loadingOverlay').style.opacity = '0';
-  setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 300);
-
-  if (user) {
-    const userData = await getCurrentUserData();
-    const isAdm = isAdmin(user.email);
-    navLinks.innerHTML = `
+onAuthChange(async(u)=>{
+  await loadSiteTheme();
+  const lo=document.getElementById('lo');
+  lo.style.opacity='0';setTimeout(()=>lo.style.display='none',300);
+  const nav=document.getElementById('navLinks');
+  if(u){
+    const ud=await getCurrentUserData();
+    nav.innerHTML=`
       <a href="#tests">Testlər</a>
-      <a href="pages/dashboard.html">📊 Hesabım</a>
-      ${isAdm ? '<a href="admin/index.html" style="color:var(--gold)">⚙️ Admin</a>' : ''}
+      <a href="pages/dashboard.html">Hesabım</a>
+      ${isAdmin(u.email)?'<a href="admin/index.html" style="color:var(--accent);font-weight:700">⚙️ Admin</a>':''}
       <div class="user-nav">
-        <div class="user-avatar">${(userData?.name || user.email)[0].toUpperCase()}</div>
-        <span class="user-name">${userData?.name || user.email}</span>
-        <button class="btn-logout" onclick="logoutUser()">Çıxış</button>
+        <div class="u-avatar">${(ud?.name||u.email)[0].toUpperCase()}</div>
+        <span class="u-name">${ud?.name||u.email}</span>
+        <button class="u-logout" onclick="logoutUser()">Çıxış</button>
       </div>`;
-    loadTests();
-  } else {
-    loadTests();
   }
+  loadTests();
 });
 </script>
 </body>
