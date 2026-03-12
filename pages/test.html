@@ -161,6 +161,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="../js/firebase-config.js"></script>
+<script src="../js/theme.js"></script>
 <script src="../js/auth.js"></script>
 <script>
 const testId = new URLSearchParams(window.location.search).get('id');
@@ -179,6 +180,7 @@ function playWrong(){try{const ctx=getCtx();const o=ctx.createOscillator(),g=ctx
 function playFinish(){try{const ctx=getCtx();[523,659,784,1047].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.value=f;const t=ctx.currentTime+i*0.15;g.gain.setValueAtTime(0.2,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.2);o.start(t);o.stop(t+0.2)});}catch(e){}}
 
 onAuthChange(async (user) => {
+  await loadSiteTheme();
   if (!user) { window.location.href = 'login.html?redirect=test&id=' + testId; return; }
   if (!testId) { window.location.href = '../index.html'; return; }
 
