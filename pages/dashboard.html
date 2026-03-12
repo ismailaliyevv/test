@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hesabım — TestHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--border:#2a2a3a;--accent:#6c63ff;--accent2:#ff6584;--accent3:#43e97b;--text:#f0f0ff;--muted:#8888aa;--gold:#ffd700;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 20% 10%,rgba(108,99,255,0.1) 0%,transparent 60%);pointer-events:none;}
+
+/* SIDEBAR */
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;}
+.sidebar-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;padding:8px 12px;margin-bottom:32px;text-decoration:none;display:block;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:0.9rem;font-weight:500;transition:all 0.2s;margin-bottom:4px;cursor:pointer;background:none;border:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif;}
+.nav-item:hover{background:var(--surface2);color:var(--text);}
+.nav-item.active{background:rgba(108,99,255,0.15);color:var(--accent);font-weight:600;}
+.nav-icon{font-size:1.1rem;width:22px;text-align:center;}
+.sidebar-bottom{margin-top:auto;}
+.user-info{padding:14px;background:var(--surface2);border-radius:12px;border:1px solid var(--border);margin-bottom:12px;}
+.user-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;margin-bottom:8px;}
+.user-name-s{font-size:0.88rem;font-weight:600;}
+.user-email-s{font-size:0.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.btn-logout{width:100%;background:none;border:1px solid var(--border);color:var(--muted);padding:9px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+.btn-logout:hover{border-color:var(--accent2);color:var(--accent2);}
+
+/* MAIN */
+.main{margin-left:240px;padding:36px;flex:1;position:relative;z-index:1;}
+.page-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:6px;}
+.page-sub{color:var(--muted);font-size:0.92rem;margin-bottom:36px;}
+
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:36px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;}
+.stat-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.stat-card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.stat-card-val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;}
+.stat-card-label{font-size:0.82rem;color:var(--muted);}
+
+/* SECTIONS */
+.section-title-sm{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.tests-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:36px;}
+.test-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all 0.2s;cursor:pointer;}
+.test-item:hover{border-color:var(--accent);transform:translateY(-2px);}
+.ti-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.ti-icon{font-size:1.4rem;}
+.ti-badge{font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:999px;}
+.badge-completed{background:rgba(67,233,123,0.15);color:var(--accent3);border:1px solid rgba(67,233,123,0.3);}
+.badge-available{background:rgba(108,99,255,0.15);color:var(--accent);border:1px solid rgba(108,99,255,0.3);}
+.ti-title{font-size:0.95rem;font-weight:700;margin-bottom:6px;}
+.ti-meta{font-size:0.8rem;color:var(--muted);}
+.ti-score{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:var(--accent3);margin-top:10px;}
+
+/* RESULTS TABLE */
+.results-table{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.results-table th{padding:14px 18px;text-align:left;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border);}
+.results-table td{padding:14px 18px;font-size:0.88rem;border-bottom:1px solid var(--border);}
+.results-table tr:last-child td{border-bottom:none;}
+.results-table tr:hover td{background:var(--surface2);}
+.score-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:0.8rem;font-weight:700;}
+.score-high{background:rgba(67,233,123,0.15);color:var(--accent3);}
+.score-mid{background:rgba(255,215,0,0.12);color:var(--gold);}
+.score-low{background:rgba(255,71,87,0.12);color:#ff6b7a;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px;color:var(--muted);}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:12px;}
+.btn-go{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:10px 24px;border-radius:10px;font-size:0.9rem;font-weight:600;margin-top:16px;transition:all 0.2s;}
+.btn-go:hover{opacity:0.85;}
+
+/* Loading */
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:40px auto;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .main{margin-left:0;padding:20px;}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="../index.html" class="sidebar-logo">TestHub</a>
+    <nav>
+      <a class="nav-item active" onclick="showTab('overview')"><span class="nav-icon">📊</span> İcmal</a>
+      <a class="nav-item" onclick="showTab('tests')"><span class="nav-icon">📝</span> Testlərim</a>
+      <a class="nav-item" onclick="showTab('history')"><span class="nav-icon">📈</span> Tarixçə</a>
+      <a class="nav-item" href="../index.html#tests"><span class="nav-icon">🔍</span> Testlərə Bax</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-info">
+        <div class="user-avatar" id="sideAvatar">?</div>
+        <div class="user-name-s" id="sideName">Yüklənir...</div>
+        <div class="user-email-s" id="sideEmail"></div>
+      </div>
+      <button class="btn-logout" onclick="logoutUser()">🚪 Çıxış</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="mainContent">
+    <div class="spinner"></div>
+  </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+let userData = null;
+let allTests = [];
+let userResults = [];
+
+onAuthChange(async (user) => {
+  if (!user) { window.location.href = 'login.html'; return; }
+  userData = await getCurrentUserData();
+  
+  // Sidebar
+  document.getElementById('sideAvatar').textContent = (userData.name || user.email)[0].toUpperCase();
+  document.getElementById('sideName').textContent = userData.name || 'İstifadəçi';
+  document.getElementById('sideEmail').textContent = user.email;
+
+  // Testlər
+  const testsSnap = await db.collection('tests').where('isActive','==',true).get();
+  allTests = testsSnap.docs.map(d => ({id:d.id,...d.data()}));
+
+  // Nəticələr
+  const resultsSnap = await db.collection('results').where('userId','==',user.uid).orderBy('completedAt','desc').get();
+  userResults = resultsSnap.docs.map(d => ({id:d.id,...d.data()}));
+
+  showTab('overview');
+});
+
+function showTab(tab) {
+  // Nav aktiv
+  document.querySelectorAll('.nav-item').forEach((el,i) => {
+    el.classList.toggle('active', ['overview','tests','history'][i] === tab);
+  });
+  const main = document.getElementById('mainContent');
+  if (tab === 'overview') renderOverview(main);
+  else if (tab === 'tests') renderTests(main);
+  else if (tab === 'history') renderHistory(main);
+}
+
+function renderOverview(main) {
+  const completedIds = [...new Set(userResults.map(r => r.testId))];
+  const avgScore = userResults.length 
+    ? Math.round(userResults.reduce((a,r) => a + r.percentage, 0) / userResults.length) 
+    : 0;
+  const bestScore = userResults.length ? Math.max(...userResults.map(r => r.percentage)) : 0;
+
+  main.innerHTML = `
+    <div class="page-title">Salam, ${userData?.name?.split(' ')[0] || 'İstifadəçi'}! 👋</div>
+    <p class="page-sub">Bugün nə öyrənəcəksiniz?</p>
+    
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div class="stat-card-icon" style="background:rgba(108,99,255,0.15)">📝</div>
+        </div>
+        <div class="stat-card-val">${completedIds.length}</div>
+        <div class="stat-card-label">Tamamlanan test</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div class="stat-card-icon" style="background:rgba(67,233,123,0.15)">✅</div>
+        </div>
+        <div class="stat-card-val">${userResults.length}</div>
+        <div class="stat-card-label">Ümumi cəhd</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div class="stat-card-icon" style="background:rgba(255,215,0,0.12)">⭐</div>
+        </div>
+        <div class="stat-card-val">${avgScore}%</div>
+        <div class="stat-card-label">Ortalama nəticə</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div class="stat-card-icon" style="background:rgba(255,101,132,0.12)">🏆</div>
+        </div>
+        <div class="stat-card-val">${bestScore}%</div>
+        <div class="stat-card-label">Ən yüksək nəticə</div>
+      </div>
+    </div>
+
+    <div class="section-title-sm">🕐 Son Nəticələr</div>
+    ${renderResultsTable(userResults.slice(0,5))}
+  `;
+}
+
+function renderTests(main) {
+  const purchasedIds = userData?.purchasedTests || [];
+  main.innerHTML = `
+    <div class="page-title">Testlərim 📝</div>
+    <p class="page-sub">Aldığınız və pulsuz testlər</p>
+    <div class="tests-list">
+      ${allTests.map(t => {
+        const isOwned = !t.isPaid || purchasedIds.includes(t.id);
+        const result = userResults.find(r => r.testId === t.id);
+        if (!isOwned) return '';
+        return `<div class="test-item" onclick="window.location.href='test.html?id=${t.id}'">
+          <div class="ti-top">
+            <div class="ti-icon">${t.icon || '📝'}</div>
+            ${result ? '<span class="ti-badge badge-completed">✓ Tamamlandı</span>' : '<span class="ti-badge badge-available">Hazır</span>'}
+          </div>
+          <div class="ti-title">${t.title}</div>
+          <div class="ti-meta">❓ ${t.questionCount || '?'} sual • ⏱ ${t.duration || '?'} dəq</div>
+          ${result ? `<div class="ti-score">${result.percentage}%</div>` : ''}
+        </div>`;
+      }).join('') || '<div class="empty-state"><div class="empty-icon">📭</div><p>Hələ test yoxdur</p><a href="../index.html#tests" class="btn-go">Testlərə Bax</a></div>'}
+    </div>`;
+}
+
+function renderHistory(main) {
+  main.innerHTML = `
+    <div class="page-title">Tarixçə 📈</div>
+    <p class="page-sub">Bütün test nəticələriniz</p>
+    ${renderResultsTable(userResults)}`;
+}
+
+function renderResultsTable(results) {
+  if (!results.length) return `<div class="empty-state"><div class="empty-icon">📊</div><p>Hələ nəticə yoxdur</p><a href="../index.html#tests" class="btn-go">Test Başla</a></div>`;
+  return `<table class="results-table">
+    <thead><tr><th>Test</th><th>Nəticə</th><th>Düzgün</th><th>Tarix</th></tr></thead>
+    <tbody>
+      ${results.map(r => {
+        const cls = r.percentage >= 70 ? 'score-high' : r.percentage >= 40 ? 'score-mid' : 'score-low';
+        const test = allTests.find(t => t.id === r.testId);
+        const date = r.completedAt?.toDate ? r.completedAt.toDate().toLocaleDateString('az') : '—';
+        return `<tr>
+          <td>${test?.title || 'Test'}</td>
+          <td><span class="score-badge ${cls}">${r.percentage}%</span></td>
+          <td>${r.correct}/${r.total}</td>
+          <td>${date}</td>
+        </tr>`;
+      }).join('')}
+    </tbody>
+  </table>`;
+}
+</script>
+</body>
+</html>

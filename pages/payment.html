@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ödəniş — TestHub</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--border:#2a2a3a;--accent:#6c63ff;--accent2:#ff6584;--accent3:#43e97b;--text:#f0f0ff;--muted:#8888aa;--gold:#ffd700;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(255,215,0,0.08) 0%,transparent 70%);pointer-events:none;}
+.container{position:relative;z-index:1;width:100%;max-width:900px;display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:start;}
+.test-info{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;}
+.info-tag{font-size:0.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.info-icon{font-size:3rem;margin-bottom:16px;}
+.info-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:10px;line-height:1.3;}
+.info-desc{color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:24px;}
+.info-features{display:flex;flex-direction:column;gap:10px;}
+.feat{display:flex;align-items:center;gap:10px;font-size:0.88rem;}
+.feat-icon{width:28px;height:28px;border-radius:7px;background:rgba(108,99,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+.payment-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px;}
+.payment-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:6px;}
+.payment-sub{color:var(--muted);font-size:0.85rem;margin-bottom:28px;}
+.price-display{background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(255,215,0,0.05));border:1px solid rgba(255,215,0,0.2);border-radius:14px;padding:20px;text-align:center;margin-bottom:24px;}
+.price-amount{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;color:var(--gold);}
+.price-label{font-size:0.8rem;color:var(--muted);margin-top:4px;}
+.payment-methods{margin-bottom:20px;}
+.method-title{font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+.method-tabs{display:flex;gap:8px;margin-bottom:20px;}
+.method-tab{flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);background:var(--surface2);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;}
+.method-tab.active{border-color:var(--accent);background:rgba(108,99,255,0.1);color:var(--accent);}
+.form-group{margin-bottom:14px;}
+label{display:block;font-size:0.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:7px;}
+input{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+input:focus{border-color:var(--accent);}
+input::placeholder{color:var(--muted);}
+.card-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.secure-badge{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--muted);justify-content:center;margin-bottom:14px;}
+.btn-pay{width:100%;background:linear-gradient(135deg,var(--gold),#ffab00);color:#0a0a0f;border:none;padding:15px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;transition:all 0.2s;box-shadow:0 8px 24px rgba(255,215,0,0.25);}
+.btn-pay:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(255,215,0,0.35);}
+.btn-pay:disabled{opacity:0.6;cursor:default;transform:none;}
+.back-link{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.85rem;margin-bottom:20px;transition:color 0.2s;}
+.back-link:hover{color:var(--text);}
+.alert{padding:12px 16px;border-radius:10px;font-size:0.88rem;margin-bottom:14px;display:none;}
+.alert-success{background:rgba(67,233,123,0.12);border:1px solid rgba(67,233,123,0.3);color:var(--accent3);}
+.alert-error{background:rgba(255,71,87,0.12);border:1px solid rgba(255,71,87,0.3);color:#ff6b7a;}
+
+/* Manual payment info */
+.manual-info{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;}
+.manual-info p{font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:8px;}
+.manual-info strong{color:var(--text);}
+.copy-field{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:8px 0;}
+.copy-val{flex:1;font-size:0.88rem;font-family:monospace;color:var(--accent3);}
+.copy-btn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:6px;font-size:0.75rem;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:760px){.container{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="container">
+  <!-- TEST INFO -->
+  <div class="test-info">
+    <a href="../index.html" class="back-link">← Geri qayıt</a>
+    <div class="info-tag">💎 Premium Test</div>
+    <div class="info-icon" id="testIcon">📝</div>
+    <div class="info-title" id="testTitle">Yüklənir...</div>
+    <div class="info-desc" id="testDesc">—</div>
+    <div class="info-features">
+      <div class="feat"><div class="feat-icon">❓</div><span id="featQ">? sual</span></div>
+      <div class="feat"><div class="feat-icon">⏱</div><span id="featT">? dəqiqə</span></div>
+      <div class="feat"><div class="feat-icon">⚡</div><span>Ani cavab feedback</span></div>
+      <div class="feat"><div class="feat-icon">📊</div><span>Nəticə statistikası</span></div>
+      <div class="feat"><div class="feat-icon">🔄</div><span>Limitsiz cəhd</span></div>
+    </div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="payment-card">
+    <div class="payment-title">Testi Al 🔐</div>
+    <div class="payment-sub">Bir dəfə ödə, həmişə istifadə et</div>
+    <div class="price-display">
+      <div class="price-amount" id="priceAmount">— ₼</div>
+      <div class="price-label">Bir dəfəlik ödəniş</div>
+    </div>
+
+    <div class="alert alert-success" id="successAlert"></div>
+    <div class="alert alert-error" id="errorAlert"></div>
+
+    <div class="method-title">Ödəniş üsulu</div>
+    <div class="method-tabs">
+      <button class="method-tab active" onclick="switchMethod('card')">💳 Kart</button>
+      <button class="method-tab" onclick="switchMethod('manual')">🏦 Bank Köçürməsi</button>
+    </div>
+
+    <!-- CARD FORM (demo — real üçün Stripe/PayRiff inteqrasiyası lazım) -->
+    <div id="cardForm">
+      <div class="form-group">
+        <label>Kart Nömrəsi</label>
+        <input type="text" id="cardNum" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
+      </div>
+      <div class="card-row">
+        <div class="form-group">
+          <label>Son Tarix</label>
+          <input type="text" id="cardExp" placeholder="MM/YY" maxlength="5" oninput="formatExp(this)">
+        </div>
+        <div class="form-group">
+          <label>CVV</label>
+          <input type="text" id="cardCvv" placeholder="000" maxlength="3" type="password">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Kart Sahibinin Adı</label>
+        <input type="text" id="cardName" placeholder="AD SOYAD">
+      </div>
+      <div class="secure-badge">🔒 SSL ilə qorunan ödəniş</div>
+      <button class="btn-pay" id="payBtn" onclick="processPayment()">💳 Ödə və Testi Al</button>
+    </div>
+
+    <!-- MANUAL BANK -->
+    <div id="manualForm" style="display:none">
+      <div class="manual-info">
+        <p>Aşağıdakı bank hesabına köçürmə edin, sonra təsdiq göndərin:</p>
+        <div class="copy-field">
+          <span class="copy-val" id="ibanVal">AZ00 UBRZ 0000 0000 0000 0000 0000</span>
+          <button class="copy-btn" onclick="copyText('ibanVal')">Kopyala</button>
+        </div>
+        <p><strong>Qeyd:</strong> Köçürmə zamanı ad soyadınızı və test adını yazın</p>
+        <p style="margin-top:8px"><strong>Alıcı:</strong> TestHub MMC</p>
+      </div>
+      <div class="form-group">
+        <label>Köçürmə Çeki (şəkil linki və ya təsvir)</label>
+        <input type="text" id="transferNote" placeholder="Köçürmə haqqında qeyd yazın...">
+      </div>
+      <button class="btn-pay" id="manualBtn" onclick="sendManualRequest()" style="background:linear-gradient(135deg,var(--accent),#8b7fff);box-shadow:0 8px 24px rgba(108,99,255,0.3);">
+        📨 Təsdiq Göndər
+      </button>
+      <p style="font-size:0.78rem;color:var(--muted);text-align:center;margin-top:10px">Admin 24 saat ərzində aktivləşdirəcək</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+const testId = new URLSearchParams(window.location.search).get('id');
+let testData = null;
+
+function formatCard(el){let v=el.value.replace(/\D/g,'').slice(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim();}
+function formatExp(el){let v=el.value.replace(/\D/g,'');if(v.length>=2)v=v.slice(0,2)+'/'+v.slice(2,4);el.value=v;}
+function copyText(id){navigator.clipboard.writeText(document.getElementById(id).textContent);const btn=event.target;btn.textContent='✓';setTimeout(()=>btn.textContent='Kopyala',1500);}
+
+function switchMethod(method) {
+  document.querySelectorAll('.method-tab').forEach((t,i)=>t.classList.toggle('active',['card','manual'][i]===method));
+  document.getElementById('cardForm').style.display = method==='card' ? 'block' : 'none';
+  document.getElementById('manualForm').style.display = method==='manual' ? 'block' : 'none';
+}
+
+onAuthChange(async (user) => {
+  if (!user) { window.location.href = 'login.html'; return; }
+  if (!testId) { window.location.href = '../index.html'; return; }
+  const doc = await db.collection('tests').doc(testId).get();
+  if (!doc.exists) { window.location.href = '../index.html'; return; }
+  testData = { id: doc.id, ...doc.data() };
+
+  // Artıq alınıbsa
+  const userData = await getCurrentUserData();
+  if (userData.purchasedTests?.includes(testId)) {
+    window.location.href = 'test.html?id=' + testId; return;
+  }
+
+  document.getElementById('testIcon').textContent = testData.icon || '📝';
+  document.getElementById('testTitle').textContent = testData.title;
+  document.getElementById('testDesc').textContent = testData.description || '';
+  document.getElementById('featQ').textContent = (testData.questionCount || '?') + ' sual';
+  document.getElementById('featT').textContent = (testData.duration || '?') + ' dəqiqə';
+  document.getElementById('priceAmount').textContent = (testData.price || '?') + ' ₼';
+
+  // Bank IBAN (admin paneldən gəlir)
+  const settingsDoc = await db.collection('settings').doc('payment').get();
+  if (settingsDoc.exists) {
+    document.getElementById('ibanVal').textContent = settingsDoc.data().iban || 'IBAN konfiqurasiya edilməyib';
+  }
+});
+
+async function processPayment() {
+  // DEMO: real ödəniş üçün Stripe, PayRiff və ya başqa gateway inteqrasiyası lazımdır
+  const btn = document.getElementById('payBtn');
+  const cardNum = document.getElementById('cardNum').value.replace(/\s/g,'');
+  const exp = document.getElementById('cardExp').value;
+  const cvv = document.getElementById('cardCvv').value;
+  const name = document.getElementById('cardName').value.trim();
+
+  if (!cardNum || !exp || !cvv || !name) {
+    showAlert('error', 'Bütün kart məlumatlarını daxil edin'); return;
+  }
+  if (cardNum.length < 16) { showAlert('error', 'Kart nömrəsi yanlışdır'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Ödəniş işlənir...';
+
+  // DEMO simulasiyası (real inteqrasiya əvəzinə)
+  await new Promise(r => setTimeout(r, 2000));
+
+  // ✅ Ödəniş uğurlu — istifadəçiyə test əlavə et
+  try {
+    await db.collection('users').doc(auth.currentUser.uid).update({
+      purchasedTests: firebase.firestore.FieldValue.arrayUnion(testId)
+    });
+    await db.collection('purchases').add({
+      userId: auth.currentUser.uid,
+      testId,
+      testTitle: testData.title,
+      amount: testData.price,
+      method: 'card',
+      status: 'completed',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showAlert('success', '✅ Ödəniş uğurlu! Yönləndirilirsiniz...');
+    setTimeout(() => window.location.href = 'test.html?id=' + testId, 1500);
+  } catch(e) {
+    showAlert('error', 'Xəta: ' + e.message);
+    btn.disabled = false; btn.innerHTML = '💳 Ödə və Testi Al';
+  }
+}
+
+async function sendManualRequest() {
+  const note = document.getElementById('transferNote').value.trim();
+  if (!note) { showAlert('error', 'Köçürmə qeydi daxil edin'); return; }
+  const btn = document.getElementById('manualBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Göndərilir...';
+  try {
+    await db.collection('purchases').add({
+      userId: auth.currentUser.uid,
+      userEmail: auth.currentUser.email,
+      testId,
+      testTitle: testData.title,
+      amount: testData.price,
+      method: 'manual',
+      status: 'pending',
+      note,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showAlert('success', '✅ Müraciətiniz göndərildi! Admin tezliklə aktivləşdirəcək.');
+    btn.textContent = '✅ Göndərildi';
+  } catch(e) {
+    showAlert('error', 'Xəta: ' + e.message);
+    btn.disabled = false; btn.textContent = '📨 Təsdiq Göndər';
+  }
+}
+
+function showAlert(type, msg) {
+  const el = document.getElementById(type === 'success' ? 'successAlert' : 'errorAlert');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 5000);
+}
+</script>
+</body>
+</html>
