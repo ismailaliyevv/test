@@ -11,5 +11,14 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// Offline cache — ilk yükləmə sürətlənir, internet olmadan da işləyir
+db.enablePersistence({ synchronizeTabs: true }).catch(err => {
+  if(err.code === 'failed-precondition'){
+    // Birdən çox tab açıqdırsa — normal davam edir
+  } else if(err.code === 'unimplemented'){
+    // Brauzer dəstəkləmir — normal davam edir
+  }
+});
+
 const ADMIN_EMAILS = ["ismayilzzz54@gmail.com"];
 function isAdmin(email){ return ADMIN_EMAILS.includes(email); }
