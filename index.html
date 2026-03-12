@@ -21,8 +21,6 @@
 html{scroll-behavior:smooth;}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
 body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--accent) 5%,transparent) 1px,transparent 0);background-size:26px 26px;pointer-events:none;z-index:0;}
-
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:66px;background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .35s;}
 .logo{font-family:var(--font-heading);font-size:1.45rem;font-weight:900;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:7px;}
 .logo::before{content:'◆';font-size:.8rem;color:var(--accent3);}
@@ -38,8 +36,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .u-name{font-size:.88rem;font-weight:600;color:var(--text2);}
 .u-logout{background:none;border:1.5px solid var(--border2);color:var(--muted);padding:5px 13px;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:.78rem;transition:all .2s;}
 .u-logout:hover{border-color:var(--danger);color:var(--danger);}
-
-/* HERO */
 .hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:108px 20px 80px;}
 .hero-shape{position:absolute;z-index:0;border-radius:50%;pointer-events:none;}
 .s1{width:500px;height:500px;top:-80px;right:-120px;background:radial-gradient(circle,var(--accent-light),transparent 70%);opacity:.6;}
@@ -50,7 +46,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @keyframes lineIn{to{transform:scaleX(1)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 h1.hero-h{position:relative;z-index:1;font-family:var(--font-heading);font-size:clamp(2.8rem,7vw,5.8rem);font-weight:900;line-height:1.05;color:var(--text);margin-bottom:10px;animation:fadeUp .5s .08s ease both;}
 h1.hero-h em{font-style:italic;color:var(--accent);position:relative;}
 h1.hero-h em::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:3px;background:var(--accent3);border-radius:2px;transform:scaleX(0);transform-origin:left;animation:lineIn .5s .9s ease both;}
@@ -65,16 +60,12 @@ h1.hero-h em::after{content:'';position:absolute;bottom:4px;left:0;right:0;heigh
 .hstat:last-child{border-right:none;}
 .hstat-v{font-family:var(--font-heading);font-size:1.9rem;font-weight:900;color:var(--accent);}
 .hstat-l{font-size:.75rem;color:var(--muted);margin-top:3px;font-weight:500;}
-
-/* SECTIONS */
 .divider{height:1px;background:var(--border);}
 .sec{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:80px 24px;}
 .sec-tag{display:inline-block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--accent2);background:var(--accent-pale);border:1px solid var(--accent-light);padding:4px 12px;border-radius:6px;margin-bottom:12px;}
 .sec-title{font-family:var(--font-heading);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;color:var(--text);margin-bottom:10px;line-height:1.15;}
 .sec-sub{color:var(--muted);font-size:.97rem;line-height:1.7;max-width:480px;}
 .sec-head{margin-bottom:48px;}
-
-/* TEST CARDS */
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px;}
 .tcard{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:26px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden;}
 .tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent3));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
@@ -94,25 +85,18 @@ h1.hero-h em::after{content:'';position:absolute;bottom:4px;left:0;right:0;heigh
 .btn-tc{background:var(--accent);color:var(--btn-text);border:none;padding:8px 18px;border-radius:9px;font-family:var(--font-body);font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;}
 .btn-tc:hover{opacity:.85;}
 .btn-tc-lock{background:var(--bg2)!important;color:var(--muted)!important;border:1px solid var(--border)!important;}
-
-/* FEATURES */
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
 .fcard{background:var(--surface);border:1.5px solid var(--border);border-radius:15px;padding:24px;transition:all .2s;}
 .fcard:hover{border-color:var(--accent-light);box-shadow:0 8px 24px var(--card-shadow);}
 .f-icon{width:42px;height:42px;border-radius:10px;background:var(--accent-pale);border:1px solid var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:14px;}
 .f-title{font-family:var(--font-heading);font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:7px;}
 .f-desc{font-size:.83rem;color:var(--muted);line-height:1.65;}
-
-/* FOOTER */
 footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36px 24px;text-align:center;background:var(--surface);}
 .f-logo{font-family:var(--font-heading);font-size:1.25rem;font-weight:900;color:var(--accent);margin-bottom:8px;}
 .f-logo::before{content:'◆ ';font-size:.75rem;color:var(--accent3);}
 footer p{color:var(--muted);font-size:.82rem;}
-
-/* LOADING */
 #lo{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .3s;}
 .spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
-
 @media(max-width:680px){
   nav{padding:0 16px;}
   .nav-links a:not(.nl-reg):not(.nl-login){display:none;}
@@ -197,18 +181,30 @@ footer p{color:var(--muted);font-size:.82rem;}
 <script>
 function cnt(el,n){let c=0,s=Math.ceil(n/40),t=setInterval(()=>{c=Math.min(c+s,n);el.textContent=c+(n>=100?'+':'');if(c>=n)clearInterval(t);},40);}
 
-// ─── CACHE SİSTEMİ ───────────────────
-const CACHE_TTL = 5 * 60 * 1000; // 5 dəqiqə
-function cacheSet(key, data){ try{ localStorage.setItem(key, JSON.stringify({data, ts: Date.now()})); }catch(e){} }
-function cacheGet(key){ try{ const c=JSON.parse(localStorage.getItem(key)||'null'); if(c && Date.now()-c.ts < CACHE_TTL) return c.data; }catch(e){} return null; }
+const CACHE_TTL=5*60*1000;
+function cacheSet(key,data){try{localStorage.setItem(key,JSON.stringify({data,ts:Date.now()}));}catch(e){}}
+function cacheGet(key){try{const c=JSON.parse(localStorage.getItem(key)||'null');if(c&&Date.now()-c.ts<CACHE_TTL)return c.data;}catch(e){}return null;}
+function withTimeout(promise,ms=8000){return Promise.race([promise,new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),ms))]);}
 
-// ─── TIMEOUT WRAPPER ─────────────────
-function withTimeout(promise, ms=8000){
-  return Promise.race([promise, new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),ms))]);
+// ─── QEYDİYYATSIZ AYARLARI ───────────
+// Default: guestView=true (testləri görsün), guestStart=false (başlaya bilməsin)
+let guestView = true;
+let guestStart = false;
+
+async function loadGuestSettings(){
+  try{
+    const doc = await withTimeout(db.collection('settings').doc('payment').get(), 5000);
+    if(doc.exists){
+      const d = doc.data();
+      guestView  = d.guestView  !== false; // default true
+      guestStart = d.guestStart === true;  // default false
+    }
+  }catch(e){ /* default dəyərlər qalır */ }
 }
 
-function mkCard(t,pur){
-  const ip=t.isPaid,io=!ip||pur?.includes(t.id);
+// ─── TEST KARTI ──────────────────────
+function mkCard(t, pur){
+  const ip=t.isPaid, io=!ip||pur?.includes(t.id);
   return `<div class="tcard" onclick="goTest('${t.id}',${ip},${io})">
     <div class="tc-top"><div class="tc-icon">${t.icon||'📝'}</div>
     <span class="tc-badge ${ip?'b-paid':'b-free'}">${ip?'💎 Ödənişli':'🆓 Pulsuz'}</span></div>
@@ -222,12 +218,32 @@ function mkCard(t,pur){
   </div>`;
 }
 
-function goTest(id,ip,io){
-  if(!auth.currentUser){window.location.href='pages/login.html?redirect=test&id='+id;return;}
-  if(ip&&!io){window.location.href='pages/payment.html?id='+id;return;}
-  window.location.href='pages/test.html?id='+id;
+// ─── TEST BAŞLAT ─────────────────────
+function goTest(id, ip, io){
+  const user = auth.currentUser;
+
+  // Qeydiyyatlı istifadəçi
+  if(user){
+    if(ip && !io){ window.location.href='pages/payment.html?id='+id; return; }
+    window.location.href='pages/test.html?id='+id;
+    return;
+  }
+
+  // Qeydiyyatsız istifadəçi
+  if(ip){
+    // Ödənişli test — mütləq login
+    window.location.href='pages/login.html?redirect=test&id='+id;
+    return;
+  }
+  // Pulsuz test
+  if(guestStart){
+    window.location.href='pages/test.html?id='+id;
+  } else {
+    window.location.href='pages/login.html?redirect=test&id='+id;
+  }
 }
 
+// ─── TESTLƏR ─────────────────────────
 function showRetry(){
   document.getElementById('testsGrid').innerHTML=`
     <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
@@ -237,12 +253,90 @@ function showRetry(){
     </div>`;
 }
 
+function showLoginWall(){
+  document.getElementById('testsGrid').innerHTML=`
+    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
+      <div style="font-size:3rem;margin-bottom:14px">🔒</div>
+      <p style="font-size:1rem;margin-bottom:6px;color:var(--text)">Testləri görmək üçün daxil olun</p>
+      <p style="font-size:.85rem;margin-bottom:22px">Qeydiyyat pulsuzdur və 30 saniyə çəkir</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <a href="pages/login.html" style="background:var(--accent);color:#fff;text-decoration:none;padding:11px 26px;border-radius:10px;font-size:.9rem;font-weight:700">Daxil ol</a>
+        <a href="pages/register.html" style="background:var(--surface);color:var(--text);text-decoration:none;padding:11px 26px;border-radius:10px;font-size:.9rem;font-weight:600;border:1.5px solid var(--border2)">Qeydiyyat</a>
+      </div>
+    </div>`;
+}
+
+async function loadTests(){
+  const g = document.getElementById('testsGrid');
+  const user = auth.currentUser;
+
+  // Qeydiyyatsız + guestView=false → login divarı göstər
+  if(!user && !guestView){
+    showLoginWall();
+    return;
+  }
+
+  // Cache-dən dərhal göstər
+  let tests = cacheGet('tests');
+  if(tests){
+    let ud = user ? cacheGet('ud_'+user.uid) : null;
+    g.innerHTML = tests.map(t=>mkCard(t, ud?.purchasedTests)).join('');
+    cnt(document.getElementById('sT'), tests.length);
+    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
+    refreshTestsBackground();
+    return;
+  }
+
+  g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div class="spin" style="margin:0 auto 14px"></div>Yüklənir...</div>`;
+
+  try{
+    const ts = await withTimeout(db.collection('tests').where('isActive','==',true).get());
+    tests = ts.docs.map(d=>({id:d.id,...d.data()}));
+    cacheSet('tests', tests);
+    cnt(document.getElementById('sT'), tests.length);
+    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
+    if(!tests.length){
+      g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div style="font-size:3rem;margin-bottom:12px">📭</div><p>Hələ test yoxdur</p></div>';
+      return;
+    }
+    let ud = null;
+    if(user){
+      ud = await withTimeout(getCurrentUserData(), 5000).catch(()=>null);
+      if(ud) cacheSet('ud_'+user.uid, ud);
+    }
+    g.innerHTML = tests.map(t=>mkCard(t, ud?.purchasedTests)).join('');
+  }catch(e){
+    console.error(e);
+    showRetry();
+  }
+}
+
+async function refreshTestsBackground(){
+  try{
+    const ts = await withTimeout(db.collection('tests').where('isActive','==',true).get(), 10000);
+    const tests = ts.docs.map(d=>({id:d.id,...d.data()}));
+    cacheSet('tests', tests);
+    cnt(document.getElementById('sT'), tests.length);
+    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
+  }catch(e){}
+}
+
+async function loadUserCount(){
+  try{
+    const cached = cacheGet('userCount');
+    if(cached !== null) cnt(document.getElementById('sU'), cached);
+    const us = await withTimeout(db.collection('users').get(), 8000);
+    cacheSet('userCount', us.size);
+    cnt(document.getElementById('sU'), us.size);
+  }catch(e){}
+}
+
 async function loadContent(){
   try{
     const cached = cacheGet('content');
-    const applyContent = (s) => {
+    const apply = (s)=>{
       if(!s) return;
-      if(s.siteName){document.title=s.siteName+' — Bilik Platforması';}
+      if(s.siteName) document.title=s.siteName+' — Bilik Platforması';
       if(s.heroTag){const el=document.querySelector('.hero-tag');if(el)el.innerHTML=`<span class="htdot"></span> ${s.heroTag}`;}
       if(s.heroLine1){const el=document.getElementById('hL1');if(el)el.textContent=s.heroLine1;}
       if(s.heroLine2){const el=document.getElementById('hL2');if(el)el.textContent=s.heroLine2;}
@@ -255,97 +349,29 @@ async function loadContent(){
       if(s.stat3){const el=document.querySelector('.hstat:nth-child(3) .hstat-l');if(el)el.textContent=s.stat3;}
       if(s.footer){const el=document.querySelector('footer p');if(el)el.textContent=s.footer;}
     };
-    if(cached){ applyContent(cached); }
-    // Arxada Firebase-dən yenilə
+    if(cached) apply(cached);
     withTimeout(db.collection('settings').doc('content').get()).then(doc=>{
-      if(doc.exists){ cacheSet('content', doc.data()); if(!cached) applyContent(doc.data()); }
+      if(doc.exists){ cacheSet('content', doc.data()); if(!cached) apply(doc.data()); }
     }).catch(()=>{});
-  }catch(e){ console.error(e); }
-}
-
-async function loadTests(){
-  const g = document.getElementById('testsGrid');
-  let tests = cacheGet('tests');
-
-  // Cache varsa dərhal göstər
-  if(tests){
-    let ud = null;
-    if(auth.currentUser){ ud = cacheGet('ud_'+auth.currentUser.uid); }
-    g.innerHTML = tests.map(t=>mkCard(t, ud?.purchasedTests)).join('');
-    cnt(document.getElementById('sT'), tests.length);
-    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
-    // Arxada yenilə
-    refreshTestsBackground();
-    return;
-  }
-
-  // Cache yoxdur — göstər ki yüklənir
-  g.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div class="spin" style="margin:0 auto 14px"></div>Yüklənir...</div>`;
-
-  try {
-    const ts = await withTimeout(db.collection('tests').where('isActive','==',true).get());
-    tests = ts.docs.map(d=>({id:d.id,...d.data()}));
-    cacheSet('tests', tests);
-
-    cnt(document.getElementById('sT'), tests.length);
-    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
-
-    if(!tests.length){
-      g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div style="font-size:3rem;margin-bottom:12px">📭</div><p>Hələ test yoxdur</p></div>';
-      return;
-    }
-    let ud = null;
-    if(auth.currentUser){
-      ud = await withTimeout(getCurrentUserData(), 5000).catch(()=>null);
-      if(ud) cacheSet('ud_'+auth.currentUser.uid, ud);
-    }
-    g.innerHTML = tests.map(t=>mkCard(t, ud?.purchasedTests)).join('');
-  } catch(e){
-    console.error(e);
-    // Offline olarsa boş kart göstər
-    showRetry();
-  }
-}
-
-async function refreshTestsBackground(){
-  try{
-    const ts = await withTimeout(db.collection('tests').where('isActive','==',true).get(), 10000);
-    const tests = ts.docs.map(d=>({id:d.id,...d.data()}));
-    cacheSet('tests', tests);
-    // Statistikaları yenilə (kart görünüşünü dəyişmə)
-    cnt(document.getElementById('sT'), tests.length);
-    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
   }catch(e){}
 }
 
-// İstifadəçi sayını ayrı, ləngiməsin
-async function loadUserCount(){
-  try{
-    const cached = cacheGet('userCount');
-    if(cached !== null){ cnt(document.getElementById('sU'), cached); }
-    const us = await withTimeout(db.collection('users').get(), 8000);
-    cacheSet('userCount', us.size);
-    cnt(document.getElementById('sU'), us.size);
-  }catch(e){}
-}
-
-// ─── AUTH + BAŞLANĞIC ────────────────
-// Sayt açılarkən AUTH gözləmədən dərhal testləri yüklə
+// ─── BAŞLANĞIC ───────────────────────
 document.addEventListener('DOMContentLoaded', ()=>{
-  // Mövzu və məzmunu dərhal tətbiq et (cache-dən)
   const themeCached = cacheGet('theme_settings');
   if(themeCached){ applyTheme(themeCached.theme||'nature'); applyFont(themeCached.font||'playfair'); }
-
-  // 300ms sonra testləri yüklə — auth gözləmə
-  setTimeout(()=>{ loadTests(); loadUserCount(); loadContent(); }, 300);
+  // guestSettings-i yüklə, sonra testləri göstər
+  loadGuestSettings().then(()=>{
+    loadTests();
+    loadUserCount();
+    loadContent();
+  });
 });
 
 onAuthChange(async(u)=>{
-  // Mövzu Firebase-dən yüklə (cache yoxdursa)
   loadSiteTheme().then(()=>{
     const t=document.documentElement.getAttribute('data-theme');
-    const f=document.documentElement.style.getPropertyValue('--font-body');
-    if(t) cacheSet('theme_settings',{theme:t,font:f.includes('Outfit')?'playfair':f});
+    if(t) cacheSet('theme_settings',{theme:t});
   });
 
   const lo=document.getElementById('lo');
@@ -365,13 +391,17 @@ onAuthChange(async(u)=>{
         <span class="u-name">${ud?.name||u.email}</span>
         <button class="u-logout" onclick="logoutUser()">Çıxış</button>
       </div>`;
-    // Login olubsa kartları yenilə (alınmış testlər üçün)
+    // Login olduqdan sonra kartları yenilə (alınmış testlər üçün)
     const g=document.getElementById('testsGrid');
     if(g && g.querySelector('.tcard') && ud){
       const tests=cacheGet('tests')||[];
       g.innerHTML=tests.map(t=>mkCard(t,ud.purchasedTests)).join('');
+    } else {
+      // Login divarı göstərilmişdisə — indi testləri yüklə
+      loadTests();
     }
   }
+  // Qeydiyyatsız — guestView ayarına görə artıq loadTests() işlədib
 });
 </script>
 </body>
