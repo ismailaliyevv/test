@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TestHub — Bilik Platforması</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1c1c28;
+  --border: #2a2a3a;
+  --accent: #6c63ff;
+  --accent2: #ff6584;
+  --accent3: #43e97b;
+  --text: #f0f0ff;
+  --muted: #8888aa;
+  --gold: #ffd700;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BG animasiya */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(108,99,255,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,101,132,0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 8px; align-items: center; }
+.nav-links a {
+  color: var(--muted); text-decoration: none;
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 0.9rem; font-weight: 500;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: var(--surface2); }
+.btn-nav-login {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+.btn-nav-register {
+  background: var(--accent) !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+.btn-nav-register:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* HERO */
+.hero {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 20px 80px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(108,99,255,0.15);
+  border: 1px solid rgba(108,99,255,0.3);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.82rem; font-weight: 600;
+  color: #a89fff;
+  margin-bottom: 28px;
+  animation: fadeUp 0.6s ease both;
+}
+.hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent3); display: inline-block; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  margin-bottom: 24px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero h1 .gradient {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--gold) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 1.15rem; color: var(--muted);
+  max-width: 560px; line-height: 1.7;
+  margin-bottom: 40px;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-btns {
+  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #8b7fff);
+  color: white; border: none;
+  padding: 14px 32px; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 8px 32px rgba(108,99,255,0.35);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(108,99,255,0.5); }
+.btn-secondary {
+  background: var(--surface2); color: var(--text);
+  border: 1px solid var(--border);
+  padding: 14px 32px; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem; font-weight: 500;
+  cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+/* STATS */
+.stats {
+  display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+  margin-top: 64px;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+/* TESTS SECTION */
+.section {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: 80px 20px;
+}
+.section-header {
+  text-align: center; margin-bottom: 52px;
+}
+.section-tag {
+  font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.15em;
+  color: var(--accent); margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; margin-bottom: 14px;
+}
+.section-sub { color: var(--muted); font-size: 1rem; line-height: 1.6; }
+
+/* TEST CARDS */
+.tests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+.test-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.test-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(108,99,255,0.05), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.test-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.test-card:hover::before { opacity: 1; }
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+.card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+.card-badge {
+  font-size: 0.72rem; font-weight: 700;
+  padding: 4px 10px; border-radius: 999px;
+}
+.badge-free { background: rgba(67,233,123,0.15); color: var(--accent3); border: 1px solid rgba(67,233,123,0.3); }
+.badge-paid { background: rgba(255,215,0,0.12); color: var(--gold); border: 1px solid rgba(255,215,0,0.25); }
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  margin-bottom: 8px; line-height: 1.35;
+}
+.card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+.card-meta {
+  display: flex; gap: 16px;
+  font-size: 0.8rem; color: var(--muted);
+  margin-bottom: 20px;
+}
+.card-meta span { display: flex; align-items: center; gap: 5px; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; }
+.card-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem; font-weight: 800;
+}
+.price-free { color: var(--accent3); }
+.price-paid { color: var(--gold); }
+.btn-card {
+  background: var(--accent); color: white; border: none;
+  padding: 9px 20px; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.2s;
+}
+.btn-card:hover { opacity: 0.85; transform: translateY(-1px); }
+.btn-card-locked { background: var(--surface2) !important; color: var(--muted) !important; }
+
+/* FEATURES */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+}
+.feature-icon { font-size: 2rem; margin-bottom: 14px; }
+.feature-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+.feature-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+
+/* USER NAV (logged in) */
+.user-nav {
+  display: flex; align-items: center; gap: 10px;
+}
+.user-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.9rem;
+  cursor: pointer;
+}
+.user-name { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+.btn-logout {
+  background: none; border: 1px solid var(--border);
+  color: var(--muted); padding: 6px 14px;
+  border-radius: 8px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem; transition: all 0.2s;
+}
+.btn-logout:hover { border-color: var(--accent2); color: var(--accent2); }
+
+/* DIVIDER */
+.divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* Loading */
+#loadingOverlay {
+  position: fixed; inset: 0; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999; transition: opacity 0.3s;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+  nav { padding: 14px 20px; }
+  .nav-links a:not(.btn-nav-register):not(.btn-nav-login) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="loadingOverlay"><div class="spinner"></div></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">TestHub</div>
+  <div class="nav-links" id="navLinks">
+    <a href="#tests">Testlər</a>
+    <a href="pages/login.html" class="btn-nav-login">Giriş</a>
+    <a href="pages/register.html" class="btn-nav-register">Qeydiyyat</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span></span> Azərbaycanın ən yaxşı test platforması</div>
+  <h1>Biliklərinizi <span class="gradient">Test Edin</span><br>İrəliləyin</h1>
+  <p class="hero-sub">Fiziki Tərbiyə, Basketbol, Voleybol və daha çox mövzuda peşəkar testlər. Öyrən, sına, inkişaf et.</p>
+  <div class="hero-btns">
+    <a href="#tests" class="btn-primary">🎯 Testlərə Bax</a>
+    <a href="pages/register.html" class="btn-secondary">📝 Pulsuz Qeydiyyat</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="statTests">0</div><div class="stat-label">Test</div></div>
+    <div class="stat"><div class="stat-num" id="statUsers">0</div><div class="stat-label">İstifadəçi</div></div>
+    <div class="stat"><div class="stat-num" id="statCompleted">0</div><div class="stat-label">Tamamlanmış</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTS -->
+<section class="section" id="tests">
+  <div class="section-header">
+    <div class="section-tag">📚 Testlər</div>
+    <h2 class="section-title">Bütün Testlər</h2>
+    <p class="section-sub">Pulsuz və ödənişli testlərimizi kəşf edin</p>
+  </div>
+  <div class="tests-grid" id="testsGrid">
+    <!-- JS ilə doldurulacaq -->
+    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
+      <div class="spinner" style="margin:0 auto 16px"></div>
+      Testlər yüklənir...
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-tag">✨ Xüsusiyyətlər</div>
+    <h2 class="section-title">Niyə TestHub?</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Ani Nəticə</div>
+      <div class="feature-desc">Hər cavabdan sonra dərhal feedback. Düzgün və yanlış cavabları görün.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Statistika</div>
+      <div class="feature-desc">Öz nəticələrinizi izləyin. Hansı mövzuda zəif olduğunuzu bilin.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">Güvənli Giriş</div>
+      <div class="feature-desc">Firebase ilə qorunan hesabınız. Məlumatlarınız həmişə təhlükəsiz.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <div class="feature-title">Hər Cihazda</div>
+      <div class="feature-desc">Telefon, tablet, kompüter — istənilən cihazdan işləyin.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🆓</div>
+      <div class="feature-title">Pulsuz Testlər</div>
+      <div class="feature-desc">Bir çox test tamamilə pulsuzdur. Qeydiyyat etmədən də başlaya bilərsiniz.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <div class="feature-title">Sertifikat</div>
+      <div class="feature-desc">Yüksək nəticə əldə edənlər sertifikat ala bilər (tezliklə).</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">TestHub</div>
+  <p>© 2025 TestHub. Bütün hüquqlar qorunur.</p>
+</footer>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+// Sayaç animasiyası
+function animateCount(el, target) {
+  let current = 0;
+  const step = Math.ceil(target / 40);
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current + (target >= 1000 ? '+' : '');
+    if (current >= target) clearInterval(timer);
+  }, 40);
+}
+
+// Test kartı HTML
+function createTestCard(test, userPurchased) {
+  const isPaid = test.isPaid;
+  const isOwned = !isPaid || userPurchased?.includes(test.id);
+  const icon = test.icon || '📝';
+  const colorMap = {
+    'fiziki': '#6c63ff', 'basketbol': '#ff6584', 'voleybol': '#43e97b',
+    'default': '#ffd700'
+  };
+  const color = colorMap[test.category] || colorMap.default;
+
+  return `
+    <div class="test-card" onclick="openTest('${test.id}', ${isPaid}, ${isOwned})">
+      <div class="card-top">
+        <div class="card-icon" style="background:${color}20">${icon}</div>
+        <span class="card-badge ${isPaid ? 'badge-paid' : 'badge-free'}">${isPaid ? '💎 Ödənişli' : '🆓 Pulsuz'}</span>
+      </div>
+      <div class="card-title">${test.title}</div>
+      <div class="card-desc">${test.description || 'Test haqqında məlumat yoxdur.'}</div>
+      <div class="card-meta">
+        <span>❓ ${test.questionCount || '?'} sual</span>
+        <span>⏱ ${test.duration || '?'} dəq</span>
+        <span>👁 ${test.views || 0} baxış</span>
+      </div>
+      <div class="card-footer">
+        <div class="card-price ${isPaid ? 'price-paid' : 'price-free'}">
+          ${isPaid ? (isOwned ? '✓ Alınıb' : test.price + ' ₼') : 'Pulsuz'}
+        </div>
+        <a class="btn-card ${!isOwned && isPaid ? 'btn-card-locked' : ''}" 
+           onclick="event.stopPropagation()">
+          ${isOwned ? '▶ Başla' : isPaid ? '🔒 Al' : '▶ Başla'}
+        </a>
+      </div>
+    </div>`;
+}
+
+// Testləri yüklə
+async function loadTests() {
+  try {
+    const snapshot = await db.collection('tests').where('isActive', '==', true).get();
+    const tests = [];
+    snapshot.forEach(doc => tests.push({ id: doc.id, ...doc.data() }));
+
+    // Statistika
+    const usersSnap = await db.collection('users').get();
+    animateCount(document.getElementById('statTests'), tests.length);
+    animateCount(document.getElementById('statUsers'), usersSnap.size);
+    animateCount(document.getElementById('statCompleted'), tests.reduce((a, t) => a + (t.completions || 0), 0));
+
+    const grid = document.getElementById('testsGrid');
+    if (tests.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
+        <div style="font-size:3rem;margin-bottom:16px">📭</div>
+        <p>Hələ test əlavə edilməyib</p></div>`;
+      return;
+    }
+
+    let userData = null;
+    if (auth.currentUser) userData = await getCurrentUserData();
+
+    grid.innerHTML = tests.map(t => createTestCard(t, userData?.purchasedTests)).join('');
+
+    // View count artır
+    tests.forEach(async t => {
+      await db.collection('tests').doc(t.id).update({ views: firebase.firestore.FieldValue.increment(1) }).catch(() => {});
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// Test aç
+function openTest(testId, isPaid, isOwned) {
+  if (!auth.currentUser) {
+    window.location.href = 'pages/login.html?redirect=test&id=' + testId;
+    return;
+  }
+  if (isPaid && !isOwned) {
+    window.location.href = 'pages/payment.html?id=' + testId;
+    return;
+  }
+  window.location.href = 'pages/test.html?id=' + testId;
+}
+
+// Auth vəziyyəti
+onAuthChange(async (user) => {
+  const navLinks = document.getElementById('navLinks');
+  document.getElementById('loadingOverlay').style.opacity = '0';
+  setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 300);
+
+  if (user) {
+    const userData = await getCurrentUserData();
+    const isAdm = isAdmin(user.email);
+    navLinks.innerHTML = `
+      <a href="#tests">Testlər</a>
+      <a href="pages/dashboard.html">📊 Hesabım</a>
+      ${isAdm ? '<a href="admin/index.html" style="color:var(--gold)">⚙️ Admin</a>' : ''}
+      <div class="user-nav">
+        <div class="user-avatar">${(userData?.name || user.email)[0].toUpperCase()}</div>
+        <span class="user-name">${userData?.name || user.email}</span>
+        <button class="btn-logout" onclick="logoutUser()">Çıxış</button>
+      </div>`;
+    loadTests();
+  } else {
+    loadTests();
+  }
+});
+</script>
+</body>
+</html>
