@@ -3,25 +3,20 @@
 // https://console.firebase.google.com
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBZ6l3woo-GnN2V1E_4TiURDwbxobGP_To",
+  authDomain: "testsayt-e0c20.firebaseapp.com",
+  projectId: "testsayt-e0c20",
+  storageBucket: "testsayt-e0c20.firebasestorage.app",
+  messagingSenderId: "916000619767",
+  appId: "1:916000619767:web:ec864e9b2cbf865ebee7f2"
 };
 
-// Firebase başlat
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Admin email-ləri (bunları dəyişin)
-const ADMIN_EMAILS = [
-  "admin@sizinsayt.com",
-  // əlavə admin email-lər buraya
-];
+const ADMIN_EMAILS = ["ismayilzzz54@gmail.com"];
 
 function isAdmin(email) {
   return ADMIN_EMAILS.includes(email);
