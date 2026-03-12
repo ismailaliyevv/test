@@ -138,7 +138,7 @@ footer p{color:var(--muted);font-size:.82rem;}
   <div class="hero-shape s1"></div>
   <div class="hero-shape s2"></div>
   <div class="hero-tag"><span class="htdot"></span> Azərbaycanın test platforması</div>
-  <h1 class="hero-h">Bilikləri <em>Sına</em>,<br>İrəliləyin</h1>
+  <h1 class="hero-h"><span id="hL1">Bilikləri</span> <em id="hL2">Sına</em>,<br><span id="hL3">İrəliləyin</span></h1>
   <p class="hero-sub">Fiziki Tərbiyə, Basketbol, Voleybol və daha çox mövzuda peşəkar testlər. Öyrən, sına, inkişaf et.</p>
   <div class="hero-btns">
     <a href="#tests" class="btn-p">◆ Testlərə Bax</a>
@@ -218,6 +218,26 @@ function goTest(id,ip,io){
   window.location.href='pages/test.html?id='+id;
 }
 
+async function loadContent(){
+  try{
+    const doc=await db.collection('settings').doc('content').get();
+    if(!doc.exists) return;
+    const s=doc.data();
+    if(s.siteName){document.title=s.siteName+' — Bilik Platforması';document.querySelector('.logo').childNodes[1]&&(document.querySelector('.logo').textContent='');document.querySelector('.logo').innerHTML='◆ '+s.siteName;}
+    if(s.heroTag){const el=document.querySelector('.hero-tag');if(el)el.innerHTML=`<span class="htdot"></span> ${s.heroTag}`;}
+    if(s.heroLine1) document.getElementById('hL1')&&(document.getElementById('hL1').textContent=s.heroLine1);
+    if(s.heroLine2) document.getElementById('hL2')&&(document.getElementById('hL2').textContent=s.heroLine2);
+    if(s.heroLine3) document.getElementById('hL3')&&(document.getElementById('hL3').textContent=s.heroLine3);
+    if(s.heroSub){const el=document.querySelector('.hero-sub');if(el)el.textContent=s.heroSub;}
+    if(s.btn1){const el=document.querySelector('.btn-p');if(el)el.textContent=s.btn1;}
+    if(s.btn2){const el=document.querySelector('.btn-o');if(el)el.textContent=s.btn2;}
+    if(s.stat1) document.querySelector('.hstat:nth-child(1) .hstat-l')&&(document.querySelector('.hstat:nth-child(1) .hstat-l').textContent=s.stat1);
+    if(s.stat2) document.querySelector('.hstat:nth-child(2) .hstat-l')&&(document.querySelector('.hstat:nth-child(2) .hstat-l').textContent=s.stat2);
+    if(s.stat3) document.querySelector('.hstat:nth-child(3) .hstat-l')&&(document.querySelector('.hstat:nth-child(3) .hstat-l').textContent=s.stat3);
+    if(s.footer){const el=document.querySelector('footer p');if(el)el.textContent=s.footer;}
+  }catch(e){console.error(e);}
+}
+
 async function loadTests(){
   try{
     const ts=await db.collection('tests').where('isActive','==',true).get();
@@ -235,6 +255,7 @@ async function loadTests(){
 
 onAuthChange(async(u)=>{
   await loadSiteTheme();
+  await loadContent();
   const lo=document.getElementById('lo');
   lo.style.opacity='0';setTimeout(()=>lo.style.display='none',300);
   const nav=document.getElementById('navLinks');
