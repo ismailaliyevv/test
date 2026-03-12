@@ -861,6 +861,13 @@ async function renderSettings(){
       <div class="design-card">
         <div class="dc-title">🏦 Bank Köçürməsi</div>
         <div class="dc-sub">Manual ödəniş üçün bank məlumatları</div>
+        <div class="tgl-row" style="margin-bottom:16px">
+          <div>
+            <span class="tgl-lbl">🏦 Bank köçürməsi aktiv</span>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:3px">Ödəniş səhifəsində bank köçürməsi bölməsi görünsün</div>
+          </div>
+          <label class="tgl"><input type="checkbox" id="sShowBank" ${s.showBank!==false?'checked':''}><div class="tgl-sl"></div></label>
+        </div>
         <div class="fg"><label class="fl">Bank IBAN</label><input class="fi" id="sIban" value="${s.iban||''}" placeholder="AZ00 UBRZ 0000 0000 0000 0000 0000"></div>
         <div class="fg"><label class="fl">Hesab Sahibi</label><input class="fi" id="sOwner" value="${s.owner||''}" placeholder="Ad Soyad / Şirkət adı"></div>
         <div class="fg"><label class="fl">Bank Adı</label><input class="fi" id="sBank" value="${s.bank||''}" placeholder="UNIBANK, ABB, Kapital Bank..."></div>
@@ -868,9 +875,15 @@ async function renderSettings(){
 
       <!-- ÖDƏNİŞ AÇARLARI -->
       <div class="design-card">
-        <div class="dc-title">🔑 Ödəniş API Açarları</div>
-        <div class="dc-sub">PayRiff, AzeriCard və ya digər ödəniş sisteminin açarları</div>
-
+        <div class="dc-title">💳 Kartla Ödəniş</div>
+        <div class="dc-sub">Kart ödənişi bölməsini idarə edin</div>
+        <div class="tgl-row" style="margin-bottom:16px">
+          <div>
+            <span class="tgl-lbl">💳 Kartla ödəniş aktiv</span>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:3px">Ödəniş səhifəsində kart bölməsi görünsün</div>
+          </div>
+          <label class="tgl"><input type="checkbox" id="sShowCard" ${s.showCard===true?'checked':''}><div class="tgl-sl"></div></label>
+        </div>
         <div style="background:var(--bg2);border-radius:9px;padding:12px;margin-bottom:14px;font-size:.8rem;color:var(--muted);line-height:1.6">
           🔒 Bu açarlar yalnız admin paneldə görünür. Heç vaxt başqasına verməyin.
         </div>
@@ -967,6 +980,8 @@ async function saveSettings(){
       payMerchantId:document.getElementById('sPayMid')?.value||'',
       guestView:document.getElementById('sGuestView')?.checked !== false,
       guestStart:document.getElementById('sGuestStart')?.checked === true,
+      showBank:document.getElementById('sShowBank')?.checked !== false,
+      showCard:document.getElementById('sShowCard')?.checked === true,
     };
     await db.collection('settings').doc('payment').set(payData,{merge:true});
     toast('✅ Parametrlər saxlanıldı');
