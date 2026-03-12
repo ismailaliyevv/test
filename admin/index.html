@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TestHub</title>
-<link id="_themeFont" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Admin Panel — TestHub</title>
+<link id="_themeFont" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f8f9f4;--bg2:#eff4ec;--surface:#fff;--surface2:#f4f7f2;
@@ -12,397 +12,966 @@
   --accent:#2d6a4f;--accent2:#40916c;--accent3:#74c69d;
   --accent-light:#d8f3dc;--accent-pale:#edf7f0;
   --text:#1a2615;--text2:#2e4228;--muted:#7a8c74;
-  --nav-bg:rgba(248,249,244,0.96);--card-shadow:rgba(45,106,79,0.10);
+  --nav-bg:#fff;--card-shadow:rgba(45,106,79,0.10);
   --btn-text:#fff;--gold:#c9a84c;--danger:#c0392b;
   --font-heading:'Playfair Display',serif;
   --font-body:'Outfit',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--accent) 5%,transparent) 1px,transparent 0);background-size:26px 26px;pointer-events:none;z-index:0;}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:66px;background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .35s;}
-.logo{font-family:var(--font-heading);font-size:1.45rem;font-weight:900;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:7px;}
-.logo::before{content:'◆';font-size:.8rem;color:var(--accent3);}
-.nav-links{display:flex;gap:5px;align-items:center;}
-.nav-links a{color:var(--muted);text-decoration:none;padding:7px 15px;border-radius:8px;font-size:.88rem;font-weight:500;transition:all .2s;}
-.nav-links a:hover{color:var(--text);background:var(--accent-pale);}
-.nl-login{border:1.5px solid var(--border2)!important;color:var(--text2)!important;}
-.nl-login:hover{border-color:var(--accent)!important;color:var(--accent)!important;background:var(--accent-pale)!important;}
-.nl-reg{background:var(--accent)!important;color:var(--btn-text)!important;font-weight:700!important;box-shadow:0 4px 14px var(--card-shadow);}
-.nl-reg:hover{opacity:.9;transform:translateY(-1px);}
-.user-nav{display:flex;align-items:center;gap:8px;}
-.u-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--btn-text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;}
-.u-name{font-size:.88rem;font-weight:600;color:var(--text2);}
-.u-logout{background:none;border:1.5px solid var(--border2);color:var(--muted);padding:5px 13px;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:.78rem;transition:all .2s;}
-.u-logout:hover{border-color:var(--danger);color:var(--danger);}
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:108px 20px 80px;}
-.hero-shape{position:absolute;z-index:0;border-radius:50%;pointer-events:none;}
-.s1{width:500px;height:500px;top:-80px;right:-120px;background:radial-gradient(circle,var(--accent-light),transparent 70%);opacity:.6;}
-.s2{width:360px;height:360px;bottom:0;left:-80px;background:radial-gradient(circle,var(--accent-pale),transparent 70%);opacity:.7;}
-.hero-tag{position:relative;z-index:1;display:inline-flex;align-items:center;gap:8px;background:var(--accent-pale);border:1.5px solid var(--accent-light);border-radius:999px;padding:6px 18px;font-size:.8rem;font-weight:700;color:var(--accent2);margin-bottom:30px;animation:fadeUp .5s ease both;}
-.htdot{width:7px;height:7px;border-radius:50%;background:var(--accent3);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes lineIn{to{transform:scaleX(1)}}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
 @keyframes spin{to{transform:rotate(360deg)}}
-h1.hero-h{position:relative;z-index:1;font-family:var(--font-heading);font-size:clamp(2.8rem,7vw,5.8rem);font-weight:900;line-height:1.05;color:var(--text);margin-bottom:10px;animation:fadeUp .5s .08s ease both;}
-h1.hero-h em{font-style:italic;color:var(--accent);position:relative;}
-h1.hero-h em::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:3px;background:var(--accent3);border-radius:2px;transform:scaleX(0);transform-origin:left;animation:lineIn .5s .9s ease both;}
-.hero-sub{position:relative;z-index:1;font-size:1.05rem;color:var(--muted);max-width:510px;line-height:1.75;margin:18px auto 38px;animation:fadeUp .5s .16s ease both;}
-.hero-btns{position:relative;z-index:1;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .5s .24s ease both;}
-.btn-p{background:var(--accent);color:var(--btn-text);border:none;padding:13px 30px;border-radius:11px;font-family:var(--font-body);font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s;box-shadow:0 6px 20px var(--card-shadow);}
-.btn-p:hover{opacity:.9;transform:translateY(-2px);}
-.btn-o{background:var(--surface);color:var(--text);border:1.5px solid var(--border2);padding:13px 30px;border-radius:11px;font-family:var(--font-body);font-size:.95rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s;}
-.btn-o:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
-.hero-stats{position:relative;z-index:1;display:flex;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-top:56px;box-shadow:0 4px 24px var(--card-shadow);animation:fadeUp .5s .32s ease both;}
-.hstat{padding:18px 34px;text-align:center;border-right:1px solid var(--border);}
-.hstat:last-child{border-right:none;}
-.hstat-v{font-family:var(--font-heading);font-size:1.9rem;font-weight:900;color:var(--accent);}
-.hstat-l{font-size:.75rem;color:var(--muted);margin-top:3px;font-weight:500;}
-.divider{height:1px;background:var(--border);}
-.sec{position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:80px 24px;}
-.sec-tag{display:inline-block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--accent2);background:var(--accent-pale);border:1px solid var(--accent-light);padding:4px 12px;border-radius:6px;margin-bottom:12px;}
-.sec-title{font-family:var(--font-heading);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;color:var(--text);margin-bottom:10px;line-height:1.15;}
-.sec-sub{color:var(--muted);font-size:.97rem;line-height:1.7;max-width:480px;}
-.sec-head{margin-bottom:48px;}
-.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px;}
-.tcard{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:26px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden;}
-.tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent3));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
-.tcard:hover{border-color:var(--accent3);transform:translateY(-4px);box-shadow:0 16px 48px var(--card-shadow);}
-.tcard:hover::before{transform:scaleX(1);}
-.tc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
-.tc-icon{width:46px;height:46px;border-radius:11px;background:var(--accent-pale);display:flex;align-items:center;justify-content:center;font-size:1.4rem;border:1px solid var(--accent-light);}
-.tc-badge{font-size:.68rem;font-weight:800;padding:4px 10px;border-radius:6px;}
-.b-free{background:var(--accent-pale);color:var(--accent2);border:1px solid var(--accent-light);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* SIDEBAR */
+.sidebar{width:248px;background:var(--surface);border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;overflow-y:auto;transition:background .35s,border-color .35s;}
+.s-logo{font-family:var(--font-heading);font-size:1.3rem;font-weight:900;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:7px;padding:6px 10px;margin-bottom:4px;}
+.s-logo::before{content:'◆';font-size:.75rem;color:var(--accent3);}
+.s-role{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--danger);padding:0 10px;margin-bottom:22px;}
+.s-sec{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);padding:0 10px;margin:14px 0 5px;}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--muted);font-size:.87rem;font-weight:500;transition:all .2s;margin-bottom:2px;cursor:pointer;background:none;border:none;width:100%;text-align:left;font-family:var(--font-body);}
+.nav-btn:hover{background:var(--bg2);color:var(--text);}
+.nav-btn.active{background:var(--accent-pale);color:var(--accent);font-weight:700;border:1px solid var(--accent-light);}
+.nav-btn .ni{font-size:1rem;width:18px;text-align:center;}
+.nb{margin-left:auto;background:var(--danger);color:#fff;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:999px;}
+.s-bottom{margin-top:auto;padding-top:14px;border-top:1px solid var(--border);}
+.s-user{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:8px;}
+.s-avatar{width:36px;height:36px;border-radius:50%;background:var(--danger);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;}
+.s-uname{font-size:.82rem;font-weight:700;}
+.s-urole{font-size:.68rem;color:var(--danger);}
+.btn-out{width:100%;background:none;border:1.5px solid var(--border);color:var(--muted);padding:8px;border-radius:9px;font-family:var(--font-body);font-size:.82rem;cursor:pointer;transition:all .2s;}
+.btn-out:hover{border-color:var(--danger);color:var(--danger);}
+
+/* MAIN */
+.main{margin-left:248px;flex:1;min-height:100vh;display:flex;flex-direction:column;}
+.topbar{padding:18px 30px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface);position:sticky;top:0;z-index:40;transition:background .35s;}
+.tb-title{font-family:var(--font-heading);font-size:1.35rem;font-weight:900;}
+.tb-sub{font-size:.8rem;color:var(--muted);margin-top:2px;}
+.tb-actions{display:flex;gap:8px;}
+.content{padding:26px 30px;flex:1;}
+
+/* BUTTONS */
+.btn-prim{background:var(--accent);color:var(--btn-text);border:none;padding:9px 20px;border-radius:9px;font-family:var(--font-body);font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 3px 12px var(--card-shadow);}
+.btn-prim:hover{opacity:.9;transform:translateY(-1px);}
+.btn-sec{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border);padding:9px 20px;border-radius:9px;font-family:var(--font-body);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent);}
+
+/* STAT CARDS */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:24px;}
+.scard{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:18px;position:relative;overflow:hidden;}
+.scard::after{content:attr(data-e);position:absolute;right:-6px;bottom:-8px;font-size:3.2rem;opacity:.07;}
+.sc-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:9px;}
+.sc-val{font-family:var(--font-heading);font-size:2rem;font-weight:900;color:var(--text);}
+.sc-ch{font-size:.72rem;margin-top:5px;color:var(--accent2);}
+
+/* TABLE */
+.twrap{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:20px;}
+.thead-row{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.t-title{font-family:var(--font-heading);font-size:.97rem;font-weight:800;}
+.search{background:var(--bg2);border:1.5px solid var(--border);border-radius:8px;padding:7px 13px;color:var(--text);font-family:var(--font-body);font-size:.83rem;outline:none;width:210px;transition:border-color .2s;}
+.search:focus{border-color:var(--accent);}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 16px;text-align:left;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border);}
+td{padding:11px 16px;font-size:.85rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:color-mix(in srgb,var(--accent) 3%,transparent);}
+.badge{display:inline-flex;align-items:center;font-size:.68rem;font-weight:800;padding:3px 9px;border-radius:6px;}
+.b-active{background:var(--accent-pale);color:var(--accent2);border:1px solid var(--accent-light);}
+.b-inactive{background:var(--bg2);color:var(--muted);border:1px solid var(--border);}
 .b-paid{background:color-mix(in srgb,var(--gold) 12%,transparent);color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 28%,transparent);}
-.tc-title{font-family:var(--font-heading);font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:7px;line-height:1.3;}
-.tc-desc{font-size:.84rem;color:var(--muted);line-height:1.65;margin-bottom:16px;}
-.tc-meta{display:flex;gap:12px;font-size:.76rem;color:var(--muted);margin-bottom:16px;flex-wrap:wrap;}
-.tc-foot{display:flex;align-items:center;justify-content:space-between;}
-.tc-price{font-family:var(--font-heading);font-size:1.15rem;font-weight:900;}
-.pf{color:var(--accent2);}.pp{color:var(--gold);}
-.btn-tc{background:var(--accent);color:var(--btn-text);border:none;padding:8px 18px;border-radius:9px;font-family:var(--font-body);font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;}
-.btn-tc:hover{opacity:.85;}
-.btn-tc-lock{background:var(--bg2)!important;color:var(--muted)!important;border:1px solid var(--border)!important;}
-.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
-.fcard{background:var(--surface);border:1.5px solid var(--border);border-radius:15px;padding:24px;transition:all .2s;}
-.fcard:hover{border-color:var(--accent-light);box-shadow:0 8px 24px var(--card-shadow);}
-.f-icon{width:42px;height:42px;border-radius:10px;background:var(--accent-pale);border:1px solid var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:14px;}
-.f-title{font-family:var(--font-heading);font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:7px;}
-.f-desc{font-size:.83rem;color:var(--muted);line-height:1.65;}
-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36px 24px;text-align:center;background:var(--surface);}
-.f-logo{font-family:var(--font-heading);font-size:1.25rem;font-weight:900;color:var(--accent);margin-bottom:8px;}
-.f-logo::before{content:'◆ ';font-size:.75rem;color:var(--accent3);}
-footer p{color:var(--muted);font-size:.82rem;}
-#lo{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .3s;}
-.spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
-@media(max-width:680px){
-  nav{padding:0 16px;}
-  .nav-links a:not(.nl-reg):not(.nl-login){display:none;}
-  .hero-stats{flex-direction:column;}
-  .hstat{border-right:none;border-bottom:1px solid var(--border);}
-  .hstat:last-child{border-bottom:none;}
-}
+.b-free{background:var(--accent-pale);color:var(--accent);border:1px solid var(--accent-light);}
+.b-pending{background:color-mix(in srgb,var(--gold) 10%,transparent);color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 25%,transparent);}
+.b-done{background:var(--accent-pale);color:var(--accent2);border:1px solid var(--accent-light);}
+.b-admin{background:color-mix(in srgb,var(--danger) 10%,transparent);color:var(--danger);border:1px solid color-mix(in srgb,var(--danger) 22%,transparent);}
+.abts{display:flex;gap:5px;}
+.abt{padding:4px 11px;border-radius:7px;font-family:var(--font-body);font-size:.72rem;font-weight:700;cursor:pointer;border:none;transition:all .2s;}
+.abt-e{background:var(--accent-pale);color:var(--accent);}
+.abt-e:hover{background:var(--accent);color:#fff;}
+.abt-d{background:color-mix(in srgb,var(--danger) 10%,transparent);color:var(--danger);}
+.abt-d:hover{background:var(--danger);color:#fff;}
+.abt-ok{background:var(--accent-pale);color:var(--accent2);}
+.abt-ok:hover{background:var(--accent2);color:#fff;}
+
+/* TABS */
+.tabs{display:flex;gap:3px;background:var(--bg2);padding:4px;border-radius:11px;margin-bottom:20px;width:fit-content;}
+.tab{padding:7px 16px;border-radius:8px;border:none;background:none;color:var(--muted);font-family:var(--font-body);font-size:.83rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.tab.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.08);}
+
+/* CHARTS */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+.ccard{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:20px;}
+.c-title{font-family:var(--font-heading);font-size:.93rem;font-weight:800;margin-bottom:18px;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.bar-lbl{font-size:.75rem;color:var(--muted);width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{flex:1;height:7px;background:var(--bg2);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent3));transition:width 1s ease;}
+.bar-val{font-size:.72rem;font-weight:700;color:var(--muted);width:28px;text-align:right;}
+
+/* ═══════════════════════════
+   DİZAYN İDARƏETMƏ PANELİ
+═══════════════════════════ */
+.design-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.design-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:24px;}
+.dc-title{font-family:var(--font-heading);font-size:1.05rem;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.dc-sub{font-size:.82rem;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+
+/* Theme seçici */
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.theme-opt{border:2px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.theme-opt:hover{border-color:var(--accent3);transform:translateY(-2px);}
+.theme-opt.selected{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);}
+.theme-opt.selected::after{content:'✓';position:absolute;top:8px;right:10px;font-size:.75rem;font-weight:800;color:var(--accent);}
+.to-preview{height:36px;border-radius:8px;margin-bottom:10px;display:flex;gap:4px;overflow:hidden;}
+.to-swatch{flex:1;border-radius:4px;}
+.to-name{font-size:.82rem;font-weight:700;color:var(--text);}
+.to-emoji{font-size:1rem;margin-right:5px;}
+
+/* Font seçici */
+.font-list{display:flex;flex-direction:column;gap:8px;}
+.font-opt{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border:2px solid var(--border);border-radius:11px;cursor:pointer;transition:all .2s;}
+.font-opt:hover{border-color:var(--accent3);}
+.font-opt.selected{border-color:var(--accent);background:var(--accent-pale);}
+.fo-left{display:flex;flex-direction:column;gap:3px;}
+.fo-name{font-size:.88rem;font-weight:700;color:var(--text);}
+.fo-preview{font-size:1.1rem;color:var(--muted);}
+.fo-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:all .2s;}
+.font-opt.selected .fo-check{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+/* Live preview */
+.preview-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-top:20px;}
+.pb-title{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:14px;}
+.pb-demo{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;}
+.pb-h{font-family:var(--font-heading);font-size:1.5rem;font-weight:900;color:var(--accent);margin-bottom:6px;}
+.pb-p{font-family:var(--font-body);font-size:.88rem;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.pb-btn{background:var(--accent);color:var(--btn-text);border:none;padding:8px 18px;border-radius:8px;font-family:var(--font-body);font-size:.83rem;font-weight:700;cursor:default;}
+.pb-card{display:flex;gap:10px;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px;margin-top:12px;}
+.pb-icon{width:36px;height:36px;border-radius:8px;background:var(--accent-pale);border:1px solid var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.pb-ct{flex:1;}
+.pb-ct-t{font-family:var(--font-heading);font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:2px;}
+.pb-ct-s{font-size:.75rem;color:var(--muted);}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:30px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;animation:fadeUp .25s ease;}
+.m-title{font-family:var(--font-heading);font-size:1.15rem;font-weight:800;margin-bottom:5px;}
+.m-sub{color:var(--muted);font-size:.83rem;margin-bottom:22px;}
+.fg{margin-bottom:13px;}
+.fl{display:block;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:6px;}
+.fi{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;color:var(--text);font-family:var(--font-body);font-size:.88rem;outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--accent);}
+.fi::placeholder{color:var(--muted);}
+textarea.fi{resize:vertical;min-height:72px;}
+select.fi{cursor:pointer;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tgl-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:var(--bg2);border-radius:9px;border:1px solid var(--border);margin-bottom:10px;}
+.tgl-lbl{font-size:.86rem;font-weight:600;}
+.tgl{position:relative;width:42px;height:22px;}
+.tgl input{display:none;}
+.tgl-sl{position:absolute;inset:0;background:var(--border2);border-radius:999px;cursor:pointer;transition:.2s;}
+.tgl input:checked+.tgl-sl{background:var(--accent);}
+.tgl-sl::after{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s;}
+.tgl input:checked+.tgl-sl::after{transform:translateX(20px);}
+.m-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:18px;border-top:1px solid var(--border);}
+.btn-cancel{background:var(--bg2);color:var(--muted);border:1.5px solid var(--border);padding:9px 18px;border-radius:9px;font-family:var(--font-body);font-size:.85rem;cursor:pointer;transition:all .2s;}
+.btn-cancel:hover{border-color:var(--danger);color:var(--danger);}
+.btn-save{background:var(--accent);color:#fff;border:none;padding:9px 22px;border-radius:9px;font-family:var(--font-body);font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-save:hover{opacity:.9;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--surface);border:1.5px solid var(--border);border-radius:11px;padding:13px 18px;font-size:.86rem;font-weight:600;z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px;box-shadow:0 8px 24px var(--card-shadow);}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.ok{border-color:var(--accent-light);color:var(--accent2);}
+.toast.err{border-color:color-mix(in srgb,var(--danger) 30%,transparent);color:var(--danger);}
+
+/* EMPTY */
+.empty{text-align:center;padding:44px;color:var(--muted);}
+.empty-e{font-size:2.5rem;margin-bottom:10px;}
+
+.spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:36px auto;}
+
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;}.cgrid{grid-template-columns:1fr;}.design-wrap{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-<div id="lo"><div class="spin"></div></div>
 
-<nav>
-  <a href="index.html" class="logo">TestHub</a>
-  <div class="nav-links" id="navLinks">
-    <a href="#tests">Testlər</a>
-    <a href="pages/login.html" class="nl-login">Giriş</a>
-    <a href="pages/register.html" class="nl-reg">Qeydiyyat</a>
-  </div>
-</nav>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <a href="../index.html" class="s-logo">TestHub</a>
+  <div class="s-role">⚡ Admin Panel</div>
 
-<section class="hero">
-  <div class="hero-shape s1"></div>
-  <div class="hero-shape s2"></div>
-  <div class="hero-tag"><span class="htdot"></span> Azərbaycanın test platforması</div>
-  <h1 class="hero-h"><span id="hL1">Bilikləri</span> <em id="hL2">Sına</em>,<br><span id="hL3">İrəliləyin</span></h1>
-  <p class="hero-sub">Fiziki Tərbiyə, Basketbol, Voleybol və daha çox mövzuda peşəkar testlər. Öyrən, sına, inkişaf et.</p>
-  <div class="hero-btns">
-    <a href="#tests" class="btn-p">◆ Testlərə Bax</a>
-    <a href="pages/register.html" class="btn-o">Pulsuz Qeydiyyat →</a>
-  </div>
-  <div class="hero-stats">
-    <div class="hstat"><div class="hstat-v" id="sT">0</div><div class="hstat-l">Test</div></div>
-    <div class="hstat"><div class="hstat-v" id="sU">0</div><div class="hstat-l">İstifadəçi</div></div>
-    <div class="hstat"><div class="hstat-v" id="sC">0</div><div class="hstat-l">Tamamlanmış</div></div>
-  </div>
-</section>
+  <div class="s-sec">Əsas</div>
+  <button class="nav-btn active" data-page="dashboard"><span class="ni">📊</span>Dashboard</button>
+  <button class="nav-btn" data-page="tests"><span class="ni">📝</span>Testlər</button>
+  <button class="nav-btn" data-page="users"><span class="ni">👥</span>İstifadəçilər</button>
 
-<div class="divider"></div>
+  <div class="s-sec">Maliyyə</div>
+  <button class="nav-btn" data-page="payments"><span class="ni">💰</span>Ödənişlər<span class="nb" id="pendBadge" style="display:none">0</span></button>
 
-<section class="sec" id="tests">
-  <div class="sec-head">
-    <div class="sec-tag">📚 Testlər</div>
-    <h2 class="sec-title">Bütün Testlər</h2>
-    <p class="sec-sub">Pulsuz və ödənişli testlərimizi kəşf edin</p>
-  </div>
-  <div class="tgrid" id="testsGrid">
-    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div class="spin" style="margin:0 auto 14px"></div>Yüklənir...</div>
-  </div>
-</section>
+  <div class="s-sec">Analitika</div>
+  <button class="nav-btn" data-page="analytics"><span class="ni">📈</span>Statistika</button>
 
-<div class="divider"></div>
+  <div class="s-sec">Sistem</div>
+  <button class="nav-btn" data-page="design"><span class="ni">🎨</span>Dizayn & Font</button>
+  <button class="nav-btn" data-page="herotext"><span class="ni">✍️</span>Mətn İdarəetməsi</button>
+  <button class="nav-btn" data-page="categories"><span class="ni">📂</span>Kateqoriyalar</button>
+  <button class="nav-btn" data-page="settings"><span class="ni">⚙️</span>Parametrlər</button>
+  <button class="nav-btn" onclick="window.open('../index.html')"><span class="ni">🌐</span>Sayta Bax</button>
 
-<div style="background:var(--bg2);position:relative;z-index:1;">
-<div class="sec">
-  <div class="sec-head">
-    <div class="sec-tag">✨ Xüsusiyyətlər</div>
-    <h2 class="sec-title">Niyə TestHub?</h2>
+  <div class="s-bottom">
+    <div class="s-user">
+      <div class="s-avatar" id="sAvatar">A</div>
+      <div><div class="s-uname" id="sName">Admin</div><div class="s-urole">Super Admin</div></div>
+    </div>
+    <button class="btn-out" onclick="logoutUser()">🚪 Çıxış</button>
   </div>
-  <div class="fgrid">
-    <div class="fcard"><div class="f-icon">⚡</div><div class="f-title">Ani Nəticə</div><div class="f-desc">Hər cavabdan sonra dərhal feedback alın.</div></div>
-    <div class="fcard"><div class="f-icon">📊</div><div class="f-title">Statistika</div><div class="f-desc">Nəticələrinizi izləyin, inkişafınızı görün.</div></div>
-    <div class="fcard"><div class="f-icon">🔒</div><div class="f-title">Güvənli</div><div class="f-desc">Firebase ilə qorunan hesabınız.</div></div>
-    <div class="fcard"><div class="f-icon">📱</div><div class="f-title">Hər Cihazda</div><div class="f-desc">Telefon, tablet, kompüterdən işləyin.</div></div>
-    <div class="fcard"><div class="f-icon">🆓</div><div class="f-title">Pulsuz Testlər</div><div class="f-desc">Bir çox test tamamilə pulsuzdur.</div></div>
-    <div class="fcard"><div class="f-icon">🏆</div><div class="f-title">Tarixçə</div><div class="f-desc">Bütün keçmiş nəticələriniz saxlanılır.</div></div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div><div class="tb-title" id="tbTitle">Dashboard</div><div class="tb-sub" id="tbSub">Ümumi icmal</div></div>
+    <div class="tb-actions" id="tbActions"></div>
   </div>
-</div>
+  <div class="content" id="mainContent"><div class="spin"></div></div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBody"></div>
 </div>
 
-<footer>
-  <div class="f-logo">TestHub</div>
-  <p>© 2025 TestHub. Bütün hüquqlar qorunur.</p>
-</footer>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/theme.js"></script>
+<script src="../js/firebase-config.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/theme.js"></script>
 <script>
-function cnt(el,n){let c=0,s=Math.ceil(n/40),t=setInterval(()=>{c=Math.min(c+s,n);el.textContent=c+(n>=100?'+':'');if(c>=n)clearInterval(t);},40);}
+// ─── STATE ───────────────────────────
+let allTests=[],allUsers=[],allPurchases=[];
+let activePage='dashboard';
+let activeTheme='nature', activeFont='playfair';
 
-const CACHE_TTL=5*60*1000;
-function cacheSet(key,data){try{localStorage.setItem(key,JSON.stringify({data,ts:Date.now()}));}catch(e){}}
-function cacheGet(key){try{const c=JSON.parse(localStorage.getItem(key)||'null');if(c&&Date.now()-c.ts<CACHE_TTL)return c.data;}catch(e){}return null;}
-function withTimeout(promise,ms=8000){return Promise.race([promise,new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),ms))]);}
-
-// ─── QEYDİYYATSIZ AYARLARI ───────────
-// Default: guestView=true (testləri görsün), guestStart=false (başlaya bilməsin)
-let guestView = true;
-let guestStart = false;
-
-async function loadGuestSettings(){
-  try{
-    const doc = await withTimeout(db.collection('settings').doc('payment').get(), 5000);
-    if(doc.exists){
-      const d = doc.data();
-      guestView  = d.guestView  !== false; // default true
-      guestStart = d.guestStart === true;  // default false
-    }
-  }catch(e){ /* default dəyərlər qalır */ }
+// ─── TOAST ───────────────────────────
+function toast(msg,type='ok'){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast '+type+' show';
+  setTimeout(()=>el.className='toast',3000);
 }
 
-// ─── TEST KARTI ──────────────────────
-function mkCard(t, pur){
-  const ip=t.isPaid, io=!ip||pur?.includes(t.id);
-  return `<div class="tcard" onclick="goTest('${t.id}',${ip},${io})">
-    <div class="tc-top"><div class="tc-icon">${t.icon||'📝'}</div>
-    <span class="tc-badge ${ip?'b-paid':'b-free'}">${ip?'💎 Ödənişli':'🆓 Pulsuz'}</span></div>
-    <div class="tc-title">${t.title}</div>
-    <div class="tc-desc">${t.description||'Test haqqında məlumat.'}</div>
-    <div class="tc-meta"><span>❓${t.questionCount||'?'} sual</span><span>⏱${t.duration||'?'} dəq</span><span>👁${t.views||0}</span></div>
-    <div class="tc-foot">
-      <div class="tc-price ${ip?'pp':'pf'}">${ip?(io?'✓ Alınıb':t.price+'₼'):'Pulsuz'}</div>
-      <a class="btn-tc ${!io&&ip?'btn-tc-lock':''}">${io?'▶ Başla':ip?'🔒 Al':'▶ Başla'}</a>
+// ─── MODAL ───────────────────────────
+function openModal(html){document.getElementById('modalBody').innerHTML=html;document.getElementById('modalBg').classList.add('open');}
+function closeModal(){document.getElementById('modalBg').classList.remove('open');}
+
+// ─── AUTH ────────────────────────────
+onAuthChange(async(user)=>{
+  if(!user){window.location.href='../pages/login.html';return;}
+  if(!isAdmin(user.email)){window.location.href='../index.html';return;}
+  document.getElementById('sAvatar').textContent=user.email[0].toUpperCase();
+  document.getElementById('sName').textContent=user.displayName||user.email;
+  await loadSiteTheme();
+  activeTheme=((await db.collection('settings').doc('theme').get().catch(()=>({exists:false,data:()=>({})})))?.data()?.theme)||'nature';
+  activeFont=((await db.collection('settings').doc('theme').get().catch(()=>({exists:false,data:()=>({})})))?.data()?.font)||'playfair';
+  await loadAll();
+  // Nav click
+  document.querySelectorAll('.nav-btn[data-page]').forEach(b=>{
+    b.addEventListener('click',()=>showPage(b.dataset.page,b));
+  });
+  showPage('dashboard');
+});
+
+async function loadAll(){
+  const [ts,us,ps]=await Promise.all([
+    db.collection('tests').get(),
+    db.collection('users').get(),
+    db.collection('purchases').orderBy('createdAt','desc').get().catch(()=>({docs:[]}))
+  ]);
+  allTests=ts.docs.map(d=>({id:d.id,...d.data()}));
+  allUsers=us.docs.map(d=>({id:d.id,...d.data()}));
+  allPurchases=ps.docs.map(d=>({id:d.id,...d.data()}));
+  const pend=allPurchases.filter(p=>p.status==='pending').length;
+  const pb=document.getElementById('pendBadge');
+  if(pend>0){pb.textContent=pend;pb.style.display='inline';}else pb.style.display='none';
+}
+
+// ─── NAV ─────────────────────────────
+const PAGE_META={
+  dashboard:{title:'Dashboard',sub:'Ümumi icmal'},
+  tests:{title:'Testlər',sub:'Test idarəetməsi',action:'+ Test Əlavə Et',fn:'openAddTest'},
+  users:{title:'İstifadəçilər',sub:'İstifadəçi idarəetməsi'},
+  payments:{title:'Ödənişlər',sub:'Ödəniş idarəetməsi'},
+  analytics:{title:'Statistika',sub:'Analitika'},
+  design:{title:'Dizayn & Font',sub:'Saytın görünüşünü dəyişin',action:'💾 Saxla',fn:'saveDesign'},
+  herotext:{title:'Mətn İdarəetməsi',sub:'Sayt başlıq və mətnlərini dəyişin',action:'💾 Saxla',fn:'saveHeroText'},
+  categories:{title:'Kateqoriyalar',sub:'Test kateqoriyalarını idarə edin',action:'+ Kateqoriya Əlavə Et',fn:'openAddCategory'},
+  settings:{title:'Parametrlər',sub:'Sistem parametrləri və ödəniş açarları',action:'💾 Saxla',fn:'saveSettings'},
+};
+
+function showPage(page,btn){
+  activePage=page;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else document.querySelector(`[data-page="${page}"]`)?.classList.add('active');
+  const m=PAGE_META[page];
+  document.getElementById('tbTitle').textContent=m.title;
+  document.getElementById('tbSub').textContent=m.sub;
+  const acts=document.getElementById('tbActions');
+  acts.innerHTML=m.action?`<button class="btn-prim" onclick="${m.fn}()">${m.action}</button>`:'';
+  const renders={dashboard:renderDashboard,tests:renderTests,users:renderUsers,payments:renderPayments,analytics:renderAnalytics,design:renderDesign,herotext:renderHeroText,categories:renderCategories,settings:renderSettings};
+  renders[page]?.();
+}
+
+// ─── DASHBOARD ───────────────────────
+function renderDashboard(){
+  const rev=allPurchases.filter(p=>p.status==='completed').reduce((a,p)=>a+(p.amount||0),0);
+  const pend=allPurchases.filter(p=>p.status==='pending').length;
+  document.getElementById('mainContent').innerHTML=`
+    <div class="sgrid">
+      <div class="scard" data-e="📝"><div class="sc-label">Testlər</div><div class="sc-val">${allTests.length}</div><div class="sc-ch">${allTests.filter(t=>t.isActive).length} aktiv</div></div>
+      <div class="scard" data-e="👥"><div class="sc-label">İstifadəçilər</div><div class="sc-val">${allUsers.length}</div><div class="sc-ch">Qeydiyyatlı</div></div>
+      <div class="scard" data-e="💰"><div class="sc-label">Gəlir (₼)</div><div class="sc-val">${rev.toFixed(0)}</div><div class="sc-ch">${pend} gözləyir</div></div>
+      <div class="scard" data-e="🛍"><div class="sc-label">Satış</div><div class="sc-val">${allPurchases.filter(p=>p.status==='completed').length}</div><div class="sc-ch">Tamamlanan</div></div>
     </div>
-  </div>`;
-}
-
-// ─── TEST BAŞLAT ─────────────────────
-function goTest(id, ip, io){
-  const user = auth.currentUser;
-
-  // Qeydiyyatlı istifadəçi
-  if(user){
-    if(ip && !io){ window.location.href='pages/payment.html?id='+id; return; }
-    window.location.href='pages/test.html?id='+id;
-    return;
-  }
-
-  // Qeydiyyatsız istifadəçi
-  if(ip){
-    // Ödənişli test — mütləq login
-    window.location.href='pages/login.html?redirect=test&id='+id;
-    return;
-  }
-  // Pulsuz test
-  if(guestStart){
-    window.location.href='pages/test.html?id='+id;
-  } else {
-    window.location.href='pages/login.html?redirect=test&id='+id;
-  }
-}
-
-// ─── TESTLƏR ─────────────────────────
-function showRetry(){
-  document.getElementById('testsGrid').innerHTML=`
-    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
-      <div style="font-size:2.5rem;margin-bottom:12px">😔</div>
-      <p style="margin-bottom:16px">Testlər yüklənmədi. İnternet bağlantınızı yoxlayın.</p>
-      <button onclick="loadTests()" style="background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:10px;font-family:var(--font-body);font-size:.9rem;font-weight:700;cursor:pointer">🔄 Yenidən Cəhd Et</button>
-    </div>`;
-}
-
-function showLoginWall(){
-  document.getElementById('testsGrid').innerHTML=`
-    <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)">
-      <div style="font-size:3rem;margin-bottom:14px">🔒</div>
-      <p style="font-size:1rem;margin-bottom:6px;color:var(--text)">Testləri görmək üçün daxil olun</p>
-      <p style="font-size:.85rem;margin-bottom:22px">Qeydiyyat pulsuzdur və 30 saniyə çəkir</p>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <a href="pages/login.html" style="background:var(--accent);color:#fff;text-decoration:none;padding:11px 26px;border-radius:10px;font-size:.9rem;font-weight:700">Daxil ol</a>
-        <a href="pages/register.html" style="background:var(--surface);color:var(--text);text-decoration:none;padding:11px 26px;border-radius:10px;font-size:.9rem;font-weight:600;border:1.5px solid var(--border2)">Qeydiyyat</a>
+    <div class="cgrid">
+      <div class="ccard">
+        <div class="c-title">📝 Test Baxışları</div>
+        ${allTests.slice(0,6).map(t=>`<div class="bar-row">
+          <div class="bar-lbl">${t.title}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,(t.views||0)/Math.max(1,...allTests.map(x=>x.views||0))*100)}%"></div></div>
+          <div class="bar-val">${t.views||0}</div>
+        </div>`).join('')||'<p style="color:var(--muted);font-size:.83rem">Test yoxdur</p>'}
+      </div>
+      <div class="ccard">
+        <div class="c-title">💰 Son Ödənişlər</div>
+        ${allPurchases.slice(0,5).map(p=>`<div class="bar-row" style="margin-bottom:10px">
+          <div class="bar-lbl">${p.userEmail||'—'}</div>
+          <div style="flex:1;font-size:.78rem;color:var(--muted)">${p.testTitle||'—'}</div>
+          <span class="badge ${p.status==='completed'?'b-done':'b-pending'}">${p.amount||0}₼</span>
+        </div>`).join('')||'<p style="color:var(--muted);font-size:.83rem">Ödəniş yoxdur</p>'}
       </div>
     </div>`;
 }
 
-async function loadTests(){
-  const g = document.getElementById('testsGrid');
-  const user = auth.currentUser;
+// ─── TESTS ───────────────────────────
+function renderTests(){
+  document.getElementById('mainContent').innerHTML=`
+    <div class="tabs">
+      <button class="tab active" onclick="filterTests('all',this)">Hamısı (${allTests.length})</button>
+      <button class="tab" onclick="filterTests('free',this)">🆓 Pulsuz</button>
+      <button class="tab" onclick="filterTests('paid',this)">💎 Ödənişli</button>
+    </div>
+    <div class="twrap">
+      <div class="thead-row"><div class="t-title">📝 Testlər</div>
+        <input class="search" placeholder="🔍 Axtar..." oninput="searchTests(this.value)"></div>
+      <table><thead><tr><th>Test</th><th>Tip</th><th>Qiymət</th><th>Baxış</th><th>Status</th><th>Əməliyyat</th></tr></thead>
+        <tbody id="testsTb">${testRows(allTests)}</tbody>
+      </table>
+    </div>`;
+}
+function testRows(tests){
+  if(!tests.length) return `<tr><td colspan="6"><div class="empty"><div class="empty-e">📭</div>Test yoxdur</div></td></tr>`;
+  return tests.map(t=>`<tr>
+    <td><strong>${t.icon||'📝'} ${t.title}</strong><br><span style="color:var(--muted);font-size:.72rem">${t.type||'inline'} • ${t.questionCount||0} sual</span></td>
+    <td><span class="badge ${t.isPaid?'b-paid':'b-free'}">${t.isPaid?'💎 Ödənişli':'🆓 Pulsuz'}</span></td>
+    <td>${t.isPaid?(t.price||0)+'₼':'—'}</td>
+    <td>${t.views||0}</td>
+    <td><span class="badge ${t.isActive?'b-active':'b-inactive'}">${t.isActive?'Aktiv':'Deaktiv'}</span></td>
+    <td><div class="abts">
+      <button class="abt abt-e" onclick="editTest('${t.id}')">✏️</button>
+      <button class="abt abt-d" onclick="delTest('${t.id}','${t.title}')">🗑</button>
+    </div></td>
+  </tr>`).join('');
+}
+function filterTests(f,btn){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const m={all:allTests,free:allTests.filter(t=>!t.isPaid),paid:allTests.filter(t=>t.isPaid)};document.getElementById('testsTb').innerHTML=testRows(m[f]);}
+function searchTests(q){document.getElementById('testsTb').innerHTML=testRows(allTests.filter(t=>t.title.toLowerCase().includes(q.toLowerCase())));}
 
-  // Qeydiyyatsız + guestView=false → login divarı göstər
-  if(!user && !guestView){
-    showLoginWall();
-    return;
-  }
+function openAddTest(){
+  db.collection('categories').orderBy('order').get().catch(()=>({docs:[]})).then(snap=>{
+    const cats=snap.docs?.map(d=>({id:d.id,...d.data()}))||[];
+    const catOpts=cats.length
+      ? cats.map(c=>`<option value="${c.slug}">${c.icon||''} ${c.name}</option>`).join('')
+      : `<option value="fiziki">📚 Fiziki Tərbiyə</option><option value="basketbol">🏀 Basketbol</option><option value="voleybol">🏐 Voleybol</option><option value="other">📝 Digər</option>`;
+    openModal(`<div class="m-title">+ Yeni Test</div><div class="m-sub">Test məlumatlarını daxil edin</div>
+      <div class="fg"><label class="fl">Test Adı *</label><input class="fi" id="mT" placeholder="Fiziki Tərbiyə..."></div>
+      <div class="fg"><label class="fl">Açıqlama</label><textarea class="fi" id="mD" placeholder="Test haqqında..."></textarea></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">İkon</label><input class="fi" id="mI" placeholder="📝" maxlength="4"></div>
+        <div class="fg"><label class="fl">Kateqoriya</label><select class="fi" id="mCat">${catOpts}</select></div>
+      </div>
+      <div class="fg"><label class="fl">Test Tipi</label><select class="fi" id="mTy" onchange="updateTypeF()"><option value="inline">Inline (JSON suallar)</option><option value="forms">Google Forms</option><option value="html">HTML Fayl</option></select></div>
+      <div id="typeFlds"><div class="fg"><label class="fl">Suallar JSON</label><textarea class="fi" id="mQ" rows="4" placeholder='[{"q":"Sual?","opts":["A) ..","B) ..","C) .."],"ans":0}]'></textarea></div></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Sual Sayı</label><input class="fi" id="mQc" type="number" placeholder="60"></div>
+        <div class="fg"><label class="fl">Müddət (dəq)</label><input class="fi" id="mDur" type="number" placeholder="30"></div>
+      </div>
+      <div class="tgl-row"><span class="tgl-lbl">Ödənişli?</span><label class="tgl"><input type="checkbox" id="mPaid" onchange="togglePrice()"><div class="tgl-sl"></div></label></div>
+      <div id="priceF" style="display:none"><div class="fg"><label class="fl">Qiymət (₼)</label><input class="fi" id="mPr" type="number" placeholder="5"></div></div>
+      <div class="tgl-row"><span class="tgl-lbl">Aktiv?</span><label class="tgl"><input type="checkbox" id="mAct" checked><div class="tgl-sl"></div></label></div>
+      <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="saveTest()">💾 Saxla</button></div>`);
+  });
+}
 
-  // Cache-dən dərhal göstər
-  let tests = cacheGet('tests');
-  if(tests){
-    let ud = user ? cacheGet('ud_'+user.uid) : null;
-    g.innerHTML = tests.map(t=>mkCard(t, ud?.purchasedTests)).join('');
-    cnt(document.getElementById('sT'), tests.length);
-    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
-    refreshTestsBackground();
-    return;
-  }
+function updateTypeF(){
+  const ty=document.getElementById('mTy').value;
+  const m={
+    inline:`<div class="fg"><label class="fl">Suallar JSON</label><textarea class="fi" id="mQ" rows="5" placeholder='[{"q":"?","opts":["A) ..","B) ..","C) .."],"ans":0}]'></textarea></div>`,
+    forms:`<div class="fg"><label class="fl">Google Forms URL</label><input class="fi" id="mFu" placeholder="https://docs.google.com/forms/..."></div>`,
+    html:`<div class="fg"><label class="fl">HTML Fayl Yolu</label><input class="fi" id="mHf" placeholder="../tests/test.html"></div>`
+  };
+  document.getElementById('typeFlds').innerHTML=m[ty];
+}
+function togglePrice(){document.getElementById('priceF').style.display=document.getElementById('mPaid').checked?'block':'none';}
 
-  g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div class="spin" style="margin:0 auto 14px"></div>Yüklənir...</div>`;
-
+async function saveTest(editId=null){
+  const title=document.getElementById('mT').value.trim();
+  if(!title){toast('Test adı daxil edin','err');return;}
+  const ty=document.getElementById('mTy').value;
+  let data={title,description:document.getElementById('mD').value,icon:document.getElementById('mI').value||'📝',category:document.getElementById('mCat').value,type:ty,questionCount:parseInt(document.getElementById('mQc').value)||0,duration:parseInt(document.getElementById('mDur').value)||0,isPaid:document.getElementById('mPaid').checked,price:parseFloat(document.getElementById('mPr')?.value)||0,isActive:document.getElementById('mAct').checked};
+  if(!editId){data.createdAt=firebase.firestore.FieldValue.serverTimestamp();data.views=0;data.completions=0;}
+  if(ty==='inline'){try{const q=document.getElementById('mQ')?.value;if(q)data.questions=JSON.parse(q);}catch{toast('JSON yanlışdır','err');return;}}
+  else if(ty==='forms') data.formsUrl=document.getElementById('mFu')?.value;
+  else data.htmlFile=document.getElementById('mHf')?.value;
   try{
-    const ts = await withTimeout(db.collection('tests').where('isActive','==',true).get());
-    tests = ts.docs.map(d=>({id:d.id,...d.data()}));
-    cacheSet('tests', tests);
-    cnt(document.getElementById('sT'), tests.length);
-    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
-    if(!tests.length){
-      g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted)"><div style="font-size:3rem;margin-bottom:12px">📭</div><p>Hələ test yoxdur</p></div>';
-      return;
+    if(editId) await db.collection('tests').doc(editId).update(data);
+    else await db.collection('tests').add(data);
+    await loadAll(); closeModal(); renderTests();
+    toast(editId?'✅ Test yeniləndi':'✅ Test əlavə edildi');
+  }catch(e){toast('Xəta: '+e.message,'err');}
+}
+
+async function editTest(id){
+  const t=allTests.find(x=>x.id===id);if(!t)return;
+  openModal(`<div class="m-title">✏️ Test Redaktəsi</div><div class="m-sub">${t.title}</div>
+    <div class="fg"><label class="fl">Test Adı</label><input class="fi" id="mT" value="${t.title}"></div>
+    <div class="fg"><label class="fl">Açıqlama</label><textarea class="fi" id="mD">${t.description||''}</textarea></div>
+    <div class="frow">
+      <div class="fg"><label class="fl">İkon</label><input class="fi" id="mI" value="${t.icon||'📝'}" maxlength="4"></div>
+      <div class="fg"><label class="fl">Kateqoriya</label><select class="fi" id="mCat"><option value="fiziki" ${t.category==='fiziki'?'selected':''}>Fiziki Tərbiyə</option><option value="basketbol" ${t.category==='basketbol'?'selected':''}>Basketbol</option><option value="voleybol" ${t.category==='voleybol'?'selected':''}>Voleybol</option><option value="other" ${t.category==='other'?'selected':''}>Digər</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Test Tipi</label><select class="fi" id="mTy" onchange="updateTypeF()"><option value="inline" ${t.type==='inline'?'selected':''}>Inline</option><option value="forms" ${t.type==='forms'?'selected':''}>Google Forms</option><option value="html" ${t.type==='html'?'selected':''}>HTML Fayl</option></select></div>
+    <div id="typeFlds">${t.type==='forms'?`<div class="fg"><label class="fl">Forms URL</label><input class="fi" id="mFu" value="${t.formsUrl||''}"></div>`:t.type==='html'?`<div class="fg"><label class="fl">HTML Yolu</label><input class="fi" id="mHf" value="${t.htmlFile||''}"></div>`:`<div class="fg"><label class="fl">Suallar JSON</label><textarea class="fi" id="mQ" rows="4">${t.questions?JSON.stringify(t.questions):''}</textarea></div>`}</div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Sual Sayı</label><input class="fi" id="mQc" type="number" value="${t.questionCount||0}"></div>
+      <div class="fg"><label class="fl">Müddət</label><input class="fi" id="mDur" type="number" value="${t.duration||0}"></div>
+    </div>
+    <div class="tgl-row"><span class="tgl-lbl">Ödənişli?</span><label class="tgl"><input type="checkbox" id="mPaid" ${t.isPaid?'checked':''} onchange="togglePrice()"><div class="tgl-sl"></div></label></div>
+    <div id="priceF" style="display:${t.isPaid?'block':'none'}"><div class="fg"><label class="fl">Qiymət (₼)</label><input class="fi" id="mPr" type="number" value="${t.price||0}"></div></div>
+    <div class="tgl-row"><span class="tgl-lbl">Aktiv?</span><label class="tgl"><input type="checkbox" id="mAct" ${t.isActive?'checked':''}><div class="tgl-sl"></div></label></div>
+    <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="saveTest('${id}')">💾 Yenilə</button></div>`);
+}
+
+async function delTest(id,title){
+  if(!confirm(`"${title}" testini silmək istəyirsiniz?`))return;
+  await db.collection('tests').doc(id).delete();
+  await loadAll(); renderTests(); toast('🗑 Test silindi');
+}
+
+// ─── USERS ───────────────────────────
+function renderUsers(){
+  document.getElementById('mainContent').innerHTML=`
+    <div class="twrap">
+      <div class="thead-row"><div class="t-title">👥 İstifadəçilər (${allUsers.length})</div>
+        <input class="search" placeholder="🔍 Axtar..." oninput="searchUsers(this.value)"></div>
+      <table><thead><tr><th>Ad</th><th>Email</th><th>Rol</th><th>Testlər</th><th>Əməliyyat</th></tr></thead>
+        <tbody id="usersTb">${userRows(allUsers)}</tbody>
+      </table>
+    </div>`;
+}
+function userRows(users){
+  if(!users.length) return `<tr><td colspan="5"><div class="empty"><div class="empty-e">👥</div>İstifadəçi yoxdur</div></td></tr>`;
+  return users.map(u=>`<tr>
+    <td><strong>${u.name||'—'}</strong></td>
+    <td>${u.email||'—'}</td>
+    <td><span class="badge ${u.role==='admin'?'b-admin':'b-free'}">${u.role==='admin'?'⚡ Admin':'👤 User'}</span></td>
+    <td>${(u.purchasedTests||[]).length}</td>
+    <td><div class="abts">
+      <button class="abt abt-e" onclick="grantTest('${u.id}','${u.name||u.email}')">🎁 Test Ver</button>
+    </div></td>
+  </tr>`).join('');
+}
+function searchUsers(q){document.getElementById('usersTb').innerHTML=userRows(allUsers.filter(u=>(u.name||'').toLowerCase().includes(q.toLowerCase())||(u.email||'').toLowerCase().includes(q.toLowerCase())));}
+
+function grantTest(uid,uname){
+  const opts=allTests.filter(t=>t.isPaid).map(t=>`<option value="${t.id}">${t.title}</option>`).join('');
+  if(!opts){toast('Ödənişli test yoxdur','err');return;}
+  openModal(`<div class="m-title">🎁 Test Ver</div><div class="m-sub">${uname} üçün pulsuz giriş</div>
+    <div class="fg"><label class="fl">Test seçin</label><select class="fi" id="gTid">${opts}</select></div>
+    <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="confirmGrant('${uid}')">🎁 Ver</button></div>`);
+}
+async function confirmGrant(uid){
+  await db.collection('users').doc(uid).update({purchasedTests:firebase.firestore.FieldValue.arrayUnion(document.getElementById('gTid').value)});
+  closeModal();toast('✅ Test verildi');
+}
+
+// ─── PAYMENTS ────────────────────────
+function renderPayments(){
+  const pend=allPurchases.filter(p=>p.status==='pending');
+  document.getElementById('mainContent').innerHTML=`
+    ${pend.length?`<div style="background:color-mix(in srgb,var(--gold) 8%,transparent);border:1.5px solid color-mix(in srgb,var(--gold) 25%,transparent);border-radius:11px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:10px">⏳ <strong>${pend.length} gözləyən ödəniş</strong> — manual köçürmə təsdiqi</div>`:''}
+    <div class="twrap">
+      <div class="thead-row"><div class="t-title">💰 Ödənişlər</div></div>
+      <table><thead><tr><th>İstifadəçi</th><th>Test</th><th>Məbləğ</th><th>Üsul</th><th>Status</th><th>Əməliyyat</th></tr></thead>
+        <tbody>${allPurchases.map(p=>`<tr>
+          <td>${p.userEmail||'—'}</td><td>${p.testTitle||'—'}</td>
+          <td><strong>${p.amount||0}₼</strong></td>
+          <td>${p.method==='card'?'💳 Kart':'🏦 Bank'}</td>
+          <td><span class="badge ${p.status==='completed'?'b-done':'b-pending'}">${p.status==='completed'?'✓ Tamamlandı':'⏳ Gözləyir'}</span></td>
+          <td><div class="abts">${p.status==='pending'?`<button class="abt abt-ok" onclick="approveP('${p.id}','${p.userId}','${p.testId}')">✅ Təsdiq</button><button class="abt abt-d" onclick="rejectP('${p.id}')">❌</button>`:'—'}</div></td>
+        </tr>`).join('')||`<tr><td colspan="6"><div class="empty"><div class="empty-e">💳</div>Ödəniş yoxdur</div></td></tr>`}
+        </tbody>
+      </table>
+    </div>`;
+}
+async function approveP(pid,uid,tid){await db.collection('purchases').doc(pid).update({status:'completed'});await db.collection('users').doc(uid).update({purchasedTests:firebase.firestore.FieldValue.arrayUnion(tid)});await loadAll();renderPayments();toast('✅ Ödəniş təsdiqləndi');}
+async function rejectP(pid){if(!confirm('Rədd etmək istəyirsiniz?'))return;await db.collection('purchases').doc(pid).update({status:'cancelled'});await loadAll();renderPayments();toast('❌ Rədd edildi');}
+
+// ─── ANALYTICS ───────────────────────
+async function renderAnalytics(){
+  const rs=await db.collection('results').get().catch(()=>({docs:[]}));
+  const results=rs.docs.map(d=>d.data());
+  const avg=results.length?Math.round(results.reduce((a,r)=>a+r.percentage,0)/results.length):0;
+  const rev=allPurchases.filter(p=>p.status==='completed').reduce((a,p)=>a+(p.amount||0),0);
+  document.getElementById('mainContent').innerHTML=`
+    <div class="sgrid">
+      <div class="scard" data-e="📊"><div class="sc-label">Cəmi Cəhd</div><div class="sc-val">${results.length}</div></div>
+      <div class="scard" data-e="🎯"><div class="sc-label">Ort. Nəticə</div><div class="sc-val">${avg}%</div></div>
+      <div class="scard" data-e="💰"><div class="sc-label">Gəlir (₼)</div><div class="sc-val">${rev.toFixed(0)}</div></div>
+      <div class="scard" data-e="👥"><div class="sc-label">İstifadəçi</div><div class="sc-val">${allUsers.length}</div></div>
+    </div>
+    <div class="ccard">
+      <div class="c-title">📝 Test Performansı (ortalama %)</div>
+      ${allTests.map(t=>{const tr=results.filter(r=>r.testId===t.id);const a=tr.length?Math.round(tr.reduce((x,r)=>x+r.percentage,0)/tr.length):0;return`<div class="bar-row"><div class="bar-lbl">${t.title}</div><div class="bar-track"><div class="bar-fill" style="width:${a}%;background:${a>=70?'var(--accent3)':a>=40?'var(--gold)':'var(--danger)'}"></div></div><div class="bar-val">${a}%</div></div>`;}).join('')||'<p style="color:var(--muted);font-size:.83rem">Nəticə yoxdur</p>'}
+    </div>`;
+}
+
+// ─── DİZAYN & FONT ──────────────────
+function renderDesign(){
+  document.getElementById('mainContent').innerHTML=`
+    <div class="design-wrap">
+
+      <!-- THEME SEÇİCİ -->
+      <div class="design-card">
+        <div class="dc-title">🎨 Rəng Mövzusu</div>
+        <div class="dc-sub">Saytın rəng sxemini seçin. Dərhal bütün səhifələrə tətbiq olunur.</div>
+        <div class="theme-grid" id="themeGrid">
+          ${Object.entries(THEMES).map(([key,t])=>`
+            <div class="theme-opt ${key===activeTheme?'selected':''}" onclick="selectTheme('${key}')" id="topt_${key}">
+              <div class="to-preview">
+                <div class="to-swatch" style="background:${t.vars['--bg']}"></div>
+                <div class="to-swatch" style="background:${t.vars['--accent']}"></div>
+                <div class="to-swatch" style="background:${t.vars['--accent3']}"></div>
+                <div class="to-swatch" style="background:${t.vars['--text']}"></div>
+              </div>
+              <div class="to-name"><span class="to-emoji">${t.emoji}</span>${t.name}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- FONT SEÇİCİ -->
+      <div class="design-card">
+        <div class="dc-title">✍️ Yazı Fontu</div>
+        <div class="dc-sub">Latın əlifbasına uyğun, Azərbaycanca dəstəkli 8 font seçimi.</div>
+        <div class="font-list" id="fontList">
+          ${Object.entries(FONTS).map(([key,f])=>`
+            <div class="font-opt ${key===activeFont?'selected':''}" onclick="selectFont('${key}')" id="fopt_${key}">
+              <div class="fo-left">
+                <div class="fo-name">${f.label}</div>
+                <div class="fo-preview" style="font-family:${f.heading}">Azərbaycan — Öyrən, Sına, İrəliləyin</div>
+              </div>
+              <div class="fo-check">${key===activeFont?'✓':''}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CANLI ÖNİZLƏMƏ -->
+    <div class="preview-box">
+      <div class="pb-title">👁 Canlı Önizləmə</div>
+      <div class="pb-demo">
+        <div class="pb-h" id="pbH">TestHub — Bilik Platforması</div>
+        <div class="pb-p" id="pbP">Fiziki Tərbiyə, Basketbol, Voleybol və daha çox mövzuda peşəkar testlər. Öyrən, sına, inkişaf et.</div>
+        <button class="pb-btn" id="pbBtn">▶ Testi Başla</button>
+        <div class="pb-card">
+          <div class="pb-icon">📝</div>
+          <div class="pb-ct">
+            <div class="pb-ct-t" id="pbCT">Fiziki Tərbiyə 07.12.2025</div>
+            <div class="pb-ct-s">❓ 60 sual • ⏱ 30 dəq • 🆓 Pulsuz</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // Fontları önizləmə üçün yüklə
+  Object.values(FONTS).forEach(f=>{
+    const id='_pf_'+f.name;
+    if(!document.getElementById(id)){
+      const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=f.url;document.head.appendChild(l);
     }
-    let ud = null;
-    if(user){
-      ud = await withTimeout(getCurrentUserData(), 5000).catch(()=>null);
-      if(ud) cacheSet('ud_'+user.uid, ud);
-    }
-    g.innerHTML = tests.map(t=>mkCard(t, ud?.purchasedTests)).join('');
-  }catch(e){
-    console.error(e);
-    showRetry();
-  }
+  });
 }
 
-async function refreshTestsBackground(){
-  try{
-    const ts = await withTimeout(db.collection('tests').where('isActive','==',true).get(), 10000);
-    const tests = ts.docs.map(d=>({id:d.id,...d.data()}));
-    cacheSet('tests', tests);
-    cnt(document.getElementById('sT'), tests.length);
-    cnt(document.getElementById('sC'), tests.reduce((a,t)=>a+(t.completions||0),0));
-  }catch(e){}
+function selectTheme(key){
+  activeTheme=key;
+  document.querySelectorAll('.theme-opt').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('topt_'+key)?.classList.add('selected');
+  applyTheme(key);
+  toast('🎨 Mövzu seçildi: '+THEMES[key].name);
 }
 
-async function loadUserCount(){
-  try{
-    const cached = cacheGet('userCount');
-    if(cached !== null) cnt(document.getElementById('sU'), cached);
-    const us = await withTimeout(db.collection('users').get(), 8000);
-    cacheSet('userCount', us.size);
-    cnt(document.getElementById('sU'), us.size);
-  }catch(e){}
+function selectFont(key){
+  activeFont=key;
+  document.querySelectorAll('.font-opt').forEach(el=>{el.classList.remove('selected');el.querySelector('.fo-check').textContent='';});
+  const opt=document.getElementById('fopt_'+key);
+  opt?.classList.add('selected');
+  opt?.querySelector('.fo-check') && (opt.querySelector('.fo-check').textContent='✓');
+  applyFont(key);
+  // Önizlə
+  const f=FONTS[key];
+  ['pbH','pbCT'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.fontFamily=f.heading;});
+  ['pbP','pbBtn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.fontFamily=f.body;});
+  toast('✍️ Font seçildi: '+f.label);
 }
 
-async function loadContent(){
+async function saveDesign(){
   try{
-    const cached = cacheGet('content');
-    const apply = (s)=>{
-      if(!s) return;
-      if(s.siteName) document.title=s.siteName+' — Bilik Platforması';
-      if(s.heroTag){const el=document.querySelector('.hero-tag');if(el)el.innerHTML=`<span class="htdot"></span> ${s.heroTag}`;}
-      if(s.heroLine1){const el=document.getElementById('hL1');if(el)el.textContent=s.heroLine1;}
-      if(s.heroLine2){const el=document.getElementById('hL2');if(el)el.textContent=s.heroLine2;}
-      if(s.heroLine3){const el=document.getElementById('hL3');if(el)el.textContent=s.heroLine3;}
-      if(s.heroSub){const el=document.querySelector('.hero-sub');if(el)el.textContent=s.heroSub;}
-      if(s.btn1){const el=document.querySelector('.btn-p');if(el)el.textContent=s.btn1;}
-      if(s.btn2){const el=document.querySelector('.btn-o');if(el)el.textContent=s.btn2;}
-      if(s.stat1){const el=document.querySelector('.hstat:nth-child(1) .hstat-l');if(el)el.textContent=s.stat1;}
-      if(s.stat2){const el=document.querySelector('.hstat:nth-child(2) .hstat-l');if(el)el.textContent=s.stat2;}
-      if(s.stat3){const el=document.querySelector('.hstat:nth-child(3) .hstat-l');if(el)el.textContent=s.stat3;}
-      if(s.footer){const el=document.querySelector('footer p');if(el)el.textContent=s.footer;}
+    await db.collection('settings').doc('theme').set({theme:activeTheme,font:activeFont},{merge:true});
+    toast('✅ Dizayn yadda saxlanıldı! Bütün səhifələrə tətbiq edildi.');
+  }catch(e){toast('Xəta: '+e.message,'err');}
+}
+
+// ─── HERO MƏTNİ ─────────────────────
+async function renderHeroText(){
+  const doc=await db.collection('settings').doc('content').get().catch(()=>({exists:false,data:()=>({})}));
+  const s=doc.exists?doc.data():{};
+  document.getElementById('mainContent').innerHTML=`
+    <div class="design-wrap">
+      <div class="design-card" style="grid-column:1/-1">
+        <div class="dc-title">✍️ Ana Səhifə Mətnləri</div>
+        <div class="dc-sub">Saytın ana səhifəsindəki bütün mətnləri buradan dəyişin.</div>
+
+        <div class="fg"><label class="fl">🏷 Sayt Adı (Logo)</label>
+          <input class="fi" id="cSiteName" value="${s.siteName||'TestHub'}" placeholder="TestHub"></div>
+
+        <div class="fg"><label class="fl">🏷 Kiçik Etiket (Hero üstündəki yazı)</label>
+          <input class="fi" id="cTag" value="${s.heroTag||'Azərbaycanın test platforması'}" placeholder="Azərbaycanın test platforması"></div>
+
+        <div style="background:var(--bg2);border-radius:10px;padding:14px;margin-bottom:14px">
+          <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px">🎯 Böyük Başlıq (Hero)</div>
+          <div class="fg" style="margin-bottom:8px"><label class="fl">Birinci sətir (normal)</label>
+            <input class="fi" id="cH1" value="${s.heroLine1||'Bilikləri'}" placeholder="Bilikləri"></div>
+          <div class="fg" style="margin-bottom:8px"><label class="fl">İkinci hissə (vurğulanan — italic, rəngli)</label>
+            <input class="fi" id="cH2" value="${s.heroLine2||'Sına'}" placeholder="Sına"></div>
+          <div class="fg"><label class="fl">Üçüncü sətir</label>
+            <input class="fi" id="cH3" value="${s.heroLine3||'İrəliləyin'}" placeholder="İrəliləyin"></div>
+        </div>
+
+        <div class="fg"><label class="fl">📝 Alt Mətn (Hero açıqlaması)</label>
+          <textarea class="fi" id="cSub" rows="3" placeholder="Fiziki Tərbiyə...">${s.heroSub||'Fiziki Tərbiyə, Basketbol, Voleybol və daha çox mövzuda peşəkar testlər. Öyrən, sına, inkişaf et.'}</textarea></div>
+
+        <div class="frow">
+          <div class="fg"><label class="fl">🔘 Düymə 1 Mətni</label>
+            <input class="fi" id="cBtn1" value="${s.btn1||'◆ Testlərə Bax'}" placeholder="◆ Testlərə Bax"></div>
+          <div class="fg"><label class="fl">🔘 Düymə 2 Mətni</label>
+            <input class="fi" id="cBtn2" value="${s.btn2||'Pulsuz Qeydiyyat →'}" placeholder="Pulsuz Qeydiyyat →"></div>
+        </div>
+
+        <div style="background:var(--bg2);border-radius:10px;padding:14px;margin-bottom:14px">
+          <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px">📊 Statistika Etiketləri</div>
+          <div class="frow">
+            <div class="fg"><label class="fl">Stat 1</label><input class="fi" id="cSt1" value="${s.stat1||'Test'}" placeholder="Test"></div>
+            <div class="fg"><label class="fl">Stat 2</label><input class="fi" id="cSt2" value="${s.stat2||'İstifadəçi'}" placeholder="İstifadəçi"></div>
+            <div class="fg"><label class="fl">Stat 3</label><input class="fi" id="cSt3" value="${s.stat3||'Tamamlanmış'}" placeholder="Tamamlanmış"></div>
+          </div>
+        </div>
+
+        <div class="fg"><label class="fl">🦶 Footer Mətni</label>
+          <input class="fi" id="cFooter" value="${s.footer||'© 2025 TestHub. Bütün hüquqlar qorunur.'}" placeholder="© 2025 TestHub..."></div>
+      </div>
+    </div>
+
+    <!-- CAN LI ÖNİZLƏMƏ -->
+    <div class="preview-box" style="margin-top:20px">
+      <div class="pb-title">👁 Canlı Önizləmə</div>
+      <div class="pb-demo">
+        <div style="font-size:.72rem;font-weight:700;color:var(--accent2);background:var(--accent-pale);border:1px solid var(--accent-light);border-radius:999px;display:inline-flex;align-items:center;gap:6px;padding:4px 14px;margin-bottom:12px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent3);display:inline-block"></span>
+          <span id="prevTag">${s.heroTag||'Azərbaycanın test platforması'}</span>
+        </div>
+        <div class="pb-h" id="prevH" style="font-size:1.8rem;line-height:1.15;margin-bottom:8px">
+          <span id="prevH1">${s.heroLine1||'Bilikləri'}</span> <em style="color:var(--accent);font-style:italic" id="prevH2">${s.heroLine2||'Sına'}</em>,<br><span id="prevH3">${s.heroLine3||'İrəliləyin'}</span>
+        </div>
+        <div class="pb-p" id="prevSub">${s.heroSub||'Fiziki Tərbiyə, Basketbol...'}</div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button class="pb-btn" id="prevBtn1">${s.btn1||'◆ Testlərə Bax'}</button>
+          <button class="pb-btn" style="background:var(--surface);color:var(--text);border:1.5px solid var(--border2)" id="prevBtn2">${s.btn2||'Pulsuz Qeydiyyat →'}</button>
+        </div>
+      </div>
+    </div>`;
+
+  // Canlı yeniləmə
+  const binds=[
+    ['cTag','prevTag'],['cH1','prevH1'],['cH2','prevH2'],['cH3','prevH3'],
+    ['cSub','prevSub'],['cBtn1','prevBtn1'],['cBtn2','prevBtn2']
+  ];
+  binds.forEach(([inp,out])=>{
+    const el=document.getElementById(inp);
+    if(el) el.addEventListener('input',()=>{const t=document.getElementById(out);if(t)t.textContent=el.value;});
+  });
+}
+
+async function saveHeroText(){
+  try{
+    await db.collection('settings').doc('content').set({
+      siteName:document.getElementById('cSiteName').value,
+      heroTag:document.getElementById('cTag').value,
+      heroLine1:document.getElementById('cH1').value,
+      heroLine2:document.getElementById('cH2').value,
+      heroLine3:document.getElementById('cH3').value,
+      heroSub:document.getElementById('cSub').value,
+      btn1:document.getElementById('cBtn1').value,
+      btn2:document.getElementById('cBtn2').value,
+      stat1:document.getElementById('cSt1').value,
+      stat2:document.getElementById('cSt2').value,
+      stat3:document.getElementById('cSt3').value,
+      footer:document.getElementById('cFooter').value,
+    },{merge:true});
+    toast('✅ Mətnlər saxlanıldı! Ana səhifə yeniləndi.');
+  }catch(e){toast('Xəta: '+e.message,'err');}
+}
+
+// ─── KATEQORİYALAR ───────────────────
+let allCategories=[];
+
+async function loadCategories(){
+  const snap=await db.collection('categories').orderBy('order').get().catch(()=>({docs:[]}));
+  allCategories=snap.docs.map(d=>({id:d.id,...d.data()}));
+  return allCategories;
+}
+
+async function renderCategories(){
+  await loadCategories();
+  document.getElementById('mainContent').innerHTML=`
+    <div class="twrap">
+      <div class="thead-row">
+        <div class="t-title">📂 Kateqoriyalar (${allCategories.length})</div>
+      </div>
+      <table>
+        <thead><tr><th>İkon</th><th>Ad</th><th>Slug</th><th>Sıra</th><th>Status</th><th>Əməliyyat</th></tr></thead>
+        <tbody id="catTb">${catRows(allCategories)}</tbody>
+      </table>
+    </div>
+    <div style="background:var(--accent-pale);border:1.5px solid var(--accent-light);border-radius:11px;padding:14px 18px;margin-top:16px;font-size:.85rem;color:var(--accent2)">
+      💡 Test əlavə edərkən bu kateqoriyalar siyahıda görünəcək. Slug-u dəyişməyin — mövcud testlər ona bağlıdır.
+    </div>`;
+}
+
+function catRows(cats){
+  if(!cats.length) return `<tr><td colspan="6"><div class="empty"><div class="empty-e">📂</div>Kateqoriya yoxdur</div></td></tr>`;
+  return cats.map(c=>`<tr>
+    <td style="font-size:1.5rem">${c.icon||'📝'}</td>
+    <td><strong>${c.name}</strong></td>
+    <td><code style="background:var(--bg2);padding:2px 8px;border-radius:5px;font-size:.78rem">${c.slug}</code></td>
+    <td>${c.order||0}</td>
+    <td><span class="badge ${c.isActive!==false?'b-active':'b-inactive'}">${c.isActive!==false?'Aktiv':'Deaktiv'}</span></td>
+    <td><div class="abts">
+      <button class="abt abt-e" onclick="editCategory('${c.id}')">✏️</button>
+      <button class="abt abt-d" onclick="deleteCategory('${c.id}','${c.name}')">🗑</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function openAddCategory(){
+  openModal(`<div class="m-title">+ Yeni Kateqoriya</div><div class="m-sub">Test kateqoriyası əlavə edin</div>
+    <div class="frow">
+      <div class="fg"><label class="fl">İkon (emoji)</label><input class="fi" id="catI" placeholder="📝" maxlength="4"></div>
+      <div class="fg"><label class="fl">Sıra (1,2,3...)</label><input class="fi" id="catOrd" type="number" placeholder="1" value="1"></div>
+    </div>
+    <div class="fg"><label class="fl">Ad *</label><input class="fi" id="catN" placeholder="Fiziki Tərbiyə" oninput="autoSlug(this.value)"></div>
+    <div class="fg"><label class="fl">Slug (URL üçün)</label><input class="fi" id="catS" placeholder="fiziki-terbiye"></div>
+    <div class="fg"><label class="fl">Açıqlama</label><input class="fi" id="catD" placeholder="Qısa açıqlama..."></div>
+    <div class="tgl-row"><span class="tgl-lbl">Aktiv?</span><label class="tgl"><input type="checkbox" id="catAct" checked><div class="tgl-sl"></div></label></div>
+    <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="saveCategory()">💾 Saxla</button></div>`);
+}
+
+function autoSlug(name){
+  const slug=name.toLowerCase()
+    .replace(/ə/g,'e').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ğ/g,'g')
+    .replace(/ş/g,'s').replace(/ç/g,'c').replace(/ı/g,'i')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const el=document.getElementById('catS');
+  if(el) el.value=slug;
+}
+
+async function saveCategory(editId=null){
+  const name=document.getElementById('catN').value.trim();
+  if(!name){toast('Ad daxil edin','err');return;}
+  const data={
+    name, icon:document.getElementById('catI').value||'📝',
+    slug:document.getElementById('catS').value||name.toLowerCase(),
+    description:document.getElementById('catD').value,
+    order:parseInt(document.getElementById('catOrd').value)||1,
+    isActive:document.getElementById('catAct').checked,
+  };
+  if(!editId) data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+  try{
+    if(editId) await db.collection('categories').doc(editId).update(data);
+    else await db.collection('categories').add(data);
+    closeModal(); await renderCategories();
+    toast(editId?'✅ Kateqoriya yeniləndi':'✅ Kateqoriya əlavə edildi');
+  }catch(e){toast('Xəta: '+e.message,'err');}
+}
+
+async function editCategory(id){
+  const c=allCategories.find(x=>x.id===id);if(!c)return;
+  openModal(`<div class="m-title">✏️ Kateqoriya Redaktəsi</div><div class="m-sub">${c.name}</div>
+    <div class="frow">
+      <div class="fg"><label class="fl">İkon</label><input class="fi" id="catI" value="${c.icon||'📝'}" maxlength="4"></div>
+      <div class="fg"><label class="fl">Sıra</label><input class="fi" id="catOrd" type="number" value="${c.order||1}"></div>
+    </div>
+    <div class="fg"><label class="fl">Ad</label><input class="fi" id="catN" value="${c.name}"></div>
+    <div class="fg"><label class="fl">Slug</label><input class="fi" id="catS" value="${c.slug}"></div>
+    <div class="fg"><label class="fl">Açıqlama</label><input class="fi" id="catD" value="${c.description||''}"></div>
+    <div class="tgl-row"><span class="tgl-lbl">Aktiv?</span><label class="tgl"><input type="checkbox" id="catAct" ${c.isActive!==false?'checked':''}><div class="tgl-sl"></div></label></div>
+    <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="saveCategory('${id}')">💾 Yenilə</button></div>`);
+}
+
+async function deleteCategory(id,name){
+  if(!confirm(`"${name}" kateqoriyasını silmək istəyirsiniz?\n\nDiqqət: Bu kateqoriyaya aid testlər silinməyəcək.`))return;
+  await db.collection('categories').doc(id).delete();
+  await renderCategories();
+  toast('🗑 Kateqoriya silindi');
+}
+
+// ─── SETTINGS ────────────────────────
+async function renderSettings(){
+  const [payDoc,themeDoc]=await Promise.all([
+    db.collection('settings').doc('payment').get().catch(()=>({exists:false,data:()=>({})})),
+    db.collection('settings').doc('theme').get().catch(()=>({exists:false,data:()=>({})})),
+  ]);
+  const s=payDoc.exists?payDoc.data():{};
+  const t=themeDoc.exists?themeDoc.data():{};
+  document.getElementById('mainContent').innerHTML=`
+    <div class="design-wrap">
+
+      <!-- BANK MƏLUMATLARı -->
+      <div class="design-card">
+        <div class="dc-title">🏦 Bank Köçürməsi</div>
+        <div class="dc-sub">Manual ödəniş üçün bank məlumatları</div>
+        <div class="fg"><label class="fl">Bank IBAN</label><input class="fi" id="sIban" value="${s.iban||''}" placeholder="AZ00 UBRZ 0000 0000 0000 0000 0000"></div>
+        <div class="fg"><label class="fl">Hesab Sahibi</label><input class="fi" id="sOwner" value="${s.owner||''}" placeholder="Ad Soyad / Şirkət adı"></div>
+        <div class="fg"><label class="fl">Bank Adı</label><input class="fi" id="sBank" value="${s.bank||''}" placeholder="UNIBANK, ABB, Kapital Bank..."></div>
+      </div>
+
+      <!-- ÖDƏNİŞ AÇARLARI -->
+      <div class="design-card">
+        <div class="dc-title">🔑 Ödəniş API Açarları</div>
+        <div class="dc-sub">PayRiff, AzeriCard və ya digər ödəniş sisteminin açarları</div>
+
+        <div style="background:var(--bg2);border-radius:9px;padding:12px;margin-bottom:14px;font-size:.8rem;color:var(--muted);line-height:1.6">
+          🔒 Bu açarlar yalnız admin paneldə görünür. Heç vaxt başqasına verməyin.
+        </div>
+
+        <div class="fg"><label class="fl">Ödəniş Sistemi</label>
+          <select class="fi" id="sPaySys" onchange="updatePayFields()">
+            <option value="manual" ${(s.paySystem||'manual')==='manual'?'selected':''}>🏦 Yalnız Bank Köçürməsi</option>
+            <option value="payriff" ${s.paySystem==='payriff'?'selected':''}>💳 PayRiff</option>
+            <option value="azericard" ${s.paySystem==='azericard'?'selected':''}>💳 AzeriCard</option>
+          </select>
+        </div>
+
+        <div id="payKeyFields">
+          ${s.paySystem==='payriff'?`
+            <div class="fg"><label class="fl">PayRiff Public Key</label><input class="fi" id="sPayPub" value="${s.payPublicKey||''}" placeholder="pk_live_..."></div>
+            <div class="fg"><label class="fl">PayRiff Secret Key</label><input class="fi" id="sPaySec" value="${s.paySecretKey||''}" placeholder="sk_live_..." type="password"></div>
+            <div class="fg"><label class="fl">Merchant ID</label><input class="fi" id="sPayMid" value="${s.payMerchantId||''}" placeholder="merchant_xxx"></div>
+          `:s.paySystem==='azericard'?`
+            <div class="fg"><label class="fl">AzeriCard Merchant ID</label><input class="fi" id="sPayPub" value="${s.payPublicKey||''}" placeholder="merchant_id"></div>
+            <div class="fg"><label class="fl">AzeriCard Secret Key</label><input class="fi" id="sPaySec" value="${s.paySecretKey||''}" placeholder="secret_key" type="password"></div>
+            <div class="fg"><label class="fl">Terminal ID</label><input class="fi" id="sPayMid" value="${s.payMerchantId||''}" placeholder="terminal_xxx"></div>
+          `:`<div style="padding:14px;background:var(--bg2);border-radius:9px;font-size:.83rem;color:var(--muted);text-align:center">Yalnız bank köçürməsi aktiv — API açarı lazım deyil</div>`}
+        </div>
+      </div>
+
+      <!-- SAYT MƏLUMATLARı -->
+      <div class="design-card">
+        <div class="dc-title">🌐 Sayt Məlumatları</div>
+        <div class="fg"><label class="fl">Sayt Adı</label><input class="fi" id="sSite" value="${s.siteName||'TestHub'}" placeholder="TestHub"></div>
+        <div class="fg"><label class="fl">İletişim Email</label><input class="fi" id="sCont" value="${s.contact||''}" placeholder="info@testhub.az"></div>
+        <div class="fg"><label class="fl">Sayt URL</label><input class="fi" id="sUrl" value="${s.siteUrl||''}" placeholder="https://username.github.io/testhub"></div>
+      </div>
+
+      <!-- QEYDİYYATSIZ İSTİFADƏÇİ -->
+      <div class="design-card">
+        <div class="dc-title">👁 Qeydiyyatsız İstifadəçilər</div>
+        <div class="dc-sub">Sayta giriş etmədən istifadəçilərin nə görə biləcəyini tənzimləyin.</div>
+        <div class="tgl-row">
+          <div>
+            <span class="tgl-lbl">Testləri görsün</span>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:3px">Qeydiyyatsız istifadəçilər test siyahısını görə bilsin</div>
+          </div>
+          <label class="tgl"><input type="checkbox" id="sGuestView" ${s.guestView!==false?'checked':''}><div class="tgl-sl"></div></label>
+        </div>
+        <div class="tgl-row">
+          <div>
+            <span class="tgl-lbl">Pulsuz testi başlada bilsin</span>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:3px">Qeydiyyatsız istifadəçilər pulsuz testləri başlada bilsin</div>
+          </div>
+          <label class="tgl"><input type="checkbox" id="sGuestStart" ${s.guestStart===true?'checked':''}><div class="tgl-sl"></div></label>
+        </div>
+      </div>
+
+      <!-- ADMİN EMAİL -->
+      <div class="design-card">
+        <div class="dc-title">👤 Admin Emailləri</div>
+        <div class="dc-sub">Hər sətirə bir email. Bu emaillər admin panelə girə bilər.</div>
+        <div class="fg"><label class="fl">Admin Emailləri</label>
+          <textarea class="fi" id="sAdmins" rows="4" placeholder="admin@email.com&#10;ikinci@email.com">${ADMIN_EMAILS.join('\n')}</textarea></div>
+        <div style="padding:10px;background:var(--bg2);border-radius:8px;font-size:.78rem;color:var(--muted)">
+          ⚠️ Dəyişiklik etdikdən sonra <strong>js/firebase-config.js</strong> faylında da ADMIN_EMAILS-i yeniləyin.
+        </div>
+      </div>
+
+    </div>`;
+}
+
+function updatePayFields(){
+  const sys=document.getElementById('sPaySys').value;
+  const fields={
+    payriff:`<div class="fg"><label class="fl">PayRiff Public Key</label><input class="fi" id="sPayPub" placeholder="pk_live_..."></div>
+      <div class="fg"><label class="fl">PayRiff Secret Key</label><input class="fi" id="sPaySec" placeholder="sk_live_..." type="password"></div>
+      <div class="fg"><label class="fl">Merchant ID</label><input class="fi" id="sPayMid" placeholder="merchant_xxx"></div>`,
+    azericard:`<div class="fg"><label class="fl">AzeriCard Merchant ID</label><input class="fi" id="sPayPub" placeholder="merchant_id"></div>
+      <div class="fg"><label class="fl">AzeriCard Secret Key</label><input class="fi" id="sPaySec" placeholder="secret_key" type="password"></div>
+      <div class="fg"><label class="fl">Terminal ID</label><input class="fi" id="sPayMid" placeholder="terminal_xxx"></div>`,
+    manual:`<div style="padding:14px;background:var(--bg2);border-radius:9px;font-size:.83rem;color:var(--muted);text-align:center">Yalnız bank köçürməsi aktiv</div>`
+  };
+  document.getElementById('payKeyFields').innerHTML=fields[sys];
+}
+
+async function saveSettings(){
+  try{
+    const payData={
+      iban:document.getElementById('sIban').value,
+      owner:document.getElementById('sOwner').value,
+      bank:document.getElementById('sBank').value,
+      siteName:document.getElementById('sSite').value,
+      contact:document.getElementById('sCont').value,
+      siteUrl:document.getElementById('sUrl').value,
+      paySystem:document.getElementById('sPaySys').value,
+      payPublicKey:document.getElementById('sPayPub')?.value||'',
+      paySecretKey:document.getElementById('sPaySec')?.value||'',
+      payMerchantId:document.getElementById('sPayMid')?.value||'',
+      guestView:document.getElementById('sGuestView')?.checked !== false,
+      guestStart:document.getElementById('sGuestStart')?.checked === true,
     };
-    if(cached) apply(cached);
-    withTimeout(db.collection('settings').doc('content').get()).then(doc=>{
-      if(doc.exists){ cacheSet('content', doc.data()); if(!cached) apply(doc.data()); }
-    }).catch(()=>{});
-  }catch(e){}
+    await db.collection('settings').doc('payment').set(payData,{merge:true});
+    toast('✅ Parametrlər saxlanıldı');
+  }catch(e){toast('Xəta: '+e.message,'err');}
 }
-
-// ─── BAŞLANĞIC ───────────────────────
-document.addEventListener('DOMContentLoaded', ()=>{
-  const themeCached = cacheGet('theme_settings');
-  if(themeCached){ applyTheme(themeCached.theme||'nature'); applyFont(themeCached.font||'playfair'); }
-  // guestSettings-i yüklə, sonra testləri göstər
-  loadGuestSettings().then(()=>{
-    loadTests();
-    loadUserCount();
-    loadContent();
-  });
-});
-
-onAuthChange(async(u)=>{
-  loadSiteTheme().then(()=>{
-    const t=document.documentElement.getAttribute('data-theme');
-    if(t) cacheSet('theme_settings',{theme:t});
-  });
-
-  const lo=document.getElementById('lo');
-  lo.style.opacity='0';
-  setTimeout(()=>lo.style.display='none',300);
-
-  const nav=document.getElementById('navLinks');
-  if(u){
-    const ud = await withTimeout(getCurrentUserData(), 5000).catch(()=>null);
-    if(ud) cacheSet('ud_'+u.uid, ud);
-    nav.innerHTML=`
-      <a href="#tests">Testlər</a>
-      <a href="pages/dashboard.html">Hesabım</a>
-      ${isAdmin(u.email)?'<a href="admin/index.html" style="color:var(--accent);font-weight:700">⚙️ Admin</a>':''}
-      <div class="user-nav">
-        <div class="u-avatar">${(ud?.name||u.email)[0].toUpperCase()}</div>
-        <span class="u-name">${ud?.name||u.email}</span>
-        <button class="u-logout" onclick="logoutUser()">Çıxış</button>
-      </div>`;
-    // Login olduqdan sonra kartları yenilə (alınmış testlər üçün)
-    const g=document.getElementById('testsGrid');
-    if(g && g.querySelector('.tcard') && ud){
-      const tests=cacheGet('tests')||[];
-      g.innerHTML=tests.map(t=>mkCard(t,ud.purchasedTests)).join('');
-    } else {
-      // Login divarı göstərilmişdisə — indi testləri yüklə
-      loadTests();
-    }
-  }
-  // Qeydiyyatsız — guestView ayarına görə artıq loadTests() işlədib
-});
 </script>
 </body>
 </html>
