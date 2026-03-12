@@ -212,6 +212,8 @@ select.fi{cursor:pointer;}
 
   <div class="s-sec">Sistem</div>
   <button class="nav-btn" data-page="design"><span class="ni">🎨</span>Dizayn & Font</button>
+  <button class="nav-btn" data-page="herotext"><span class="ni">✍️</span>Mətn İdarəetməsi</button>
+  <button class="nav-btn" data-page="categories"><span class="ni">📂</span>Kateqoriyalar</button>
   <button class="nav-btn" data-page="settings"><span class="ni">⚙️</span>Parametrlər</button>
   <button class="nav-btn" onclick="window.open('../index.html')"><span class="ni">🌐</span>Sayta Bax</button>
 
@@ -303,7 +305,9 @@ const PAGE_META={
   payments:{title:'Ödənişlər',sub:'Ödəniş idarəetməsi'},
   analytics:{title:'Statistika',sub:'Analitika'},
   design:{title:'Dizayn & Font',sub:'Saytın görünüşünü dəyişin',action:'💾 Saxla',fn:'saveDesign'},
-  settings:{title:'Parametrlər',sub:'Sistem parametrləri',action:'💾 Saxla',fn:'saveSettings'},
+  herotext:{title:'Mətn İdarəetməsi',sub:'Sayt başlıq və mətnlərini dəyişin',action:'💾 Saxla',fn:'saveHeroText'},
+  categories:{title:'Kateqoriyalar',sub:'Test kateqoriyalarını idarə edin',action:'+ Kateqoriya Əlavə Et',fn:'openAddCategory'},
+  settings:{title:'Parametrlər',sub:'Sistem parametrləri və ödəniş açarları',action:'💾 Saxla',fn:'saveSettings'},
 };
 
 function showPage(page,btn){
@@ -316,7 +320,7 @@ function showPage(page,btn){
   document.getElementById('tbSub').textContent=m.sub;
   const acts=document.getElementById('tbActions');
   acts.innerHTML=m.action?`<button class="btn-prim" onclick="${m.fn}()">${m.action}</button>`:'';
-  const renders={dashboard:renderDashboard,tests:renderTests,users:renderUsers,payments:renderPayments,analytics:renderAnalytics,design:renderDesign,settings:renderSettings};
+  const renders={dashboard:renderDashboard,tests:renderTests,users:renderUsers,payments:renderPayments,analytics:renderAnalytics,design:renderDesign,herotext:renderHeroText,categories:renderCategories,settings:renderSettings};
   renders[page]?.();
 }
 
@@ -385,23 +389,29 @@ function filterTests(f,btn){document.querySelectorAll('.tab').forEach(b=>b.class
 function searchTests(q){document.getElementById('testsTb').innerHTML=testRows(allTests.filter(t=>t.title.toLowerCase().includes(q.toLowerCase())));}
 
 function openAddTest(){
-  openModal(`<div class="m-title">+ Yeni Test</div><div class="m-sub">Test məlumatlarını daxil edin</div>
-    <div class="fg"><label class="fl">Test Adı *</label><input class="fi" id="mT" placeholder="Fiziki Tərbiyə..."></div>
-    <div class="fg"><label class="fl">Açıqlama</label><textarea class="fi" id="mD" placeholder="Test haqqında..."></textarea></div>
-    <div class="frow">
-      <div class="fg"><label class="fl">İkon</label><input class="fi" id="mI" placeholder="📝" maxlength="4"></div>
-      <div class="fg"><label class="fl">Kateqoriya</label><select class="fi" id="mCat"><option value="fiziki">Fiziki Tərbiyə</option><option value="basketbol">Basketbol</option><option value="voleybol">Voleybol</option><option value="other">Digər</option></select></div>
-    </div>
-    <div class="fg"><label class="fl">Test Tipi</label><select class="fi" id="mTy" onchange="updateTypeF()"><option value="inline">Inline (JSON suallar)</option><option value="forms">Google Forms</option><option value="html">HTML Fayl</option></select></div>
-    <div id="typeFlds"><div class="fg"><label class="fl">Suallar JSON</label><textarea class="fi" id="mQ" rows="4" placeholder='[{"q":"Sual?","opts":["A) ..","B) ..","C) .."],"ans":0}]'></textarea></div></div>
-    <div class="frow">
-      <div class="fg"><label class="fl">Sual Sayı</label><input class="fi" id="mQc" type="number" placeholder="60"></div>
-      <div class="fg"><label class="fl">Müddət (dəq)</label><input class="fi" id="mDur" type="number" placeholder="30"></div>
-    </div>
-    <div class="tgl-row"><span class="tgl-lbl">Ödənişli?</span><label class="tgl"><input type="checkbox" id="mPaid" onchange="togglePrice()"><div class="tgl-sl"></div></label></div>
-    <div id="priceF" style="display:none"><div class="fg"><label class="fl">Qiymət (₼)</label><input class="fi" id="mPr" type="number" placeholder="5"></div></div>
-    <div class="tgl-row"><span class="tgl-lbl">Aktiv?</span><label class="tgl"><input type="checkbox" id="mAct" checked><div class="tgl-sl"></div></label></div>
-    <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="saveTest()">💾 Saxla</button></div>`);
+  db.collection('categories').orderBy('order').get().catch(()=>({docs:[]})).then(snap=>{
+    const cats=snap.docs?.map(d=>({id:d.id,...d.data()}))||[];
+    const catOpts=cats.length
+      ? cats.map(c=>`<option value="${c.slug}">${c.icon||''} ${c.name}</option>`).join('')
+      : `<option value="fiziki">📚 Fiziki Tərbiyə</option><option value="basketbol">🏀 Basketbol</option><option value="voleybol">🏐 Voleybol</option><option value="other">📝 Digər</option>`;
+    openModal(`<div class="m-title">+ Yeni Test</div><div class="m-sub">Test məlumatlarını daxil edin</div>
+      <div class="fg"><label class="fl">Test Adı *</label><input class="fi" id="mT" placeholder="Fiziki Tərbiyə..."></div>
+      <div class="fg"><label class="fl">Açıqlama</label><textarea class="fi" id="mD" placeholder="Test haqqında..."></textarea></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">İkon</label><input class="fi" id="mI" placeholder="📝" maxlength="4"></div>
+        <div class="fg"><label class="fl">Kateqoriya</label><select class="fi" id="mCat">${catOpts}</select></div>
+      </div>
+      <div class="fg"><label class="fl">Test Tipi</label><select class="fi" id="mTy" onchange="updateTypeF()"><option value="inline">Inline (JSON suallar)</option><option value="forms">Google Forms</option><option value="html">HTML Fayl</option></select></div>
+      <div id="typeFlds"><div class="fg"><label class="fl">Suallar JSON</label><textarea class="fi" id="mQ" rows="4" placeholder='[{"q":"Sual?","opts":["A) ..","B) ..","C) .."],"ans":0}]'></textarea></div></div>
+      <div class="frow">
+        <div class="fg"><label class="fl">Sual Sayı</label><input class="fi" id="mQc" type="number" placeholder="60"></div>
+        <div class="fg"><label class="fl">Müddət (dəq)</label><input class="fi" id="mDur" type="number" placeholder="30"></div>
+      </div>
+      <div class="tgl-row"><span class="tgl-lbl">Ödənişli?</span><label class="tgl"><input type="checkbox" id="mPaid" onchange="togglePrice()"><div class="tgl-sl"></div></label></div>
+      <div id="priceF" style="display:none"><div class="fg"><label class="fl">Qiymət (₼)</label><input class="fi" id="mPr" type="number" placeholder="5"></div></div>
+      <div class="tgl-row"><span class="tgl-lbl">Aktiv?</span><label class="tgl"><input type="checkbox" id="mAct" checked><div class="tgl-sl"></div></label></div>
+      <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="saveTest()">💾 Saxla</button></div>`);
+  });
 }
 
 function updateTypeF(){
@@ -633,35 +643,310 @@ async function saveDesign(){
   }catch(e){toast('Xəta: '+e.message,'err');}
 }
 
-// ─── SETTINGS ────────────────────────
-async function renderSettings(){
-  const doc=await db.collection('settings').doc('payment').get().catch(()=>({exists:false,data:()=>({})}));
+// ─── HERO MƏTNİ ─────────────────────
+async function renderHeroText(){
+  const doc=await db.collection('settings').doc('content').get().catch(()=>({exists:false,data:()=>({})}));
   const s=doc.exists?doc.data():{};
   document.getElementById('mainContent').innerHTML=`
     <div class="design-wrap">
-      <div class="design-card">
-        <div class="dc-title">🏦 Ödəniş Məlumatları</div>
-        <div class="fg"><label class="fl">Bank IBAN</label><input class="fi" id="sIban" value="${s.iban||''}" placeholder="AZ00 UBRZ ..."></div>
-        <div class="fg"><label class="fl">Hesab Sahibi</label><input class="fi" id="sOwner" value="${s.owner||''}" placeholder="Ad Soyad / Şirkət"></div>
-        <div class="fg"><label class="fl">Bank Adı</label><input class="fi" id="sBank" value="${s.bank||''}" placeholder="UNIBANK, ABB..."></div>
+      <div class="design-card" style="grid-column:1/-1">
+        <div class="dc-title">✍️ Ana Səhifə Mətnləri</div>
+        <div class="dc-sub">Saytın ana səhifəsindəki bütün mətnləri buradan dəyişin.</div>
+
+        <div class="fg"><label class="fl">🏷 Sayt Adı (Logo)</label>
+          <input class="fi" id="cSiteName" value="${s.siteName||'TestHub'}" placeholder="TestHub"></div>
+
+        <div class="fg"><label class="fl">🏷 Kiçik Etiket (Hero üstündəki yazı)</label>
+          <input class="fi" id="cTag" value="${s.heroTag||'Azərbaycanın test platforması'}" placeholder="Azərbaycanın test platforması"></div>
+
+        <div style="background:var(--bg2);border-radius:10px;padding:14px;margin-bottom:14px">
+          <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px">🎯 Böyük Başlıq (Hero)</div>
+          <div class="fg" style="margin-bottom:8px"><label class="fl">Birinci sətir (normal)</label>
+            <input class="fi" id="cH1" value="${s.heroLine1||'Bilikləri'}" placeholder="Bilikləri"></div>
+          <div class="fg" style="margin-bottom:8px"><label class="fl">İkinci hissə (vurğulanan — italic, rəngli)</label>
+            <input class="fi" id="cH2" value="${s.heroLine2||'Sına'}" placeholder="Sına"></div>
+          <div class="fg"><label class="fl">Üçüncü sətir</label>
+            <input class="fi" id="cH3" value="${s.heroLine3||'İrəliləyin'}" placeholder="İrəliləyin"></div>
+        </div>
+
+        <div class="fg"><label class="fl">📝 Alt Mətn (Hero açıqlaması)</label>
+          <textarea class="fi" id="cSub" rows="3" placeholder="Fiziki Tərbiyə...">${s.heroSub||'Fiziki Tərbiyə, Basketbol, Voleybol və daha çox mövzuda peşəkar testlər. Öyrən, sına, inkişaf et.'}</textarea></div>
+
+        <div class="frow">
+          <div class="fg"><label class="fl">🔘 Düymə 1 Mətni</label>
+            <input class="fi" id="cBtn1" value="${s.btn1||'◆ Testlərə Bax'}" placeholder="◆ Testlərə Bax"></div>
+          <div class="fg"><label class="fl">🔘 Düymə 2 Mətni</label>
+            <input class="fi" id="cBtn2" value="${s.btn2||'Pulsuz Qeydiyyat →'}" placeholder="Pulsuz Qeydiyyat →"></div>
+        </div>
+
+        <div style="background:var(--bg2);border-radius:10px;padding:14px;margin-bottom:14px">
+          <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px">📊 Statistika Etiketləri</div>
+          <div class="frow">
+            <div class="fg"><label class="fl">Stat 1</label><input class="fi" id="cSt1" value="${s.stat1||'Test'}" placeholder="Test"></div>
+            <div class="fg"><label class="fl">Stat 2</label><input class="fi" id="cSt2" value="${s.stat2||'İstifadəçi'}" placeholder="İstifadəçi"></div>
+            <div class="fg"><label class="fl">Stat 3</label><input class="fi" id="cSt3" value="${s.stat3||'Tamamlanmış'}" placeholder="Tamamlanmış"></div>
+          </div>
+        </div>
+
+        <div class="fg"><label class="fl">🦶 Footer Mətni</label>
+          <input class="fi" id="cFooter" value="${s.footer||'© 2025 TestHub. Bütün hüquqlar qorunur.'}" placeholder="© 2025 TestHub..."></div>
       </div>
+    </div>
+
+    <!-- CAN LI ÖNİZLƏMƏ -->
+    <div class="preview-box" style="margin-top:20px">
+      <div class="pb-title">👁 Canlı Önizləmə</div>
+      <div class="pb-demo">
+        <div style="font-size:.72rem;font-weight:700;color:var(--accent2);background:var(--accent-pale);border:1px solid var(--accent-light);border-radius:999px;display:inline-flex;align-items:center;gap:6px;padding:4px 14px;margin-bottom:12px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent3);display:inline-block"></span>
+          <span id="prevTag">${s.heroTag||'Azərbaycanın test platforması'}</span>
+        </div>
+        <div class="pb-h" id="prevH" style="font-size:1.8rem;line-height:1.15;margin-bottom:8px">
+          <span id="prevH1">${s.heroLine1||'Bilikləri'}</span> <em style="color:var(--accent);font-style:italic" id="prevH2">${s.heroLine2||'Sına'}</em>,<br><span id="prevH3">${s.heroLine3||'İrəliləyin'}</span>
+        </div>
+        <div class="pb-p" id="prevSub">${s.heroSub||'Fiziki Tərbiyə, Basketbol...'}</div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button class="pb-btn" id="prevBtn1">${s.btn1||'◆ Testlərə Bax'}</button>
+          <button class="pb-btn" style="background:var(--surface);color:var(--text);border:1.5px solid var(--border2)" id="prevBtn2">${s.btn2||'Pulsuz Qeydiyyat →'}</button>
+        </div>
+      </div>
+    </div>`;
+
+  // Canlı yeniləmə
+  const binds=[
+    ['cTag','prevTag'],['cH1','prevH1'],['cH2','prevH2'],['cH3','prevH3'],
+    ['cSub','prevSub'],['cBtn1','prevBtn1'],['cBtn2','prevBtn2']
+  ];
+  binds.forEach(([inp,out])=>{
+    const el=document.getElementById(inp);
+    if(el) el.addEventListener('input',()=>{const t=document.getElementById(out);if(t)t.textContent=el.value;});
+  });
+}
+
+async function saveHeroText(){
+  try{
+    await db.collection('settings').doc('content').set({
+      siteName:document.getElementById('cSiteName').value,
+      heroTag:document.getElementById('cTag').value,
+      heroLine1:document.getElementById('cH1').value,
+      heroLine2:document.getElementById('cH2').value,
+      heroLine3:document.getElementById('cH3').value,
+      heroSub:document.getElementById('cSub').value,
+      btn1:document.getElementById('cBtn1').value,
+      btn2:document.getElementById('cBtn2').value,
+      stat1:document.getElementById('cSt1').value,
+      stat2:document.getElementById('cSt2').value,
+      stat3:document.getElementById('cSt3').value,
+      footer:document.getElementById('cFooter').value,
+    },{merge:true});
+    toast('✅ Mətnlər saxlanıldı! Ana səhifə yeniləndi.');
+  }catch(e){toast('Xəta: '+e.message,'err');}
+}
+
+// ─── KATEQORİYALAR ───────────────────
+let allCategories=[];
+
+async function loadCategories(){
+  const snap=await db.collection('categories').orderBy('order').get().catch(()=>({docs:[]}));
+  allCategories=snap.docs.map(d=>({id:d.id,...d.data()}));
+  return allCategories;
+}
+
+async function renderCategories(){
+  await loadCategories();
+  document.getElementById('mainContent').innerHTML=`
+    <div class="twrap">
+      <div class="thead-row">
+        <div class="t-title">📂 Kateqoriyalar (${allCategories.length})</div>
+      </div>
+      <table>
+        <thead><tr><th>İkon</th><th>Ad</th><th>Slug</th><th>Sıra</th><th>Status</th><th>Əməliyyat</th></tr></thead>
+        <tbody id="catTb">${catRows(allCategories)}</tbody>
+      </table>
+    </div>
+    <div style="background:var(--accent-pale);border:1.5px solid var(--accent-light);border-radius:11px;padding:14px 18px;margin-top:16px;font-size:.85rem;color:var(--accent2)">
+      💡 Test əlavə edərkən bu kateqoriyalar siyahıda görünəcək. Slug-u dəyişməyin — mövcud testlər ona bağlıdır.
+    </div>`;
+}
+
+function catRows(cats){
+  if(!cats.length) return `<tr><td colspan="6"><div class="empty"><div class="empty-e">📂</div>Kateqoriya yoxdur</div></td></tr>`;
+  return cats.map(c=>`<tr>
+    <td style="font-size:1.5rem">${c.icon||'📝'}</td>
+    <td><strong>${c.name}</strong></td>
+    <td><code style="background:var(--bg2);padding:2px 8px;border-radius:5px;font-size:.78rem">${c.slug}</code></td>
+    <td>${c.order||0}</td>
+    <td><span class="badge ${c.isActive!==false?'b-active':'b-inactive'}">${c.isActive!==false?'Aktiv':'Deaktiv'}</span></td>
+    <td><div class="abts">
+      <button class="abt abt-e" onclick="editCategory('${c.id}')">✏️</button>
+      <button class="abt abt-d" onclick="deleteCategory('${c.id}','${c.name}')">🗑</button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function openAddCategory(){
+  openModal(`<div class="m-title">+ Yeni Kateqoriya</div><div class="m-sub">Test kateqoriyası əlavə edin</div>
+    <div class="frow">
+      <div class="fg"><label class="fl">İkon (emoji)</label><input class="fi" id="catI" placeholder="📝" maxlength="4"></div>
+      <div class="fg"><label class="fl">Sıra (1,2,3...)</label><input class="fi" id="catOrd" type="number" placeholder="1" value="1"></div>
+    </div>
+    <div class="fg"><label class="fl">Ad *</label><input class="fi" id="catN" placeholder="Fiziki Tərbiyə" oninput="autoSlug(this.value)"></div>
+    <div class="fg"><label class="fl">Slug (URL üçün)</label><input class="fi" id="catS" placeholder="fiziki-terbiye"></div>
+    <div class="fg"><label class="fl">Açıqlama</label><input class="fi" id="catD" placeholder="Qısa açıqlama..."></div>
+    <div class="tgl-row"><span class="tgl-lbl">Aktiv?</span><label class="tgl"><input type="checkbox" id="catAct" checked><div class="tgl-sl"></div></label></div>
+    <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="saveCategory()">💾 Saxla</button></div>`);
+}
+
+function autoSlug(name){
+  const slug=name.toLowerCase()
+    .replace(/ə/g,'e').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ğ/g,'g')
+    .replace(/ş/g,'s').replace(/ç/g,'c').replace(/ı/g,'i')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const el=document.getElementById('catS');
+  if(el) el.value=slug;
+}
+
+async function saveCategory(editId=null){
+  const name=document.getElementById('catN').value.trim();
+  if(!name){toast('Ad daxil edin','err');return;}
+  const data={
+    name, icon:document.getElementById('catI').value||'📝',
+    slug:document.getElementById('catS').value||name.toLowerCase(),
+    description:document.getElementById('catD').value,
+    order:parseInt(document.getElementById('catOrd').value)||1,
+    isActive:document.getElementById('catAct').checked,
+  };
+  if(!editId) data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+  try{
+    if(editId) await db.collection('categories').doc(editId).update(data);
+    else await db.collection('categories').add(data);
+    closeModal(); await renderCategories();
+    toast(editId?'✅ Kateqoriya yeniləndi':'✅ Kateqoriya əlavə edildi');
+  }catch(e){toast('Xəta: '+e.message,'err');}
+}
+
+async function editCategory(id){
+  const c=allCategories.find(x=>x.id===id);if(!c)return;
+  openModal(`<div class="m-title">✏️ Kateqoriya Redaktəsi</div><div class="m-sub">${c.name}</div>
+    <div class="frow">
+      <div class="fg"><label class="fl">İkon</label><input class="fi" id="catI" value="${c.icon||'📝'}" maxlength="4"></div>
+      <div class="fg"><label class="fl">Sıra</label><input class="fi" id="catOrd" type="number" value="${c.order||1}"></div>
+    </div>
+    <div class="fg"><label class="fl">Ad</label><input class="fi" id="catN" value="${c.name}"></div>
+    <div class="fg"><label class="fl">Slug</label><input class="fi" id="catS" value="${c.slug}"></div>
+    <div class="fg"><label class="fl">Açıqlama</label><input class="fi" id="catD" value="${c.description||''}"></div>
+    <div class="tgl-row"><span class="tgl-lbl">Aktiv?</span><label class="tgl"><input type="checkbox" id="catAct" ${c.isActive!==false?'checked':''}><div class="tgl-sl"></div></label></div>
+    <div class="m-foot"><button class="btn-cancel" onclick="closeModal()">Ləğv</button><button class="btn-save" onclick="saveCategory('${id}')">💾 Yenilə</button></div>`);
+}
+
+async function deleteCategory(id,name){
+  if(!confirm(`"${name}" kateqoriyasını silmək istəyirsiniz?\n\nDiqqət: Bu kateqoriyaya aid testlər silinməyəcək.`))return;
+  await db.collection('categories').doc(id).delete();
+  await renderCategories();
+  toast('🗑 Kateqoriya silindi');
+}
+
+// ─── SETTINGS ────────────────────────
+async function renderSettings(){
+  const [payDoc,themeDoc]=await Promise.all([
+    db.collection('settings').doc('payment').get().catch(()=>({exists:false,data:()=>({})})),
+    db.collection('settings').doc('theme').get().catch(()=>({exists:false,data:()=>({})})),
+  ]);
+  const s=payDoc.exists?payDoc.data():{};
+  const t=themeDoc.exists?themeDoc.data():{};
+  document.getElementById('mainContent').innerHTML=`
+    <div class="design-wrap">
+
+      <!-- BANK MƏLUMATLARı -->
+      <div class="design-card">
+        <div class="dc-title">🏦 Bank Köçürməsi</div>
+        <div class="dc-sub">Manual ödəniş üçün bank məlumatları</div>
+        <div class="fg"><label class="fl">Bank IBAN</label><input class="fi" id="sIban" value="${s.iban||''}" placeholder="AZ00 UBRZ 0000 0000 0000 0000 0000"></div>
+        <div class="fg"><label class="fl">Hesab Sahibi</label><input class="fi" id="sOwner" value="${s.owner||''}" placeholder="Ad Soyad / Şirkət adı"></div>
+        <div class="fg"><label class="fl">Bank Adı</label><input class="fi" id="sBank" value="${s.bank||''}" placeholder="UNIBANK, ABB, Kapital Bank..."></div>
+      </div>
+
+      <!-- ÖDƏNİŞ AÇARLARI -->
+      <div class="design-card">
+        <div class="dc-title">🔑 Ödəniş API Açarları</div>
+        <div class="dc-sub">PayRiff, AzeriCard və ya digər ödəniş sisteminin açarları</div>
+
+        <div style="background:var(--bg2);border-radius:9px;padding:12px;margin-bottom:14px;font-size:.8rem;color:var(--muted);line-height:1.6">
+          🔒 Bu açarlar yalnız admin paneldə görünür. Heç vaxt başqasına verməyin.
+        </div>
+
+        <div class="fg"><label class="fl">Ödəniş Sistemi</label>
+          <select class="fi" id="sPaySys" onchange="updatePayFields()">
+            <option value="manual" ${(s.paySystem||'manual')==='manual'?'selected':''}>🏦 Yalnız Bank Köçürməsi</option>
+            <option value="payriff" ${s.paySystem==='payriff'?'selected':''}>💳 PayRiff</option>
+            <option value="azericard" ${s.paySystem==='azericard'?'selected':''}>💳 AzeriCard</option>
+          </select>
+        </div>
+
+        <div id="payKeyFields">
+          ${s.paySystem==='payriff'?`
+            <div class="fg"><label class="fl">PayRiff Public Key</label><input class="fi" id="sPayPub" value="${s.payPublicKey||''}" placeholder="pk_live_..."></div>
+            <div class="fg"><label class="fl">PayRiff Secret Key</label><input class="fi" id="sPaySec" value="${s.paySecretKey||''}" placeholder="sk_live_..." type="password"></div>
+            <div class="fg"><label class="fl">Merchant ID</label><input class="fi" id="sPayMid" value="${s.payMerchantId||''}" placeholder="merchant_xxx"></div>
+          `:s.paySystem==='azericard'?`
+            <div class="fg"><label class="fl">AzeriCard Merchant ID</label><input class="fi" id="sPayPub" value="${s.payPublicKey||''}" placeholder="merchant_id"></div>
+            <div class="fg"><label class="fl">AzeriCard Secret Key</label><input class="fi" id="sPaySec" value="${s.paySecretKey||''}" placeholder="secret_key" type="password"></div>
+            <div class="fg"><label class="fl">Terminal ID</label><input class="fi" id="sPayMid" value="${s.payMerchantId||''}" placeholder="terminal_xxx"></div>
+          `:`<div style="padding:14px;background:var(--bg2);border-radius:9px;font-size:.83rem;color:var(--muted);text-align:center">Yalnız bank köçürməsi aktiv — API açarı lazım deyil</div>`}
+        </div>
+      </div>
+
+      <!-- SAYT MƏLUMATLARı -->
       <div class="design-card">
         <div class="dc-title">🌐 Sayt Məlumatları</div>
         <div class="fg"><label class="fl">Sayt Adı</label><input class="fi" id="sSite" value="${s.siteName||'TestHub'}" placeholder="TestHub"></div>
         <div class="fg"><label class="fl">İletişim Email</label><input class="fi" id="sCont" value="${s.contact||''}" placeholder="info@testhub.az"></div>
+        <div class="fg"><label class="fl">Sayt URL</label><input class="fi" id="sUrl" value="${s.siteUrl||''}" placeholder="https://username.github.io/testhub"></div>
       </div>
+
+      <!-- ADMİN EMAİL -->
+      <div class="design-card">
+        <div class="dc-title">👤 Admin Emailləri</div>
+        <div class="dc-sub">Hər sətirə bir email. Bu emaillər admin panelə girə bilər.</div>
+        <div class="fg"><label class="fl">Admin Emailləri</label>
+          <textarea class="fi" id="sAdmins" rows="4" placeholder="admin@email.com&#10;ikinci@email.com">${ADMIN_EMAILS.join('\n')}</textarea></div>
+        <div style="padding:10px;background:var(--bg2);border-radius:8px;font-size:.78rem;color:var(--muted)">
+          ⚠️ Dəyişiklik etdikdən sonra <strong>js/firebase-config.js</strong> faylında da ADMIN_EMAILS-i yeniləyin.
+        </div>
+      </div>
+
     </div>`;
+}
+
+function updatePayFields(){
+  const sys=document.getElementById('sPaySys').value;
+  const fields={
+    payriff:`<div class="fg"><label class="fl">PayRiff Public Key</label><input class="fi" id="sPayPub" placeholder="pk_live_..."></div>
+      <div class="fg"><label class="fl">PayRiff Secret Key</label><input class="fi" id="sPaySec" placeholder="sk_live_..." type="password"></div>
+      <div class="fg"><label class="fl">Merchant ID</label><input class="fi" id="sPayMid" placeholder="merchant_xxx"></div>`,
+    azericard:`<div class="fg"><label class="fl">AzeriCard Merchant ID</label><input class="fi" id="sPayPub" placeholder="merchant_id"></div>
+      <div class="fg"><label class="fl">AzeriCard Secret Key</label><input class="fi" id="sPaySec" placeholder="secret_key" type="password"></div>
+      <div class="fg"><label class="fl">Terminal ID</label><input class="fi" id="sPayMid" placeholder="terminal_xxx"></div>`,
+    manual:`<div style="padding:14px;background:var(--bg2);border-radius:9px;font-size:.83rem;color:var(--muted);text-align:center">Yalnız bank köçürməsi aktiv</div>`
+  };
+  document.getElementById('payKeyFields').innerHTML=fields[sys];
 }
 
 async function saveSettings(){
   try{
-    await db.collection('settings').doc('payment').set({
+    const payData={
       iban:document.getElementById('sIban').value,
       owner:document.getElementById('sOwner').value,
       bank:document.getElementById('sBank').value,
       siteName:document.getElementById('sSite').value,
       contact:document.getElementById('sCont').value,
-    },{merge:true});
+      siteUrl:document.getElementById('sUrl').value,
+      paySystem:document.getElementById('sPaySys').value,
+      payPublicKey:document.getElementById('sPayPub')?.value||'',
+      paySecretKey:document.getElementById('sPaySec')?.value||'',
+      payMerchantId:document.getElementById('sPayMid')?.value||'',
+    };
+    await db.collection('settings').doc('payment').set(payData,{merge:true});
     toast('✅ Parametrlər saxlanıldı');
   }catch(e){toast('Xəta: '+e.message,'err');}
 }
