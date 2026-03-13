@@ -32,7 +32,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nl-reg{background:var(--accent)!important;color:var(--btn-text)!important;font-weight:700!important;box-shadow:0 4px 14px var(--card-shadow);}
 .nl-reg:hover{opacity:.9;transform:translateY(-1px);}
 .user-nav{display:flex;align-items:center;gap:8px;}
-.u-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--btn-text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;text-decoration:none;cursor:pointer;transition:opacity .2s;flex-shrink:0;}
+.u-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--btn-text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;text-decoration:none;cursor:pointer;flex-shrink:0;transition:opacity .2s;}
 .u-avatar:hover{opacity:.85;}
 .u-name{font-size:.88rem;font-weight:600;color:var(--text2);text-decoration:none;padding:4px 7px;border-radius:7px;transition:all .2s;}
 .u-name:hover{background:var(--accent-pale);color:var(--accent);}
@@ -101,9 +101,7 @@ footer p{color:var(--muted);font-size:.82rem;}
 .spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
 @media(max-width:680px){
   nav{padding:0 16px;}
-  /* Adi nav linklərini gizlət, user-nav-ı qoru */
   .nav-links>a:not(.nl-reg):not(.nl-login){display:none;}
-  /* user-nav-da mail çox uzun olsa kıs */
   .u-name{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .hero-stats{flex-direction:column;}
   .hstat{border-right:none;border-bottom:1px solid var(--border);}
@@ -127,7 +125,7 @@ footer p{color:var(--muted);font-size:.82rem;}
   <div class="hero-shape s1"></div>
   <div class="hero-shape s2"></div>
   <div class="hero-tag"><span class="htdot"></span> Azərbaycanın test platforması</div>
-  <h1 class="hero-h"><span id="hL1">Bilikləri</span> <em id="hL2">Sına</em>,<br><span id="hL3">İrəliləyin</span></h1>
+  <h1 class="hero-h"><span id="hL1">Bilikləri Sına, İrəliləyin</span></h1>
   <p class="hero-sub">Fiziki Tərbiyə, Basketbol, Voleybol və daha çox mövzuda peşəkar testlər. Öyrən, sına, inkişaf et.</p>
   <div class="hero-btns">
     <a href="#tests" class="btn-p">◆ Testlərə Bax</a>
@@ -344,8 +342,6 @@ async function loadContent(){
       if(s.siteName) document.title=s.siteName+' — Bilik Platforması';
       if(s.heroTag){const el=document.querySelector('.hero-tag');if(el)el.innerHTML=`<span class="htdot"></span> ${s.heroTag}`;}
       if(s.heroLine1){const el=document.getElementById('hL1');if(el)el.textContent=s.heroLine1;}
-      if(s.heroLine2){const el=document.getElementById('hL2');if(el)el.textContent=s.heroLine2;}
-      if(s.heroLine3){const el=document.getElementById('hL3');if(el)el.textContent=s.heroLine3;}
       if(s.heroSub){const el=document.querySelector('.hero-sub');if(el)el.textContent=s.heroSub;}
       if(s.btn1){const el=document.querySelector('.btn-p');if(el)el.textContent=s.btn1;}
       if(s.btn2){const el=document.querySelector('.btn-o');if(el)el.textContent=s.btn2;}
