@@ -1,5 +1,14 @@
 // Auth köməkçi funksiyalar
 
+// ── Path köməkçisi (GitHub Pages /repo-name/ üçün) ──
+function getBasePath() {
+  // /test/pages/login.html → /test
+  // /test/index.html → /test
+  const parts = window.location.pathname.split('/');
+  // İlk boş element + repo adı
+  return '/' + parts[1];
+}
+
 // Qeydiyyat
 async function registerUser(name, email, password) {
   const cred = await auth.createUserWithEmailAndPassword(email, password);
@@ -20,10 +29,11 @@ async function loginUser(email, password) {
   return cred.user;
 }
 
-// Çıxış
+// Çıxış — GitHub Pages üçün düzgün path
 async function logoutUser() {
   await auth.signOut();
-  window.location.href = '..test/index.html';
+  const base = getBasePath();
+  window.location.href = base + '/index.html';
 }
 
 // Cari istifadəçi məlumatları
