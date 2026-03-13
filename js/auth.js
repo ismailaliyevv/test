@@ -23,7 +23,7 @@ async function loginUser(email, password) {
 // Çıxış
 async function logoutUser() {
   await auth.signOut();
-  window.location.href = '../index.html';
+  window.location.href = '..test/index.html';
 }
 
 // Cari istifadəçi məlumatları
