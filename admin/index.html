@@ -189,26 +189,10 @@ select.fi{cursor:pointer;}
 
 .spin{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:36px auto;}
 
-/* HAMBURGER */
-.hamburger{display:none;position:fixed;top:14px;left:14px;z-index:100;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;cursor:pointer;font-size:1.2rem;box-shadow:0 2px 8px var(--card-shadow);}
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:49;}
-@media(max-width:768px){
-  .hamburger{display:flex;}
-  .sidebar{transform:translateX(-100%);transition:transform .3s;z-index:50;}
-  .sidebar.open{transform:translateX(0);}
-  .sidebar-overlay.open{display:block;}
-  .main{margin-left:0;}
-  .topbar{padding-left:56px;}
-  .cgrid{grid-template-columns:1fr;}
-  .design-wrap{grid-template-columns:1fr;}
-}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;}.cgrid{grid-template-columns:1fr;}.design-wrap{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-
-<!-- HAMBURGER (mobil) -->
-<button class="hamburger" onclick="toggleSidebar()" id="hamburgerBtn">☰</button>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
@@ -677,12 +661,8 @@ async function renderHeroText(){
 
         <div style="background:var(--bg2);border-radius:10px;padding:14px;margin-bottom:14px">
           <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px">🎯 Böyük Başlıq (Hero)</div>
-          <div class="fg" style="margin-bottom:8px"><label class="fl">Birinci sətir (normal)</label>
-            <input class="fi" id="cH1" value="${s.heroLine1||'Bilikləri'}" placeholder="Bilikləri"></div>
-          <div class="fg" style="margin-bottom:8px"><label class="fl">İkinci hissə (vurğulanan — italic, rəngli)</label>
-            <input class="fi" id="cH2" value="${s.heroLine2||'Sına'}" placeholder="Sına"></div>
-          <div class="fg"><label class="fl">Üçüncü sətir</label>
-            <input class="fi" id="cH3" value="${s.heroLine3||'İrəliləyin'}" placeholder="İrəliləyin"></div>
+          <div class="fg"><label class="fl">Başlıq mətni</label>
+            <input class="fi" id="cH1" value="${s.heroLine1||'Bilikləri Sına, İrəliləyin'}" placeholder="Başlıq mətni..."></div>
         </div>
 
         <div class="fg"><label class="fl">📝 Alt Mətn (Hero açıqlaması)</label>
@@ -718,7 +698,7 @@ async function renderHeroText(){
           <span id="prevTag">${s.heroTag||'Azərbaycanın test platforması'}</span>
         </div>
         <div class="pb-h" id="prevH" style="font-size:1.8rem;line-height:1.15;margin-bottom:8px">
-          <span id="prevH1">${s.heroLine1||'Bilikləri'}</span> <em style="color:var(--accent);font-style:italic" id="prevH2">${s.heroLine2||'Sına'}</em>,<br><span id="prevH3">${s.heroLine3||'İrəliləyin'}</span>
+          <span id="prevH1">${s.heroLine1||'Bilikləri Sına, İrəliləyin'}</span>
         </div>
         <div class="pb-p" id="prevSub">${s.heroSub||'Fiziki Tərbiyə, Basketbol...'}</div>
         <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
@@ -730,7 +710,7 @@ async function renderHeroText(){
 
   // Canlı yeniləmə
   const binds=[
-    ['cTag','prevTag'],['cH1','prevH1'],['cH2','prevH2'],['cH3','prevH3'],
+    ['cTag','prevTag'],['cH1','prevH1'],
     ['cSub','prevSub'],['cBtn1','prevBtn1'],['cBtn2','prevBtn2']
   ];
   binds.forEach(([inp,out])=>{
@@ -745,8 +725,6 @@ async function saveHeroText(){
       siteName:document.getElementById('cSiteName').value,
       heroTag:document.getElementById('cTag').value,
       heroLine1:document.getElementById('cH1').value,
-      heroLine2:document.getElementById('cH2').value,
-      heroLine3:document.getElementById('cH3').value,
       heroSub:document.getElementById('cSub').value,
       btn1:document.getElementById('cBtn1').value,
       btn2:document.getElementById('cBtn2').value,
@@ -877,13 +855,6 @@ async function renderSettings(){
       <div class="design-card">
         <div class="dc-title">🏦 Bank Köçürməsi</div>
         <div class="dc-sub">Manual ödəniş üçün bank məlumatları</div>
-        <div class="tgl-row" style="margin-bottom:16px">
-          <div>
-            <span class="tgl-lbl">🏦 Bank köçürməsi aktiv</span>
-            <div style="font-size:.72rem;color:var(--muted);margin-top:3px">Ödəniş səhifəsində bank bölməsi görünsün</div>
-          </div>
-          <label class="tgl"><input type="checkbox" id="sShowBank" ${s.showBank!==false?'checked':''}><div class="tgl-sl"></div></label>
-        </div>
         <div class="fg"><label class="fl">Bank IBAN</label><input class="fi" id="sIban" value="${s.iban||''}" placeholder="AZ00 UBRZ 0000 0000 0000 0000 0000"></div>
         <div class="fg"><label class="fl">Hesab Sahibi</label><input class="fi" id="sOwner" value="${s.owner||''}" placeholder="Ad Soyad / Şirkət adı"></div>
         <div class="fg"><label class="fl">Bank Adı</label><input class="fi" id="sBank" value="${s.bank||''}" placeholder="UNIBANK, ABB, Kapital Bank..."></div>
@@ -891,15 +862,9 @@ async function renderSettings(){
 
       <!-- ÖDƏNİŞ AÇARLARI -->
       <div class="design-card">
-        <div class="dc-title">💳 Kartla Ödəniş</div>
-        <div class="dc-sub">Kart ödənişini aktivləşdirin</div>
-        <div class="tgl-row" style="margin-bottom:16px">
-          <div>
-            <span class="tgl-lbl">💳 Kartla ödəniş aktiv</span>
-            <div style="font-size:.72rem;color:var(--muted);margin-top:3px">Ödəniş səhifəsində kart bölməsi görünsün</div>
-          </div>
-          <label class="tgl"><input type="checkbox" id="sShowCard" ${s.showCard===true?'checked':''}><div class="tgl-sl"></div></label>
-        </div>
+        <div class="dc-title">🔑 Ödəniş API Açarları</div>
+        <div class="dc-sub">PayRiff, AzeriCard və ya digər ödəniş sisteminin açarları</div>
+
         <div style="background:var(--bg2);border-radius:9px;padding:12px;margin-bottom:14px;font-size:.8rem;color:var(--muted);line-height:1.6">
           🔒 Bu açarlar yalnız admin paneldə görünür. Heç vaxt başqasına verməyin.
         </div>
@@ -981,13 +946,6 @@ function updatePayFields(){
   document.getElementById('payKeyFields').innerHTML=fields[sys];
 }
 
-function toggleSidebar(){
-  const sb=document.querySelector('.sidebar');
-  const ov=document.getElementById('sidebarOverlay');
-  sb.classList.toggle('open');
-  ov.classList.toggle('open');
-}
-
 async function saveSettings(){
   try{
     const payData={
@@ -1003,8 +961,6 @@ async function saveSettings(){
       payMerchantId:document.getElementById('sPayMid')?.value||'',
       guestView:document.getElementById('sGuestView')?.checked !== false,
       guestStart:document.getElementById('sGuestStart')?.checked === true,
-      showBank:document.getElementById('sShowBank')?.checked !== false,
-      showCard:document.getElementById('sShowCard')?.checked === true,
     };
     await db.collection('settings').doc('payment').set(payData,{merge:true});
     toast('✅ Parametrlər saxlanıldı');
