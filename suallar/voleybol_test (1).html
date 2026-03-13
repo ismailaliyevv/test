@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voleybol Testi</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f0ece3;--surface:#fff;--surface2:#f7f4ee;--border:#ddd7c9;
+  --ink:#1a1208;--ink2:#4a3c28;--ink3:#9a8c78;
+  --green:#166534;--gbg:#f0fdf4;
+  --red:#991b1b;--rbg:#fff1f0;
+  --teal:#0f766e;--tbg:#f0fdfa;
+  --amber:#92400e;--abg:#fffbeb;
+  --blue:#1d4ed8;--bbg:#eff6ff;
+}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+.site-header{background:var(--ink);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;border-bottom:3px solid var(--teal)}
+.site-header h1{font-size:15px;font-weight:700;letter-spacing:1px}
+.site-header h1 span{color:#5eead4}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:13px;font-weight:600;color:#fff}
+.pill.red{color:#fca5a5}
+.snd-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.snd-btn:hover{background:rgba(255,255,255,.2)}
+.wrap{max-width:780px;margin:0 auto;padding:28px 16px 60px}
+.prog{margin-bottom:22px}
+.prog-bar{height:6px;background:var(--border);border-radius:6px;overflow:hidden;margin-bottom:6px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),#0d9488);border-radius:6px;transition:width .4s ease;width:0}
+.prog-lbl{font-size:12px;color:var(--ink3);font-weight:500;text-align:right}
+.grid-box{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.grid-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+.q-grid{display:flex;flex-wrap:wrap;gap:5px}
+.gc{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface2);font-size:11px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif}
+.gc:hover{border-color:var(--teal);color:var(--teal);background:var(--tbg)}
+.gc.cur{background:var(--ink);border-color:var(--ink);color:#fff}
+.gc.g-ok{background:var(--green);border-color:var(--green);color:#fff}
+.gc.g-err{background:var(--red);border-color:var(--red);color:#fff}
+.q-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:18px;box-shadow:0 4px 20px rgba(0,0,0,.07);animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.q-header{background:var(--ink);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.q-num{font-size:12px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:1px}
+.q-num b{color:#5eead4;font-size:15px}
+.q-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:4px 10px;border-radius:10px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.q-body{padding:22px 20px 14px;border-bottom:1px solid var(--surface2)}
+.q-text{font-size:15px;font-weight:500;line-height:1.7;color:var(--ink)}
+.opts{padding:14px 14px 18px;display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left;width:100%;font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--ink2);transition:all .18s}
+.opt:hover:not([disabled]){border-color:var(--teal);background:var(--tbg);transform:translateX(3px)}
+.opt[disabled]{cursor:default}
+.opt-key{min-width:28px;height:28px;border-radius:7px;background:var(--border);font-size:11px;font-weight:700;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
+.opt.correct{border-color:var(--green)!important;background:var(--gbg)!important}
+.opt.correct .opt-key{background:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red)!important;background:var(--rbg)!important;animation:shk .3s ease}
+.opt.wrong .opt-key{background:var(--red);color:#fff}
+.opt.show-ans{border-color:var(--green)!important;border-style:dashed!important;background:var(--gbg)!important}
+.opt.show-ans .opt-key{background:var(--green);color:#fff}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.tbl-wrap{padding:6px 16px 18px}
+table.vtbl{width:100%;border-collapse:collapse;font-size:13px}
+.vtbl th{padding:9px 12px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);text-align:left;border-bottom:1.5px solid var(--border);background:var(--surface2)}
+.vtbl td{padding:8px 12px;border-bottom:1px solid var(--surface2);color:var(--ink2);font-size:13.5px}
+.vtbl td:first-child{font-weight:600}
+.vtbl tr.row-ok td:first-child{color:var(--green)}
+.vtbl tr.row-ok td:first-child::after{content:" ✓"}
+.vtbl tr.row-err td:first-child{color:var(--red)}
+.vtbl tr.row-err td:first-child::after{content:" ✗"}
+.rc{text-align:center}
+.rc input[type=radio]{display:none}
+.rc label{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface2);font-size:11px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all .18s}
+.rc label:hover{border-color:var(--teal);color:var(--teal);background:var(--tbg)}
+.rc input[type=radio]:checked+label{background:var(--teal);border-color:var(--teal);color:#fff}
+.tbl-btn{margin:12px 0 4px;width:100%;padding:11px;background:var(--tbg);border:1.5px solid var(--teal);color:var(--teal);border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;transition:all .18s}
+.tbl-btn:hover{background:var(--teal);color:#fff}
+.tbl-res{margin-top:8px;padding:10px 14px;border-radius:9px;font-size:13px;font-weight:600;display:none}
+.tbl-res.show{display:block}
+.tbl-res.ok{background:var(--gbg);border:1px solid #bbf7d0;color:var(--green)}
+.tbl-res.part{background:var(--abg);border:1px solid #fde68a;color:var(--amber)}
+.tbl-res.fail{background:var(--rbg);border:1px solid #fecaca;color:var(--red)}
+.fb{padding:0 16px 14px;font-size:13px;font-weight:600;display:none;align-items:center;gap:8px}
+.fb.show{display:flex}
+.fb.ok{color:var(--green)}
+.fb.fail{color:var(--red)}
+.nav-row{display:flex;gap:10px;margin-top:4px}
+.nav-btn{padding:12px 22px;border-radius:11px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1.5px solid}
+.nav-btn.back{background:transparent;border-color:var(--border);color:var(--ink2);display:none}
+.nav-btn.back.show{display:flex;align-items:center;gap:8px}
+.nav-btn.back:hover{border-color:var(--ink);color:var(--ink)}
+.nav-btn.next{background:var(--ink);border-color:var(--ink);color:#fff;display:none;margin-left:auto}
+.nav-btn.next.show{display:flex;align-items:center;gap:8px}
+.nav-btn.next:hover{background:var(--teal);border-color:var(--teal)}
+.res-panel{display:none;animation:fadeIn .4s ease}
+.res-panel.show{display:block}
+.res-card{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 6px 30px rgba(0,0,0,.08)}
+.res-top{background:var(--ink);padding:44px 32px;text-align:center}
+.res-emoji{font-size:56px;margin-bottom:12px}
+.res-title{font-size:28px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:6px}
+.res-sub{color:rgba(255,255,255,.5);font-size:14px}
+.res-body{padding:32px}
+.big-sc{text-align:center;margin-bottom:22px}
+.big-sc .n{font-size:72px;font-weight:700;color:var(--teal);line-height:1}
+.big-sc .d{font-size:28px;color:var(--ink3)}
+.stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.stat{background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:14px 20px;text-align:center;min-width:88px}
+.stat .sn{font-size:24px;font-weight:700;display:block;margin-bottom:3px}
+.stat .sl{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:1.5px}
+.stat.ok .sn{color:var(--green)}
+.stat.err .sn{color:var(--red)}
+.stat.pct .sn{color:var(--teal)}
+.restart-btn{width:100%;padding:15px;background:var(--ink);border:none;border-radius:13px;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.restart-btn:hover{background:var(--teal)}
+#cfw{position:fixed;inset:0;pointer-events:none;z-index:9999}
+.cp{position:absolute;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{from{transform:translateY(-30px) rotate(0deg);opacity:1}to{transform:translateY(105vh) rotate(600deg);opacity:0}}
+@media(max-width:540px){.q-text{font-size:14px}.gc{width:28px;height:28px;font-size:10px}}
+</style>
+</head>
+<body>
+<div class="site-header">
+  <h1>🏐 <span>Voleybol</span> Qaydaları Testi</h1>
+  <div class="hdr-right">
+    <div class="pill" id="sc">Bal: 0</div>
+    <div class="pill red" id="wc">Səhv: 0</div>
+    <button class="snd-btn" id="sndBtn">🔊</button>
+  </div>
+</div>
+<div class="wrap">
+  <div class="prog">
+    <div class="prog-bar"><div class="prog-fill" id="pf"></div></div>
+    <div class="prog-lbl" id="pl">0 / 52</div>
+  </div>
+  <div class="grid-box">
+    <div class="grid-title">Sual Xəritəsi</div>
+    <div class="q-grid" id="qGrid"></div>
+  </div>
+  <div id="qArea"></div>
+  <div class="nav-row" id="navRow">
+    <button class="nav-btn back" id="btnBack">← Geri</button>
+    <button class="nav-btn next" id="btnNext">Növbəti →</button>
+  </div>
+  <div class="res-panel" id="resPanel">
+    <div class="res-card">
+      <div class="res-top">
+        <div class="res-emoji" id="rEmoji">🏆</div>
+        <div class="res-title" id="rTitle">Əla!</div>
+        <div class="res-sub" id="rSub"></div>
+      </div>
+      <div class="res-body">
+        <div class="big-sc"><span class="n" id="rN">0</span><span class="d" id="rD">/52</span></div>
+        <div class="stats">
+          <div class="stat ok"><span class="sn" id="rOk">0</span><span class="sl">Düzgün</span></div>
+          <div class="stat err"><span class="sn" id="rErr">0</span><span class="sl">Səhv</span></div>
+          <div class="stat pct"><span class="sn" id="rPct">0%</span><span class="sl">Faiz</span></div>
+        </div>
+        <button class="restart-btn" onclick="startQuiz()">↺ Yenidən Başla</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="cfw"></div>
+<script>
+// ── SUALLAR ──────────────────────────────────────────────────────────
+// Hər sualda dörd variant var. Düzgün cavab müxtəlif mövqelərdədir (A/B/C/D).
+// Shuffle zamanı isCorrect:true olan variant qarışır — mövqe hər dəfə dəyişir.
+const BANK = [
+  // SAHƏ (7)
+  {tp:'c',topic:'Oyun Sahəsi',
+   q:'Voleybol meydançasının eni neçə metrdir?',
+   opts:[{t:'9 m',c:true},{t:'12 m',c:false},{t:'18 m',c:false},{t:'6 m',c:false}]},
+
+  {tp:'c',topic:'Oyun Sahəsi',
+   q:'Voleybol meydançasının uzunluğu neçə metrdir?',
+   opts:[{t:'12 m',c:false},{t:'15 m',c:false},{t:'18 m',c:true},{t:'9 m',c:false}]},
+
+  {tp:'c',topic:'Oyun Sahəsi',
+   q:'Kişilər üçün tor hündürlüyü neçədir?',
+   opts:[{t:'2.24 m',c:false},{t:'2.43 m',c:true},{t:'2.35 m',c:false},{t:'2.50 m',c:false}]},
+
+  {tp:'c',topic:'Oyun Sahəsi',
+   q:'Qadınlar üçün tor hündürlüyü neçədir?',
+   opts:[{t:'2.20 m',c:false},{t:'2.43 m',c:false},{t:'2.24 m',c:true},{t:'2.35 m',c:false}]},
+
+  {tp:'c',topic:'Oyun Sahəsi',
+   q:'Servis atışı sahəsinin dərinliyi neçə metrdir?',
+   opts:[{t:'6 m',c:false},{t:'9 m',c:true},{t:'3 m',c:false},{t:'12 m',c:false}]},
+
+  {tp:'c',topic:'Oyun Sahəsi',
+   q:'Yan xətlər oyun meydançasına daxildirmi?',
+   opts:[{t:'Bəli, daxildir',c:true},{t:'Xeyr, daxil deyil',c:false},{t:'Yalnız servis üçün',c:false},{t:'Yarısı daxildir',c:false}]},
+
+  {tp:'c',topic:'Oyun Sahəsi',
+   q:'Libero dəyişdirmə zonası harada yerləşir?',
+   opts:[{t:'Arxa xətt boyunca bütün zona',c:false},{t:'Hücum xətti uzantısından orta xəttə qədər olan bölmə',c:true},{t:'Meydançanın ortasında',c:false},{t:'Yalnız sol tərəfdə',c:false}]},
+
+  // KOMANDA (6)
+  {tp:'c',topic:'Komanda',
+   q:'Bir komandada maksimum neçə oyunçu ola bilər?',
+   opts:[{t:'10',c:false},{t:'14',c:false},{t:'12',c:true},{t:'16',c:false}]},
+
+  {tp:'c',topic:'Komanda',
+   q:'Dünya çempionatlarında yazı cədvəlinə neçə oyunçu qeyd edilir?',
+   opts:[{t:'12',c:false},{t:'16',c:false},{t:'18',c:false},{t:'14',c:true}]},
+
+  {tp:'c',topic:'Komanda',
+   q:'Hər komandanın meydançada eyni anda neçə oyunçusu olur?',
+   opts:[{t:'5',c:false},{t:'7',c:false},{t:'8',c:false},{t:'6',c:true}]},
+
+  {tp:'c',topic:'Komanda',
+   q:'Formaların nömrələri hansı aralıqda olmalıdır?',
+   opts:[{t:'1–12',c:false},{t:'1–15',c:false},{t:'1–20',c:true},{t:'1–18',c:false}]},
+
+  {tp:'c',topic:'Komanda',
+   q:'Komandanın kapitanı kim ola bilər?',
+   opts:[{t:'Yalnız ön zona oyunçusu',c:false},{t:'Libero daxil istənilən oyunçu',c:true},{t:'Yalnız libero',c:false},{t:'Libero xaric istənilən oyunçu',c:false}]},
+
+  {tp:'c',topic:'Komanda',
+   q:'Dünya çempionatlarında neçə libero ola bilər?',
+   opts:[{t:'1',c:false},{t:'3',c:false},{t:'4',c:false},{t:'2',c:true}]},
+
+  // OYUN QAYDASI (3)
+  {tp:'c',topic:'Oyun Qaydası',
+   q:'Voleybol oyunu necə başlayır?',
+   opts:[{t:'Servis atışı ilə',c:false},{t:'Baş hakim işarəsi ilə',c:false},{t:'Püşkatma ilə',c:true},{t:'Komanda razılaşması ilə',c:false}]},
+
+  {tp:'c',topic:'Oyun Qaydası',
+   q:'Püşkü qazanan komanda nə seçmək hüququna sahib olur?',
+   opts:[{t:'Oyuna başlamaq VƏ YA sahəni seçmək',c:true},{t:'Yalnız sahəni seçmək',c:false},{t:'Yalnız servis atmaq',c:false},{t:'Oyunçu sayını seçmək',c:false}]},
+
+  {tp:'c',topic:'Oyun Qaydası',
+   q:'Hissəni qazanmaq üçün nə lazımdır?',
+   opts:[{t:'20 xal toplamaq',c:false},{t:'15 xal toplamaq',c:false},{t:'25 xal toplamaq',c:false},{t:'Rəqibdən ən az 2 xal çox olmaqla tələb olunan xalı toplamaq',c:true}]},
+
+  // MÖVQELƏr (7)
+  {tp:'c',topic:'Mövqelər',
+   q:'Sağda olan ön zona oyunçusunun nömrəsi neçədir?',
+   opts:[{t:'3',c:false},{t:'4',c:false},{t:'1',c:false},{t:'2',c:true}]},
+
+  {tp:'c',topic:'Mövqelər',
+   q:'Solda olan ön zona oyunçusunun nömrəsi neçədir?',
+   opts:[{t:'2',c:false},{t:'3',c:false},{t:'4',c:true},{t:'5',c:false}]},
+
+  {tp:'c',topic:'Mövqelər',
+   q:'Orta ön zona oyunçusunun nömrəsi neçədir?',
+   opts:[{t:'2',c:false},{t:'4',c:false},{t:'6',c:false},{t:'3',c:true}]},
+
+  {tp:'c',topic:'Mövqelər',
+   q:'Arxa zona sağ oyunçusunun nömrəsi neçədir?',
+   opts:[{t:'5',c:false},{t:'6',c:false},{t:'2',c:false},{t:'1',c:true}]},
+
+  {tp:'c',topic:'Mövqelər',
+   q:'Arxa zona orta oyunçusunun nömrəsi neçədir?',
+   opts:[{t:'1',c:false},{t:'5',c:false},{t:'3',c:false},{t:'6',c:true}]},
+
+  {tp:'c',topic:'Mövqelər',
+   q:'Mövqe xətasında rəqib komandaya nə verilir?',
+   opts:[{t:'2 xal',c:false},{t:'3 xal',c:false},{t:'Yalnız mövqe düzəldilir',c:false},{t:'1 xal + servis atma hüququ',c:true}]},
+
+  {tp:'c',topic:'Mövqelər',
+   q:'Servis atışından sonra oyunçular nə edə bilər?',
+   opts:[{t:'Yalnız öz zonasında qala bilər',c:false},{t:'Yalnız arxa zonaya keçə bilər',c:false},{t:'Sərbəst hərəkət edib istənilən mövqeyə keçə bilər',c:true},{t:'Mövqeyini dəyişdirə bilməz',c:false}]},
+
+  // LİBERO (5)
+  {tp:'c',topic:'Libero',
+   q:'Libero oyunçusu neçə oyunçu əvəzinə müdafiə edə bilər?',
+   opts:[{t:'Yalnız 1',c:false},{t:'Limitsiz',c:false},{t:'Ən çox 2',c:true},{t:'Yalnız 2',c:false}]},
+
+  {tp:'c',topic:'Libero',
+   q:'Libero forması qalanlara nisbətən necə olmalıdır?',
+   opts:[{t:'İstənilən rəngdə',c:false},{t:'Fərqli rəngdə',c:true},{t:'Ağ rəngdə',c:false},{t:'Eyni rəngdə',c:false}]},
+
+  {tp:'c',topic:'Libero',
+   q:'Libero hansı hərəkətləri edə bilməz?',
+   opts:[{t:'Topun qəbulu',c:false},{t:'Ötürmə etmək',c:false},{t:'Blok qurmaq, servis atmaq, hücum zərbəsi vurmaq',c:true},{t:'Sahəyə daxil olmaq',c:false}]},
+
+  {tp:'c',topic:'Libero',
+   q:'Libero kapitan ola bilərmi?',
+   opts:[{t:'Bəli, həmişə',c:false},{t:'Komanda qərarı ilə',c:false},{t:'Xeyr, libero kapitan ola bilməz',c:true},{t:'Yalnız finallarda',c:false}]},
+
+  {tp:'c',topic:'Libero',
+   q:'Libero blok qura bilərmi?',
+   opts:[{t:'Bəli, həmişə',c:false},{t:'Kapitan icazəsi ilə',c:false},{t:'Yalnız ön zonada',c:false},{t:'Xeyr, qadağandır',c:true}]},
+
+  // SERVİS (3)
+  {tp:'c',topic:'Servis',
+   q:'Servis necə atılır?',
+   opts:[{t:'İki əl ilə',c:false},{t:'Baş ilə',c:false},{t:'Bir əl ilə vurularaq',c:true},{t:'Ayaq ilə',c:false}]},
+
+  {tp:'c',topic:'Servis',
+   q:'Topu havaya atdıqdan neçə saniyə ərzində vurmalıdır?',
+   opts:[{t:'5 saniyə',c:false},{t:'3 saniyə',c:false},{t:'10 saniyə',c:false},{t:'8 saniyə',c:true}]},
+
+  {tp:'c',topic:'Servis',
+   q:'Servis zamanı oyunçunun ayaqları xətti keçsə nə olur?',
+   opts:[{t:'Xəbərdarlıq verilir',c:false},{t:'Servis yenilənir',c:false},{t:'Heç nə olmur',c:false},{t:'Servis xətası — rəqib xal qazanır',c:true}]},
+
+  // BLOK (4)
+  {tp:'c',topic:'Blok',
+   q:'Blok kimin tərəfindən qurulur?',
+   opts:[{t:'Libero',c:false},{t:'Yalnız kapitan',c:false},{t:'İstənilən oyunçu',c:false},{t:'Tora yaxın ön zona oyunçuları',c:true}]},
+
+  {tp:'c',topic:'Blok',
+   q:'Arxa zona oyunçusu blok qura bilərmi?',
+   opts:[{t:'Bəli, həmişə',c:false},{t:'Yalnız 5-ci hissədə',c:false},{t:'Xeyr, qadağandır',c:true},{t:'Kapitan icazəsi ilə',c:false}]},
+
+  {tp:'c',topic:'Blok',
+   q:'Rəqib servis atarkən blok qurmaq olarmı?',
+   opts:[{t:'Bəli',c:false},{t:'Yalnız ön zona üçün',c:false},{t:'Yalnız 3-cü hissədə',c:false},{t:'Xeyr, qadağandır',c:true}]},
+
+  {tp:'c',topic:'Blok',
+   q:'Blok zamanı topa edilən toxunuş necə sayılır?',
+   opts:[{t:'3 toxunuşdan biri kimi',c:false},{t:'2 toxunuşdan biri kimi',c:false},{t:'Sayılmır — sonra 3 toxunuş daha edilə bilər',c:true},{t:'Pozuntu sayılır',c:false}]},
+
+  // XALLAR (1)
+  {tp:'c',topic:'Xallar',
+   q:'Komanda xal nə vaxt qazanır?',
+   opts:[{t:'Yalnız top yerə dəydikdə',c:false},{t:'Yalnız servis xətasında',c:false},{t:'Top rəqibin sahəsinde yerə dəydikdə, rəqib qayda pozduqda və ya cəzalandırıldıqda',c:true},{t:'Yalnız tora toxunmada',c:false}]},
+
+  // FASİLƏ (6)
+  {tp:'c',topic:'Fasilə',
+   q:'Hər komanda hər hissədə maksimum neçə taym-aut götürə bilər?',
+   opts:[{t:'1',c:false},{t:'3',c:false},{t:'4',c:false},{t:'2',c:true}]},
+
+  {tp:'c',topic:'Fasilə',
+   q:'Adi taym-autun müddəti neçə saniyədir?',
+   opts:[{t:'15',c:false},{t:'20',c:false},{t:'60',c:false},{t:'30',c:true}]},
+
+  {tp:'c',topic:'Fasilə',
+   q:'Texniki taym-aut nə vaxt götürülür?',
+   opts:[{t:'İstənilən vaxt',c:false},{t:'Hər 5 xaldan bir',c:false},{t:'Öndə olan komanda 8 və 16-cı xallara çatdıqda',c:true},{t:'Yalnız 5-ci hissədə',c:false}]},
+
+  {tp:'c',topic:'Fasilə',
+   q:'Texniki taym-autun müddəti neçə saniyədir?',
+   opts:[{t:'30',c:false},{t:'45',c:false},{t:'90',c:false},{t:'60',c:true}]},
+
+  {tp:'c',topic:'Fasilə',
+   q:'İki hissə arasındakı fasilə neçə dəqiqədir?',
+   opts:[{t:'1',c:false},{t:'2',c:false},{t:'5',c:false},{t:'3',c:true}]},
+
+  {tp:'c',topic:'Fasilə',
+   q:'5-ci hissədə texniki taym-aut varmı?',
+   opts:[{t:'Bəli, 8-ci xalda',c:false},{t:'Bəli, 5-ci xalda',c:false},{t:'Bəli, 10-cu xalda',c:false},{t:'Xeyr, yoxdur',c:true}]},
+
+  // CƏZALAR (4)
+  {tp:'c',topic:'Cəzalar',
+   q:'Sarı kart nəyi bildirir?',
+   opts:[{t:'Oyundan xaric',c:false},{t:'1 xal rəqibə',c:false},{t:'Xəbərdarlıq — xal verilmir',c:true},{t:'Servis itirilir',c:false}]},
+
+  {tp:'c',topic:'Cəzalar',
+   q:'Qırmızı kart nəyi bildirir?',
+   opts:[{t:'Xəbərdarlıq',c:false},{t:'Oyundan çıxarılma',c:false},{t:'Fasilə götürülməsi',c:false},{t:'Rəqibə 1 xal + servis atma',c:true}]},
+
+  {tp:'c',topic:'Cəzalar',
+   q:'Sarı + qırmızı AYRI-AYRI göstərilirsə nə deməkdir?',
+   opts:[{t:'Xəbərdarlıq',c:false},{t:'1 xal rəqibə + servis',c:false},{t:'Oyundan xaric',c:false},{t:'Hissədən xaric',c:true}]},
+
+  {tp:'c',topic:'Cəzalar',
+   q:'Oyundan xaric necə göstərilir?',
+   opts:[{t:'Sarı kart',c:false},{t:'Qırmızı kart',c:false},{t:'Sarı və qırmızı BİRLİKDƏ',c:true},{t:'Ağ kart',c:false}]},
+
+  // HAKİMLƏR (2)
+  {tp:'c',topic:'Hakimlər',
+   q:'Beynəlxalq voleybol matçında cəmi neçə hakim olur?',
+   opts:[{t:'4',c:false},{t:'6',c:false},{t:'10',c:false},{t:'8',c:true}]},
+
+  {tp:'c',topic:'Hakimlər',
+   q:'Voleybol matçında neçə baş hakim olur?',
+   opts:[{t:'2',c:false},{t:'3',c:false},{t:'4',c:false},{t:'1',c:true}]},
+
+  // HÜCUM / YERDƏYİŞMƏ (3)
+  {tp:'c',topic:'Hücum Zərbəsi',
+   q:'Arxa zona oyunçusu ön zonadan hücum zərbəsi vura bilərmi?',
+   opts:[{t:'Bəli, həmişə',c:false},{t:'Xeyr, heç vaxt',c:false},{t:'Yalnız libero üçün mümkündür',c:false},{t:'Bəli, amma ayaqları ön zona xəttini keçməməlidir',c:true}]},
+
+  {tp:'c',topic:'Hücum Zərbəsi',
+   q:'Hücum zərbəsinin növləri hansılardır?',
+   opts:[{t:'Yalnız düzünə',c:false},{t:'Yalnız yanaki',c:false},{t:'Düzünə, yanaki, aşağıya',c:false},{t:'Düzünə və yanaki',c:true}]},
+
+  {tp:'c',topic:'Yerdəyişmə',
+   q:'Bir hissədə komanda maksimum neçə oyunçu dəyişikliyi edə bilər?',
+   opts:[{t:'3',c:false},{t:'8',c:false},{t:'12',c:false},{t:'6',c:true}]},
+
+  // TARİX (5)
+  {tp:'c',topic:'Tarix',
+   q:'Voleybol ilk dəfə nə vaxt oynanılıb?',
+   opts:[{t:'1891',c:false},{t:'1900',c:false},{t:'1912',c:false},{t:'1895',c:true}]},
+
+  {tp:'c',topic:'Tarix',
+   q:'Voleybol oyununu kim icad etmişdir?',
+   opts:[{t:'James Naismith',c:false},{t:'Pierre de Coubertin',c:false},{t:'Alfred Halstead',c:false},{t:'Uilyam Morgan',c:true}]},
+
+  {tp:'c',topic:'Tarix',
+   q:'FIVB nə vaxt yaradılıb?',
+   opts:[{t:'1913',c:false},{t:'1932',c:false},{t:'1952',c:false},{t:'1947',c:true}]},
+
+  {tp:'c',topic:'Tarix',
+   q:'FIVB-nin baş qərargahı hansı şəhərdədir?',
+   opts:[{t:'Paris',c:false},{t:'Roma',c:false},{t:'Berlin',c:false},{t:'Lozanna',c:true}]},
+
+  {tp:'c',topic:'Tarix',
+   q:'Voleybol Olimpiya oyunlarına nə vaxt daxil edildi?',
+   opts:[{t:'1952',c:false},{t:'1960',c:false},{t:'1968',c:false},{t:'1964',c:true}]},
+
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let Qs=[], cur=0, score=0, wrong=0, answers=[], soundOn=true, actx=null;
+
+// ── SOUND ─────────────────────────────────────────────────────────────
+function ac(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx}
+function snd(type){
+  if(!soundOn)return;
+  try{
+    const c=ac(),t=c.currentTime;
+    if(type==='ok'){
+      [[440,0],[554,.1],[659,.2]].forEach(([f,d])=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;
+        g.gain.setValueAtTime(.18,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.28);
+        o.start(t+d);o.stop(t+d+.32);
+      });
+    }else if(type==='err'){
+      const o=c.createOscillator(),g=c.createGain();
+      o.connect(g);g.connect(c.destination);o.type='sawtooth';
+      o.frequency.setValueAtTime(260,t);o.frequency.exponentialRampToValueAtTime(120,t+.28);
+      g.gain.setValueAtTime(.13,t);g.gain.exponentialRampToValueAtTime(.001,t+.32);
+      o.start(t);o.stop(t+.35);
+    }else if(type==='nav'){
+      const o=c.createOscillator(),g=c.createGain();
+      o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=480;
+      g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.001,t+.09);
+      o.start(t);o.stop(t+.11);
+    }else if(type==='fin'){
+      [[523,0],[659,.13],[784,.26],[1047,.4]].forEach(([f,d])=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;
+        g.gain.setValueAtTime(.18,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.32);
+        o.start(t+d);o.stop(t+d+.36);
+      });
+    }
+  }catch(e){}
+}
+document.getElementById('sndBtn').onclick=function(){
+  soundOn=!soundOn;this.textContent=soundOn?'🔊':'🔇';
+};
+
+// ── UTILS ─────────────────────────────────────────────────────────────
+function shuffle(a){
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
+  return b;
+}
+
+// ── START ─────────────────────────────────────────────────────────────
+function startQuiz(){
+  // Shuffle question order + shuffle each choice's options
+  Qs=shuffle(BANK).map(q=>{
+    if(q.tp==='c') return {...q, opts:shuffle([...q.opts])};
+    return {...q};
+  });
+  cur=0; score=0; wrong=0;
+  answers=Qs.map(()=>({done:false,correct:false}));
+  document.getElementById('resPanel').classList.remove('show');
+  document.getElementById('qArea').style.display='block';
+  document.getElementById('navRow').style.display='flex';
+  document.getElementById('cfw').innerHTML='';
+  buildGrid();
+  renderQ();
+}
+
+// ── GRID ─────────────────────────────────────────────────────────────
+function buildGrid(){
+  const g=document.getElementById('qGrid');
+  g.innerHTML='';
+  Qs.forEach((_,i)=>{
+    const b=document.createElement('button');
+    b.className='gc'+(i===0?' cur':'');
+    b.textContent=i+1;
+    b.id='gc'+i;
+    b.onclick=()=>{snd('nav');goTo(i);};
+    g.appendChild(b);
+  });
+}
+function refreshGrid(){
+  Qs.forEach((_,i)=>{
+    const b=document.getElementById('gc'+i);
+    if(!b)return;
+    b.className='gc';
+    if(i===cur)b.classList.add('cur');
+    else if(answers[i].done)b.classList.add(answers[i].correct?'g-ok':'g-err');
+  });
+}
+
+// ── NAVIGATE ──────────────────────────────────────────────────────────
+function goTo(i){
+  if(i<0||i>=Qs.length)return;
+  cur=i;
+  renderQ();
+  setTimeout(()=>document.getElementById('qArea').scrollIntoView({behavior:'smooth',block:'nearest'}),40);
+}
+
+// ── PROGRESS ─────────────────────────────────────────────────────────
+function refreshUI(){
+  const done=answers.filter(a=>a.done).length;
+  document.getElementById('pf').style.width=(done/Qs.length*100)+'%';
+  document.getElementById('pl').textContent=done+' / '+Qs.length;
+  document.getElementById('sc').textContent='Bal: '+score;
+  document.getElementById('wc').textContent='Səhv: '+wrong;
+}
+
+// ── RENDER QUESTION ───────────────────────────────────────────────────
+function renderQ(){
+  const q=Qs[cur];
+  const area=document.getElementById('qArea');
+  area.innerHTML='';
+
+  const card=document.createElement('div');
+  card.className='q-card';
+
+  // header
+  card.innerHTML='<div class="q-header">'
+    +'<div class="q-num">SUAL <b>'+(cur+1)+'</b> / '+Qs.length+'</div>'
+    +'<div class="q-tag">'+q.topic+'</div>'
+    +'</div>'
+    +'<div class="q-body"><div class="q-text">'+q.q+'</div></div>';
+
+  if(q.tp==='c') renderChoice(card,q,cur);
+  else if(q.tp==='t') renderTable(card,q,cur);
+
+  // feedback
+  const fb=document.createElement('div');
+  const a=answers[cur];
+  if(a.done){
+    fb.className='fb show '+(a.correct?'ok':'fail');
+    fb.textContent=a.correct?'✅ Düzgün cavab!':'❌ Səhv. Düzgün cavab işarələndi.';
+  }else{fb.className='fb';}
+  card.appendChild(fb);
+  area.appendChild(card);
+
+  // nav
+  document.getElementById('btnBack').className='nav-btn back'+(cur>0?' show':'');
+  const nb=document.getElementById('btnNext');
+  if(answers[cur].done){
+    nb.className='nav-btn next show';
+    nb.textContent=cur===Qs.length-1?'Nəticə →':'Növbəti →';
+  }else{
+    nb.className='nav-btn next';
+  }
+  refreshGrid();
+  refreshUI();
+}
+
+// ── CHOICE ───────────────────────────────────────────────────────────
+function renderChoice(card, q, qIndex){
+  const wrap=document.createElement('div');
+  wrap.className='opts';
+  const keys=['A','B','C','D'];
+
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt';
+
+    const isDone=answers[qIndex].done;
+    if(isDone){
+      btn.setAttribute('disabled','');
+      if(answers[qIndex].chosenIdx===i){
+        btn.classList.add(opt.c?'correct':'wrong');
+      }else if(opt.c){
+        btn.classList.add('show-ans');
+      }
+    }
+
+    btn.innerHTML='<span class="opt-key">'+keys[i]+'</span><span>'+opt.t+'</span>';
+
+    btn.onclick=function(){
+      // Use qIndex (captured at render time) not global cur
+      if(answers[qIndex].done)return;
+      const ok=opt.c;
+      answers[qIndex]={done:true,correct:ok,chosenIdx:i};
+      if(ok){score++;snd('ok');}else{wrong++;snd('err');}
+      // Only re-render if this is still the active question
+      if(cur===qIndex)renderQ();
+    };
+
+    wrap.appendChild(btn);
+  });
+  card.appendChild(wrap);
+}
+
+// ── TABLE ─────────────────────────────────────────────────────────────
+function renderTable(card, q, qIndex){
+  const wrap=document.createElement('div');
+  wrap.className='tbl-wrap';
+  const a=answers[qIndex];
+  const uv=a.userVals||{};
+
+  let html='<table class="vtbl"><thead><tr><th>Element</th>';
+  q.cols.forEach(c=>{ html+='<th>'+c+'</th>'; });
+  html+='</tr></thead><tbody>';
+
+  q.rows.forEach((row,ri)=>{
+    let cls='';
+    if(a.done) cls=(uv[ri]===row.correct)?'row-ok':'row-err';
+    html+='<tr class="'+cls+'"><td>'+row.label+'</td>';
+    q.cols.forEach((_,ci)=>{
+      const id='t'+qIndex+'r'+ri+'c'+ci;
+      const chk=(a.done&&uv[ri]===ci)?'checked':'';
+      const dis=a.done?'disabled':'';
+      html+='<td class="rc">'
+        +'<input type="radio" name="t'+qIndex+'r'+ri+'" id="'+id+'" value="'+ci+'" '+chk+' '+dis+'>'
+        +'<label for="'+id+'">'+q.cols[ci][0]+'</label>'
+        +'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+
+  if(!a.done) html+='<button class="tbl-btn" id="tbtn'+qIndex+'">Yoxla ✓</button>';
+
+  let rh='',rc='';
+  if(a.done){
+    const n=q.rows.filter((_,ri)=>uv[ri]===q.rows[ri].correct).length;
+    const tot=q.rows.length;
+    if(n===tot){rc='ok';rh='✅ Hamısı düzgün! ('+tot+'/'+tot+')';}
+    else if(n>0){rc='part';rh='⚠️ '+n+'/'+tot+' düzgündür.';}
+    else{rc='fail';rh='❌ Hamısı səhvdir.';}
+  }
+  html+='<div class="tbl-res '+(a.done?'show ':'')+rc+'">'+rh+'</div>';
+  wrap.innerHTML=html;
+  card.appendChild(wrap);
+
+  if(!a.done){
+    const btn=document.getElementById('tbtn'+qIndex);
+    if(btn) btn.onclick=function(){
+      const vals={};
+      q.rows.forEach((_,ri)=>{
+        q.cols.forEach((_,ci)=>{
+          const el=document.querySelector('input[name="t'+qIndex+'r'+ri+'"][value="'+ci+'"]');
+          if(el&&el.checked) vals[ri]=ci;
+        });
+      });
+      if(Object.keys(vals).length<q.rows.length){alert('Bütün sıralar üçün seçim edin!');return;}
+      const ok=q.rows.every((_,ri)=>vals[ri]===q.rows[ri].correct);
+      answers[qIndex]={done:true,correct:ok,userVals:vals};
+      if(ok){score++;snd('ok');}else{wrong++;snd('err');}
+      if(cur===qIndex)renderQ();
+    };
+  }
+}
+
+// ── NAV BUTTONS ───────────────────────────────────────────────────────
+document.getElementById('btnNext').onclick=function(){
+  if(cur>=Qs.length-1){showResults();return;}
+  snd('nav'); goTo(cur+1);
+};
+document.getElementById('btnBack').onclick=function(){
+  if(cur>0){snd('nav');goTo(cur-1);}
+};
+
+// ── RESULTS ───────────────────────────────────────────────────────────
+function showResults(){
+  document.getElementById('qArea').style.display='none';
+  document.getElementById('navRow').style.display='none';
+  const p=document.getElementById('resPanel');
+  p.classList.add('show');
+  p.scrollIntoView({behavior:'smooth'});
+  const tot=Qs.length, pct=Math.round(score/tot*100);
+  document.getElementById('rN').textContent=score;
+  document.getElementById('rD').textContent='/'+tot;
+  document.getElementById('rOk').textContent=score;
+  document.getElementById('rErr').textContent=wrong;
+  document.getElementById('rPct').textContent=pct+'%';
+  let e,t,s;
+  if(pct>=90){e='🏆';t='Əla!';s='Voleybol qaydalarını mükəmməl bilirsiniz!';}
+  else if(pct>=75){e='🥈';t='Çox Yaxşı!';s='Güclü nəticə!';}
+  else if(pct>=60){e='🥉';t='Yaxşı İş!';s='Biraz daha öyrənin!';}
+  else if(pct>=40){e='📚';t='Orta Nəticə';s='Materialı yenidən nəzərdən keçirin.';}
+  else{e='💪';t='Davam Et!';s='Qaydaları yenidən oxuyun.';}
+  document.getElementById('rEmoji').textContent=e;
+  document.getElementById('rTitle').textContent=t;
+  document.getElementById('rSub').textContent=s;
+  snd('fin');
+  if(pct>=60)confetti();
+}
+
+function confetti(){
+  const w=document.getElementById('cfw');w.innerHTML='';
+  const cols=['#0f766e','#c75a0a','#b8860b','#166534','#991b1b','#1d4ed8'];
+  for(let i=0;i<100;i++){
+    const p=document.createElement('div');p.className='cp';
+    const sz=4+Math.random()*8;
+    p.style.cssText='left:'+Math.random()*100+'%;background:'+cols[i%cols.length]+';width:'+sz+'px;height:'+sz+'px;border-radius:'+(Math.random()>.5?'50%':'3px')+';animation-duration:'+(1.8+Math.random()*2.5)+'s;animation-delay:'+(Math.random()*1.5)+'s;';
+    w.appendChild(p);
+  }
+  setTimeout(()=>w.innerHTML='',7000);
+}
+
+startQuiz();
+</script>
+</body>
+</html>
