@@ -32,7 +32,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nl-reg{background:var(--accent)!important;color:var(--btn-text)!important;font-weight:700!important;box-shadow:0 4px 14px var(--card-shadow);}
 .nl-reg:hover{opacity:.9;transform:translateY(-1px);}
 .user-nav{display:flex;align-items:center;gap:8px;}
-.u-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--btn-text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;text-decoration:none;cursor:pointer;transition:opacity .2s;}
+.u-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--btn-text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;text-decoration:none;cursor:pointer;transition:opacity .2s;flex-shrink:0;}
 .u-avatar:hover{opacity:.85;}
 .u-name{font-size:.88rem;font-weight:600;color:var(--text2);text-decoration:none;padding:4px 7px;border-radius:7px;transition:all .2s;}
 .u-name:hover{background:var(--accent-pale);color:var(--accent);}
@@ -101,7 +101,10 @@ footer p{color:var(--muted);font-size:.82rem;}
 .spin{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
 @media(max-width:680px){
   nav{padding:0 16px;}
-  .nav-links a:not(.nl-reg):not(.nl-login){display:none;}
+  /* Adi nav linklərini gizlət, user-nav-ı qoru */
+  .nav-links>a:not(.nl-reg):not(.nl-login){display:none;}
+  /* user-nav-da mail çox uzun olsa kıs */
+  .u-name{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .hero-stats{flex-direction:column;}
   .hstat{border-right:none;border-bottom:1px solid var(--border);}
   .hstat:last-child{border-bottom:none;}
