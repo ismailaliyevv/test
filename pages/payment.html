@@ -92,13 +92,13 @@ input::placeholder{color:var(--muted);}
     <div class="alert alert-error" id="errorAlert"></div>
 
     <div class="method-title">Ödəniş üsulu</div>
-    <div class="method-tabs" id="methodTabs">
+    <div class="method-tabs" id="methodTabs" style="display:none">
       <button class="method-tab active" id="tabCard" onclick="switchMethod('card')">💳 Kart</button>
       <button class="method-tab" id="tabBank" onclick="switchMethod('manual')">🏦 Bank Köçürməsi</button>
     </div>
 
     <!-- CARD FORM (demo — real üçün Stripe/PayRiff inteqrasiyası lazım) -->
-    <div id="cardForm">
+    <div id="cardForm" style="display:none">
       <div class="form-group">
         <label>Kart Nömrəsi</label>
         <input type="text" id="cardNum" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
@@ -185,34 +185,38 @@ onAuthChange(async (user) => {
   document.getElementById('featT').textContent = (testData.duration || '?') + ' dəqiqə';
   document.getElementById('priceAmount').textContent = (testData.price || '?') + ' ₼';
 
-  // Ödəniş metodlarını göstər/gizlət (admin panelə görə)
+  // Bank IBAN + göstər/gizlət (admin panelə görə)
+  const settingsDoc = await db.collection('settings').doc('payment').get();
+  const paySettings = settingsDoc.exists ? settingsDoc.data() : {};
+
+  // IBAN
+  document.getElementById('ibanVal').textContent = paySettings.iban || 'IBAN konfiqurasiya edilməyib';
+
   const showCard = paySettings.showCard === true;
   const showBank = paySettings.showBank !== false;
 
+  const methodTabs = document.getElementById('methodTabs');
   const tabCard = document.getElementById('tabCard');
   const tabBank = document.getElementById('tabBank');
-  const cardForm = document.getElementById('cardForm');
-  const manualForm = document.getElementById('manualForm');
 
+  // Tab görünüşü
   if (tabCard) tabCard.style.display = showCard ? '' : 'none';
   if (tabBank) tabBank.style.display = showBank ? '' : 'none';
 
-  // Aktiv metodu müəyyənləşdir
-  if (!showCard && showBank) {
-    switchMethod('manual');
-  } else if (showCard && !showBank) {
-    switchMethod('card');
-  } else if (!showCard && !showBank) {
-    // Hər ikisi deaktivdir — xəbərdarlıq göstər
-    document.getElementById('methodTabs').innerHTML = '<div style="padding:12px;background:var(--bg2);border-radius:9px;font-size:.85rem;color:var(--muted);text-align:center">⚠️ Hazırda ödəniş qəbul edilmir</div>';
-    if (cardForm) cardForm.style.display = 'none';
-    if (manualForm) manualForm.style.display = 'none';
-  }
-
-  // Bank IBAN (admin paneldən gəlir)
-  const settingsDoc = await db.collection('settings').doc('payment').get();
-  if (settingsDoc.exists) {
-    document.getElementById('ibanVal').textContent = settingsDoc.data().iban || 'IBAN konfiqurasiya edilməyib';
+  // Hər ikisi yoxdursa
+  if (!showCard && !showBank) {
+    methodTabs.innerHTML = '<div style="padding:12px;background:#fef3cd;border:1px solid #ffc107;border-radius:9px;font-size:.85rem;color:#856404;text-align:center">⚠️ Hazırda ödəniş qəbul edilmir</div>';
+  } else {
+    methodTabs.style.display = 'flex';
+    // Aktiv metodu seç
+    if (showCard) {
+      switchMethod('card');
+    } else {
+      switchMethod('manual');
+    }
+    // Yalnız bir tab varsa tabs-ı gizlə
+    if (showCard && !showBank) methodTabs.style.display = 'none';
+    if (!showCard && showBank) methodTabs.style.display = 'none';
   }
 });
 
