@@ -8,140 +8,69 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f8f9fc;
-  --white:#ffffff;
-  --border:#e4e7ef;
-  --border2:#c8cfe0;
-  --accent:#1a56db;
-  --accent-light:#eff4ff;
-  --accent2:#7c3aed;
-  --ok:#059669;
-  --ok-light:#ecfdf5;
-  --no:#dc2626;
-  --no-light:#fef2f2;
-  --gold:#d97706;
-  --txt:#0f1724;
-  --sub:#64748b;
-  --mute:#94a3b8;
-  --shadow:rgba(15,23,42,.08);
-  --shadow2:rgba(15,23,42,.04);
+  --bg:#f8f9fc;--white:#ffffff;--border:#e4e7ef;--border2:#c8cfe0;
+  --accent:#1a56db;--accent-light:#eff4ff;--accent2:#7c3aed;
+  --ok:#059669;--ok-light:#ecfdf5;--no:#dc2626;--no-light:#fef2f2;
+  --gold:#d97706;--txt:#0f1724;--sub:#64748b;--mute:#94a3b8;
+  --shadow:rgba(15,23,42,.08);--shadow2:rgba(15,23,42,.04);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--txt);font-family:'Geist',sans-serif;min-height:100vh;}
-
-/* ── LAYOUT ── */
 .wrap{max-width:760px;margin:0 auto;padding:0 16px 80px;}
 
-/* ── HEADER ── */
+/* HEADER */
 .hdr{padding:52px 0 36px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:28px;}
-.hdr-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:var(--accent-light);color:var(--accent);
-  font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-  padding:5px 14px;border-radius:100px;border:1px solid rgba(26,86,219,.15);
-  margin-bottom:18px;
-}
-.hdr h1{
-  font-family:'Instrument Serif',serif;font-style:italic;
-  font-size:clamp(32px,6vw,52px);line-height:1;
-  color:var(--txt);margin-bottom:8px;letter-spacing:-1px;
-}
+.hdr-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-light);color:var(--accent);font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:5px 14px;border-radius:100px;border:1px solid rgba(26,86,219,.15);margin-bottom:18px;}
+.hdr h1{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(32px,6vw,52px);line-height:1;color:var(--txt);margin-bottom:8px;letter-spacing:-1px;}
 .hdr h1 b{font-style:normal;color:var(--accent);}
-.hdr p{color:var(--sub);font-size:13px;font-weight:400;}
+.hdr p{color:var(--sub);font-size:13px;}
 
-/* ── TOPBAR ── */
-.topbar{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:16px;padding:14px 20px;margin-bottom:16px;
-  display:flex;align-items:center;gap:16px;
-  box-shadow:0 1px 4px var(--shadow2);
-}
+/* TOPBAR */
+.topbar{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px;box-shadow:0 1px 4px var(--shadow2);}
 .tb-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mute);white-space:nowrap;}
-.tb-num{font-size:22px;font-weight:900;color:var(--accent);min-width:60px;text-align:center;font-variant-numeric:tabular-nums;}
+.tb-num{font-size:22px;font-weight:900;color:var(--accent);min-width:60px;text-align:center;}
 .bar-wrap{flex:1;height:6px;background:var(--border);border-radius:100px;overflow:hidden;}
 .bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;}
 .score-box{text-align:right;min-width:48px;}
 .score-box .sl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute);display:block;}
 .score-box .sv{font-size:22px;font-weight:900;color:var(--gold);}
-.snd-btn{
-  width:36px;height:36px;border-radius:10px;background:var(--bg);
-  border:1px solid var(--border);cursor:pointer;font-size:16px;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .2s;flex-shrink:0;
-}
+.snd-btn{width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
 .snd-btn:hover{border-color:var(--border2);}
 
-/* ── NAV GRID ── */
-.nav-panel{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:16px;padding:14px 16px;margin-bottom:16px;
-  box-shadow:0 1px 4px var(--shadow2);
-}
+/* NAV GRID */
+.nav-panel{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:16px;box-shadow:0 1px 4px var(--shadow2);}
 .nav-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;cursor:pointer;user-select:none;}
 .nav-head span{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute);}
 .nav-toggle{font-size:10px;font-weight:700;color:var(--accent);background:var(--accent-light);border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-family:'Geist',sans-serif;}
 .nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(30px,1fr));gap:4px;max-height:150px;overflow-y:auto;}
 .nav-grid.collapsed{display:none;}
-.nq{
-  width:100%;aspect-ratio:1;border-radius:6px;
-  background:var(--bg);border:1.5px solid var(--border);
-  font-size:9px;font-weight:800;color:var(--mute);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:all .12s;
-}
+.nq{width:100%;aspect-ratio:1;border-radius:6px;background:var(--bg);border:1.5px solid var(--border);font-size:9px;font-weight:800;color:var(--mute);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;}
 .nq:hover{border-color:var(--border2);color:var(--txt);}
 .nq.nq-cur{background:var(--accent);color:#fff;border-color:var(--accent);}
 .nq.nq-ok{background:var(--ok-light);color:var(--ok);border-color:rgba(5,150,105,.3);}
 .nq.nq-no{background:var(--no-light);color:var(--no);border-color:rgba(220,38,38,.3);}
 
-/* ── CARD ── */
-.card{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:20px;padding:28px 26px 22px;
-  margin-bottom:14px;position:relative;overflow:hidden;
-  animation:slideUp .32s cubic-bezier(.4,0,.2,1);
-  box-shadow:0 2px 12px var(--shadow),0 1px 3px var(--shadow2);
-}
+/* CARD */
+.card{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:28px 26px 22px;margin-bottom:14px;position:relative;overflow:hidden;animation:slideUp .32s cubic-bezier(.4,0,.2,1);box-shadow:0 2px 12px var(--shadow),0 1px 3px var(--shadow2);}
 .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:3px 0 0 3px;}
 @keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
 .q-meta{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-.q-num-badge{
-  background:var(--accent-light);color:var(--accent);
-  font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;
-  border:1px solid rgba(26,86,219,.15);
-}
-.q-category{font-size:10px;font-weight:600;color:var(--mute);}
+.q-num-badge{background:var(--accent-light);color:var(--accent);font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;border:1px solid rgba(26,86,219,.15);}
+.q-cat{font-size:10px;font-weight:600;color:var(--mute);}
 .q-txt{font-size:15px;font-weight:600;color:var(--txt);line-height:1.7;margin-bottom:22px;}
 
-/* ── OPTIONS ── */
+/* OPTIONS */
 .opts{display:flex;flex-direction:column;gap:8px;}
-.opt{
-  background:var(--bg);border:1.5px solid var(--border);
-  border-radius:12px;padding:13px 16px;
-  cursor:pointer;font-size:13px;font-weight:500;color:var(--txt);
-  transition:all .15s ease;display:flex;align-items:center;
-  gap:12px;text-align:left;width:100%;font-family:'Geist',sans-serif;
-}
-.opt:hover:not(.locked){
-  border-color:rgba(26,86,219,.4);
-  background:var(--accent-light);
-  transform:translateX(3px);
-}
-.opt-l{
-  width:26px;height:26px;border-radius:7px;flex-shrink:0;
-  background:var(--border);
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:800;color:var(--sub);
-  transition:all .15s;
-}
+.opt{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;cursor:pointer;font-size:13px;font-weight:500;color:var(--txt);transition:all .15s ease;display:flex;align-items:center;gap:12px;text-align:left;width:100%;font-family:'Geist',sans-serif;}
+.opt:hover:not(.locked){border-color:rgba(26,86,219,.4);background:var(--accent-light);transform:translateX(3px);}
+.opt-l{width:26px;height:26px;border-radius:7px;flex-shrink:0;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--sub);transition:all .15s;}
 .opt-t{flex:1;line-height:1.5;}
 .opt-i{font-size:15px;opacity:0;transition:opacity .18s;flex-shrink:0;}
-.opt.correct{border-color:var(--ok);background:var(--ok-light);}
+.opt.correct{border-color:var(--ok);background:var(--ok-light);animation:pop .3s ease;}
 .opt.correct .opt-l{background:var(--ok);color:#fff;}
 .opt.correct .opt-i{opacity:1;}
-.opt.wrong{border-color:var(--no);background:var(--no-light);}
+.opt.wrong{border-color:var(--no);background:var(--no-light);animation:jolt .3s ease;}
 .opt.wrong .opt-l{background:var(--no);color:#fff;}
 .opt.wrong .opt-i{opacity:1;}
 .opt.reveal{border-color:rgba(5,150,105,.5);background:var(--ok-light);}
@@ -149,37 +78,19 @@ body{background:var(--bg);color:var(--txt);font-family:'Geist',sans-serif;min-he
 .locked{pointer-events:none;}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.015)}100%{transform:scale(1)}}
 @keyframes jolt{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-.opt.correct{animation:pop .3s ease;}
-.opt.wrong{animation:jolt .3s ease;}
 
-/* ── BTNS ── */
+/* BTNS */
 .btns{display:flex;justify-content:space-between;margin-top:16px;gap:10px;}
-.btn-prev{
-  display:none;background:var(--white);color:var(--sub);
-  border:1.5px solid var(--border);border-radius:11px;
-  padding:11px 20px;font-family:'Geist',sans-serif;
-  font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;
-}
+.btn-prev{display:none;background:var(--white);color:var(--sub);border:1.5px solid var(--border);border-radius:11px;padding:11px 20px;font-family:'Geist',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;}
 .btn-prev:hover{border-color:var(--border2);color:var(--txt);}
 .btn-prev.show{display:block;}
-.btn-nx{
-  display:none;background:var(--accent);color:#fff;
-  border:none;border-radius:11px;padding:11px 26px;
-  font-family:'Geist',sans-serif;font-size:13px;font-weight:700;
-  cursor:pointer;box-shadow:0 3px 12px rgba(26,86,219,.3);
-  transition:all .18s;margin-left:auto;
-}
+.btn-nx{display:none;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:11px 26px;font-family:'Geist',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(26,86,219,.3);transition:all .18s;margin-left:auto;}
 .btn-nx:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(26,86,219,.4);}
 .btn-nx.show{display:block;}
 
-/* ── RESULT ── */
+/* RESULT */
 #res{display:none;}
-.rc{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:22px;padding:48px 28px;text-align:center;
-  box-shadow:0 4px 20px var(--shadow);margin-bottom:20px;
-  animation:slideUp .45s ease;
-}
+.rc{background:var(--white);border:1px solid var(--border);border-radius:22px;padding:48px 28px;text-align:center;box-shadow:0 4px 20px var(--shadow);margin-bottom:20px;animation:slideUp .45s ease;}
 .rc-emo{font-size:68px;display:block;margin-bottom:14px;}
 .rc-title{font-family:'Instrument Serif',serif;font-style:italic;font-size:38px;color:var(--txt);margin-bottom:6px;}
 .rc-stars{font-size:28px;letter-spacing:4px;margin-bottom:18px;}
@@ -191,16 +102,10 @@ body{background:var(--bg);color:var(--txt);font-family:'Geist',sans-serif;min-he
 .rc-stat .l{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute);margin-top:3px;}
 .rc-stat.g .v{color:var(--ok);}
 .rc-stat.r .v{color:var(--no);}
-.btn-re{
-  background:var(--accent);color:#fff;border:none;
-  border-radius:12px;padding:14px 40px;
-  font-family:'Geist',sans-serif;font-size:14px;font-weight:700;
-  cursor:pointer;box-shadow:0 4px 16px rgba(26,86,219,.3);
-  transition:all .2s;
-}
+.btn-re{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:14px 40px;font-family:'Geist',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(26,86,219,.3);transition:all .2s;}
 .btn-re:hover{transform:translateY(-2px);box-shadow:0 7px 24px rgba(26,86,219,.4);}
 
-/* ── CONFETTI ── */
+/* CONFETTI */
 .cp{position:fixed;top:-12px;border-radius:2px;animation:fall linear forwards;pointer-events:none;z-index:999;}
 @keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:0}}
 </style>
@@ -212,15 +117,13 @@ body{background:var(--bg);color:var(--txt);font-family:'Geist',sans-serif;min-he
     <h1>Voleybol<br><b>Testi</b></h1>
     <p>60 sual · Suallar və cavablar hər dəfə qarışır</p>
   </div>
-
   <div class="topbar">
     <div class="tb-label">Sual</div>
     <div class="tb-num" id="pNum">1/60</div>
     <div class="bar-wrap"><div class="bar-fill" id="barF"></div></div>
     <div class="score-box"><span class="sl">Xal</span><span class="sv" id="scV">0</span></div>
-    <button class="snd-btn" id="sndBtn" title="Səs">🔊</button>
+    <button class="snd-btn" id="sndBtn">🔊</button>
   </div>
-
   <div class="nav-panel">
     <div class="nav-head" onclick="toggleNav()">
       <span>📋 Sual Naviqasiyası</span>
@@ -228,282 +131,82 @@ body{background:var(--bg);color:var(--txt);font-family:'Geist',sans-serif;min-he
     </div>
     <div class="nav-grid" id="navGrid"></div>
   </div>
-
   <div id="quiz"></div>
   <div id="res"></div>
 </div>
-
 <script>
-const ALL = [
-{q:'Oyunçu düzülüşü hakimlərə təqdim olunan vərəqdəki ardıcıllıqdan fərqli olarsa və bu, oyun başladıqdan sonra aşkar edilərsə, hansı prosedur tətbiq edilir?',
- opts:['Xəta edən tərəfin həmin hissədə qazandığı bütün xallar ləğv edilir.','Hakimlər tərəfindən komandaya şifahi xəbərdarlıq edilərək oyun davam edir.','Səhv edən komandadan 2 xal silinir və servis atmaq hüququ rəqibə verilir.','Düzülüş vərəqi yenidən doldurulur və hər iki komanda sıfırdan başlayır.','Oyunçu dəyişikliyi limiti daxilində dərhal yeni bir püşkatma keçirilir.'],
- ans:'Xəta edən tərəfin həmin hissədə qazandığı bütün xallar ləğv edilir.'},
-
-{q:'Servis atan oyunçu topu havaya atdıqdan sonra ona toxunmadan yerə düşməsinə şərait yaradarsa, bu hal dərslik qaydalarına görə necə qiymətləndirilir?',
- opts:['Bu bir servis xətasıdır, xal və servis atmaq hüququ rəqib komandaya keçir.','Servis atışının uğursuz cəhdi sayılır və oyunçuya təkrar servis verilir.','Oyunçunun vaxtı uzatması hesab edilir və dərhal sarı vərəqə göstərilir.','Top oyunçuya toxunmadığı üçün hakim fiti ilə oyun yenidən başladılır.','Oyunçuya 8 saniyəlik əlavə bir hazırlıq vaxtı tanımaqla oyun davam edir.'],
- ans:'Bu bir servis xətasıdır, xal və servis atmaq hüququ rəqib komandaya keçir.'},
-
-{q:'Beşinci həlledici hissədə komandaların sahə dəyişməsi prosedurunun yerinə yetirilməsi hansı texniki qaydaya əsaslanır?',
- opts:['Komandalardan biri 10 xal topladıqda oyunçu zonaları dəyişməklə icra olunur.','Komandaların hər ikisi cəmi 15 xal topladıqda hakim tərəfindən icra olunur.','Komandalardan biri 8 xal topladıqda oyunçu zonaları dəyişmədən icra olunur.','Yalnız hissə bitdikdən sonra komandaların ümumi razılığı əsasında icra olunur.','Hər taym-aut fasiləsindən sonra oyunun tempini artırmaq üçün dərhal icra olunur.'],
- ans:'Komandalardan biri 8 xal topladıqda oyunçu zonaları dəyişmədən icra olunur.'},
-
-{q:'Arxa zona oyunçusu ön zonadan tullanaraq hücum zərbəsi endirərkən top tora toxunursa, bu hansı halda qayda pozuntusu sayılır?',
- opts:['Zərbə anında top torun üst kənar səviyyəsindən aşağıda yerləşərsə.','Zərbə anında top torun üst kənar səviyyəsindən yuxarıda yerləşərsə.','Oyunçu zərbədən sonra ön zona daxilinə müvazinətini saxlayaraq düşərsə.','Top rəqib blokuna toxunduqdan sonra meydança hüdudlarından kənara düşərsə.','Oyunçunun ayaqları tullanma anında hücum xəttinə heç bir halda toxunmazsa.'],
- ans:'Zərbə anında top torun üst kənar səviyyəsindən yuxarıda yerləşərsə.'},
-
-{q:'Blok zamanı topa eyni anda iki komanda yoldaşı toxunarsa, komandanın növbəti oyun hüququ necə müəyyən edilir?',
- opts:['Bu toxunuş 1 vuruş sayılır və komandanın 2 toxunuş haqqı qalır.','Bu toxunuş vuruş sayılmır və komandanın 3 toxunuş haqqı qalır.','Bu toxunuş 2 vuruş sayılır və komandanın 1 toxunuş haqqı qalır.','Bu toxunuş xəta sayılır və xal birbaşa rəqib komandaya verilir.','Bu toxunuşdan sonra topu yalnız ön zona oyunçusu oyuna daxil edə bilər.'],
- ans:'Bu toxunuş vuruş sayılmır və komandanın 3 toxunuş haqqı qalır.'},
-
-{q:'Libero oyunçusunun oyundakı rolu və kapitanlıq hüququ ilə bağlı hansı fikir dərslik materialına uyğundur?',
- opts:['Libero komandanın taktiki hücumlarını idarə edən əsas kapitan ola bilər.','Libero ön zonada blok qura bilər və oyunun gedişatında kapitanı əvəz edər.','Libero yalnız arxa zonada oynaya bilər və komanda kapitanı ola bilməz.','Libero istənilən zonada çıxış edərək rəsmi olaraq kapitan statusu daşıyar.','Libero yalnız servis atışları zamanı kapitanın funksiyalarını yerinə yetirər.'],
- ans:'Libero yalnız arxa zonada oynaya bilər və komanda kapitanı ola bilməz.'},
-
-{q:'Servis zamanı oyunçuların meydandakı yerləşməsində hansı vəziyyət "Mövqe xətası" kimi qeydə alınır?',
- opts:['Arxa sağ zona oyunçusunun ön sağ zona oyunçusundan daha geridə dayanması.','Ön orta zona oyunçusunun arxa orta zona oyunçusundan daha öndə dayanması.','6 nömrəli oyunçunun 1 nömrəli oyunçudan daha sağda və öndə dayanması.','Arxa sol zona oyunçusunun ön sol zona oyunçusu ilə paralel xətt üzrə dayanması.','4 nömrəli oyunçunun 3 nömrəli oyunçudan daha solda və hücum xəttində dayanması.'],
- ans:'6 nömrəli oyunçunun 1 nömrəli oyunçudan daha sağda və öndə dayanması.'},
-
-{q:'Rəqib komandanın yerinə yetirdiyi servis atışına qarşı blok qurulması qaydalara görə necə tənzimlənir?',
- opts:['Yalnız ön zonada dayanan kapitan tərəfindən servisə blok qurula bilər.','Servisə blok qurmaq qadağandır və bu hərəkət birbaşa xal itkisi deməkdir.','Servis atışı çox sürətli olarsa, bütün oyunçulara blok qurmağa icazə verilir.','Servisə yalnız top tor səviyyəsindən aşağıda olduğu zaman blok qurula bilər.','Servisə blok qurmaq sərbəstdir, lakin top rəqib sahəsinə düşərsə xal sayılmaz.'],
- ans:'Servisə blok qurmaq qadağandır və bu hərəkət birbaşa xal itkisi deməkdir.'},
-
-{q:'Oyunçuya "qırmızı vərəqə" göstərilməsinin nəticəsi dərslikdəki cəzalar bölməsinə görə necə izah olunur?',
- opts:['Oyunçu yalnız xəbərdarlıq alır və oyun heç bir xal itkisi olmadan davam edir.','Səhv edən komanda 1 xal itirir və servis atmaq hüququ rəqibə təqdim olunur.','Oyunçu dərhal meydandan qovulur, lakin rəqib komandaya heç bir xal verilmir.','Qırmızı vərəqə alan oyunçunun komandası həmin hissəni məğlub başa vurur.','Oyunçu 3 dəqiqəlik cərimə skamyasına göndərilir və komanda azlıqda qalır.'],
- ans:'Səhv edən komanda 1 xal itirir və servis atmaq hüququ rəqibə təqdim olunur.'},
-
-{q:'Bir hissə (set) ərzində komandanın edə biləcəyi oyunçu dəyişikliyi limiti hansı bənddə düzgün göstərilib?',
- opts:['Komanda hər hissədə maksimum 3 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda hər hissədə maksimum 8 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda hər hissədə maksimum 6 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda üçün oyunçu dəyişikliyi limiti yoxdur, sərbəst şəkildə dəyişə bilər.','Komanda yalnız zədələnmə halları baş verdikdə 2 oyunçu dəyişikliyi edə bilər.'],
- ans:'Komanda hər hissədə maksimum 6 oyunçu dəyişikliyi etmək hüququna malikdir.'},
-
-{q:'Servis atışını yerinə yetirən oyunçu topa vurduğu anda ayağı ilə servis sahəsini hüdudlandıran yan xəttə toxunarsa:',
- opts:['Xətt hakimi bayrağını qaldırır və servis atışı təkrar edilir.','Bu qayda pozuntusudur, xal və servis haqqı rəqibə verilir.','Oyunçuya xəbərdarlıq edilir, top rəqibə keçərsə oyun davam edir.','Bu hərəkət texniki xəta sayılır və komandadan 1 xal silinir.','Yan xətlərə toxunmaq sərbəstdir, yalnız arxa xətti keçmək olmaz.'],
- ans:'Bu qayda pozuntusudur, xal və servis haqqı rəqibə verilir.'},
-
-{q:'Oyunun 1-ci hissəsində hesab 8:7 olduqda hakimin icra etməli olduğu prosedur hansıdır?',
- opts:['Komandalara 30 saniyəlik adi taym-aut götürmək hüququ tanınır.','Oyunun tempini saxlamaq üçün 60 saniyəlik texniki fasilə verilir.','Komandalar dərhal sahələri dəyişmək üçün mərkəz xəttinə toplanır.','Heç bir fasilə verilmir, oyunçu dəyişikliyi üçün vaxt ayrılır.','Püşkatmanın nəticəsinə uyğun olaraq servis atan tərəf dəyişdirilir.'],
- ans:'Oyunun tempini saxlamaq üçün 60 saniyəlik texniki fasilə verilir.'},
-
-{q:'Komandanın 2 nömrəli oyunçusu servis atmaq hüququ qazandıqda hansı hərəkəti etməlidir?',
- opts:['Saat əqrəbi istiqamətində yerini dəyişərək 1 nömrəli zonaya keçməlidir.','Saat əqrəbinin əksi istiqamətində hərəkət edərək 3 nömrəli zonaya keçməlidir.','Olduğu zonada qalaraq dərhal servis sahəsinə çıxış etməli və topa vurmalıdır.','Yalnız arxa zona oyunçularından biri ilə yerini dəyişərək müdafiəyə keçməlidir.','Hakimin göstərişi ilə 6 nömrəli zona ilə çarpaz şəkildə yerini dəyişməlidir.'],
- ans:'Saat əqrəbi istiqamətində yerini dəyişərək 1 nömrəli zonaya keçməlidir.'},
-
-{q:'Top rəqib sahəsinə keçərkən toru hüdudlandıran antenaların çöl hissəsindən keçərsə, hakimin qərarı?',
- opts:['Top "daxildə" hesab edilir və oyun fasiləsiz şəkildə davam etdirilir.','Top "out" sayılır və xal servis atışını qarşılayan komandaya verilir.','Bu vəziyyət tor xətası hesab olunur və servis təkrar yerinə yetirilir.','Antenaya toxunmadığı halda topun hərəkət trayektoriyası düzgün sayılır.','Topun antenadan kənar keçməsi yalnız servis zamanı pozuntu hesab edilir.'],
- ans:'Top "out" sayılır və xal servis atışını qarşılayan komandaya verilir.'},
-
-{q:'Blok qurulması zamanı oyunçunun əllərinin toru keçərək rəqib sahəsinə daxil olması hansı halda icazəlidir?',
- opts:['Rəqibin hücum zərbəsindən əvvəl topa toxunaraq trayektoriyanı dəyişdikdə.','Rəqib oyunçunun hərəkətlərinə mane olmaq məqsədilə toru tam keçdikdə.','Rəqib öz hücum zərbəsini tamamladıqdan sonra və ya həmin anda olduqda.','Top torun alt hissəsindən rəqib sahəsinə doğru hərəkət etdiyi zaman.','Blok zamanı əllərin rəqib sahəsinə keçməsi bütün hallarda qadağandır.'],
- ans:'Rəqib öz hücum zərbəsini tamamladıqdan sonra və ya həmin anda olduqda.'},
-
-{q:'Bir komanda bir hissə ərzində maksimum neçə adi (30 saniyəlik) taym-aut götürə bilər?',
- opts:['Bir hissə ərzində hər komanda üçün 1 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 2 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 3 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 4 taym-aut nəzərdə tutulmuşdur.','5-ci hissə istisna olmaqla, hər hissədə limitsiz taym-aut hüququ vardır.'],
- ans:'Bir hissə ərzində hər komanda üçün 2 taym-aut nəzərdə tutulmuşdur.'},
-
-{q:'Topun oyunçu tərəfindən aydın şəkildə vurulmayıb, ovuc daxilində saxlanılaraq istiqamətləndirilməsi hansı xətadır?',
- opts:['"Dörd vuruş" xətası sayılır və top birbaşa rəqib komandaya verilir.','"Topun tutulması" xətası sayılır və rəqibə bir xal və servis verilir.','"Mövqe xətası" sayılır və oyunçuya dərhal sarı vərəqə göstərilir.','"Tor xətası" sayılır və oyunun tempini pozduğu üçün oyunçu cəzalanır.','Dərslik qaydalarına görə bu hərəkət texniki cəhətdən düzgün hesab edilir.'],
- ans:'"Topun tutulması" xətası sayılır və rəqibə bir xal və servis verilir.'},
-
-{q:'Oyunçu rəqib sahəsinə orta xəttin altından hansı şərtlə keçə bilər?',
- opts:['Rəqib oyunçuların hərəkətinə heç bir maneə yaratmadığı təqdirdə.','Ayağının bir hissəsi hələ də mərkəz xəttinin üzərində qaldığı təqdirdə.','Yalnız top rəqib sahəsində yerə toxunduqdan sonra keçdiyi təqdirdə.','Komanda kapitanı hakimdən əvvəlcədən icazə aldığı xüsusi təqdirdə.','Şəbəkənin altından rəqib sahəsinə keçmək bütün hallarda qadağandır.'],
- ans:'Rəqib oyunçuların hərəkətinə heç bir maneə yaratmadığı təqdirdə.'},
-
-{q:'Voleybol matçını idarə edən cəmi 8 hakimdən neçəsi xətt hakimi kimi fəaliyyət göstərir?',
- opts:['2 nəfər','4 nəfər','6 nəfər','1 nəfər','5 nəfər'],
- ans:'4 nəfər'},
-
-{q:'5-ci (həlledici) hissədə texniki taym-autların verilməsi proseduru necədir?',
- opts:['Hesab 8-ə çatdıqda 60 saniyəlik bir texniki taym-aut verilir.','Hesab 8 və 16-ya çatdıqda iki dəfə texniki taym-aut verilir.','5-ci hissədə heç bir halda texniki taym-aut verilməsi nəzərdə tutulmur.','Yalnız komandalardan biri 15 xal topladıqda texniki fasilə verilir.','Texniki taym-autlar yalnız beynəlxalq final oyunlarında tətbiq edilir.'],
- ans:'5-ci hissədə heç bir halda texniki taym-aut verilməsi nəzərdə tutulmur.'},
-
-{q:'Püşkatmanı qazanaraq servis atmaq hüququnu seçən komanda nədən imtina etmiş sayılır?',
- opts:['Oyun sahəsini seçmək hüququndan','Taym-aut götürmək hüququndan','Oyunçu dəyişmək hüququndan','Libero istifadə etmək hüququndan','Kapitanı təyin etmək hüququndan'],
- ans:'Oyun sahəsini seçmək hüququndan'},
-
-{q:'Oyunçu topa vurarkən eyni anda həm əli, həm də çiyni ilə toxunursa, bu neçə vuruş sayılır?',
- opts:['1 vuruş','2 vuruş','Xəta sayılır','"Out" sayılır','Cərimə sayılır'],
- ans:'1 vuruş'},
-
-{q:'Top rəqib tərəfə keçərkən torun alt boşluğundan keçərsə, hakimin qərarı?',
- opts:['Oyun davam edir','Xal rəqibə verilir','Top təkrar atılır','Servis təkrar yerinə yetirilir','"Net" xətası sayılır'],
- ans:'Xal rəqibə verilir'},
-
-{q:'Arxa zona oyunçusu olan 5 nömrəli oyunçu blok qurarkən topa toxunarsa, bu necə adlanır?',
- opts:['Uğurlu müdafiə','Blok xətası','Texniki vuruş','Sahə xətası','Mövqe xətası'],
- ans:'Blok xətası'},
-
-{q:'Hakimin fitindən sonra servis neçə saniyə ərzində yerinə yetirilməlidir?',
- opts:['3 saniyə','5 saniyə','8 saniyə','10 saniyə','12 saniyə'],
- ans:'8 saniyə'},
-
-{q:'Blok zamanı topa toxunuş vuruş sayına daxil edilirmi?',
- opts:['Bəli, daxildir','Xeyr, daxil deyil','Yalnız finalda daxildir','Yalnız 5-ci setdə daxildir','Hakimin qərarına bağlıdır'],
- ans:'Xeyr, daxil deyil'},
-
-{q:'"Mövqe xətası" rəqib komandaya nə qazandırır?',
- opts:['Yalnız servis haqqı','Yalnız xəbərdarlıq','1 xal və servis haqqı','2 xal və servis haqqı','Heç nə qazandırmır'],
- ans:'1 xal və servis haqqı'},
-
-{q:'Oyunçu dəyişikliyi zamanı meydanı tərk edən oyunçu həmin hissədə nə vaxt qayıda bilər?',
- opts:['İstənilən vaxt qayıda bilər','Yalnız onu əvəz edənin yerinə','Yalnız 5 dəqiqə sonra','Heç bir halda qayıda bilməz','Yalnız zədə halında qayıdar'],
- ans:'Yalnız onu əvəz edənin yerinə'},
-
-{q:'Voleybol formalarında nömrələr hansı aralıqda olmalıdır?',
- opts:['1-12 arası','1-20 arası','1-99 arası','1-6 arası','Nömrə məcburi deyil'],
- ans:'1-99 arası'},
-
-{q:'Top tavana və ya oyun sahəsindən kənar əşyaya dəyərsə, bu necə qiymətləndirilir?',
- opts:['Oyun davam edir','Top "out" sayılır','Servis təkrar edilir','Xal hücum edənə verilir','Hakimin püşkü ilə həll olunur'],
- ans:'Top "out" sayılır'},
-
-{q:'3:0 və ya 3:1 hesabı ilə bitən oyunda qalib neçə xal qazanır?',
- opts:['1 xal','2 xal','3 xal','0 xal','5 xal'],
- ans:'3 xal'},
-
-{q:'3:2 hesabı ilə bitən oyunda məğlub olan komanda neçə xal qazanır?',
- opts:['0 xal','1 xal','2 xal','3 xal','Xal qazanmır'],
- ans:'1 xal'},
-
-{q:'Hansı halda "out" qərarı verilir?',
- opts:['Top yan xətlərə toxunduqda','Top torun gözcüklərinə dəydikdə','Top antenanın çölündən keçdikdə','Top rəqib blokuna toxunduqda','Top orta xəttə toxunduqda'],
- ans:'Top antenanın çölündən keçdikdə'},
-
-{q:'Taym-autun müddəti dərslikdə neçə saniyə göstərilib?',
- opts:['20 saniyə','30 saniyə','60 saniyə','45 saniyə','15 saniyə'],
- ans:'30 saniyə'},
-
-{q:'Arxa zona oyunçularının zonaları hansı rəqəmlərlə işarələnib?',
- opts:['1, 2, 3','4, 5, 6','1, 5, 6','2, 3, 4','3, 4, 5'],
- ans:'1, 5, 6'},
-
-{q:'Voleybol oyununu 1895-ci ildə kim icad etmişdir?',
- opts:['Ceyms Neysmit','Uilyam Morqan','Alfred Halsted','Elio Lokatelli','Jan Jek Russo'],
- ans:'Uilyam Morqan'},
-
-{q:'Voleybolun ilkin adı dərslikdə necə qeyd olunub?',
- opts:['Volley-ball','Mintonette','Speed-ball','Net-ball','Sky-ball'],
- ans:'Mintonette'},
-
-{q:'Voleybol topunun çəkisi nə qədərdir?',
- opts:['200-220 qr','240-250 qr','260-280 qr','300-320 qr','280-300 qr'],
- ans:'260-280 qr'},
-
-{q:'Kişilər üçün torun hündürlüyü nə qədərdir?',
- opts:['2.24 m','2.30 m','2.43 m','2.50 m','2.45 m'],
- ans:'2.43 m'},
-
-{q:'Qadınlar üçün torun hündürlüyü nə qədərdir?',
- opts:['2.15 m','2.20 m','2.24 m','2.30 m','2.43 m'],
- ans:'2.24 m'},
-
-{q:'Azərbaycanlı voleybolçu İnna Riskal neçə dəfə Olimpiya mükafatçısı olub?',
- opts:['2 dəfə','3 dəfə','4 dəfə','1 dəfə','5 dəfə'],
- ans:'4 dəfə'},
-
-{q:'FIVB-nin qərargahı hazırda hansı şəhərdə yerləşir?',
- opts:['Paris','Lozanna','Roma','London','Bakı'],
- ans:'Lozanna'},
-
-{q:'İlk voleybol qaydaları rəsmi olaraq neçənci ildə hazırlanıb?',
- opts:['1895-ci ildə','1897-ci ildə','1900-cü ildə','1913-cü ildə','1947-ci ildə'],
- ans:'1897-ci ildə'},
-
-{q:'Voleybol üzrə ilk beynəlxalq turnir hansı qitədə keçirilib?',
- opts:['Avropa','Amerika','Asiya','Afrika','Avstraliya'],
- ans:'Asiya'},
-
-{q:'Voleybol meydançasının standart ölçüləri hansıdır?',
- opts:['15x28 m','18x9 m','20x10 m','12x24 m','18x12 m'],
- ans:'18x9 m'},
-
-{q:'"Azərreyl" voleybol klubu neçənci ildə "Top-komandalar" kubokunu qazanıb?',
- opts:['2000-ci ildə','2002-ci ildə','2004-cü ildə','1998-ci ildə','2010-cu ildə'],
- ans:'2004-cü ildə'},
-
-{q:'"BMKZ" komandası neçənci ildə SSRİ Kubokunun qalibi olub?',
- opts:['1980-ci ildə','1991-ci ildə','1990-cı ildə','1985-ci ildə','1992-ci ildə'],
- ans:'1990-cı ildə'},
-
-{q:'Qadınlar arasında ilk Olimpiya Çempionu olan ölkə hansıdır?',
- opts:['SSRİ','Yaponiya','Çin','ABŞ','Braziliya'],
- ans:'SSRİ'},
-
-{q:'Hücum zonasının (ön zona) uzunluğu neçə metrdir?',
- opts:['2 metr','3 metr','4 metr','5 metr','6 metr'],
- ans:'3 metr'},
-
-{q:'Voleybol toru üzərindəki antenanın uzunluğu cəmi nə qədərdir?',
- opts:['1 metr','1.50 metr','1.80 metr','2 metr','1.20 metr'],
- ans:'1.80 metr'},
-
-{q:'FIVB neçənci ildə və hansı ölkədə yaradılıb?',
- opts:['1947, Fransa','1947, İsveçrə','1913, Filippin','1913, Yaponiya','1964, Yaponiya'],
- ans:'1947, Fransa'},
-
-{q:'Azərbaycan Voleybol Federasiyası (AVF) neçənci ildən beynəlxalq üzvdür?',
- opts:['1991','1992','1994','1995','1926'],
- ans:'1992'},
-
-{q:'"Libero" sözünün latın mənşəli mənası nədir?',
- opts:['Güclü','Sürətli','Azad','Müdafiəçi','Köməkçi'],
- ans:'Azad'},
-
-{q:'Voleybolda "fasilə" termini iki hissə arasında neçə dəqiqədir?',
- opts:['1 dəqiqə','3 dəqiqə','5 dəqiqə','10 dəqiqə','2 dəqiqə'],
- ans:'3 dəqiqə'},
-
-{q:'Voleybol torunun gözcüklərinin ölçüsü nə qədərdir?',
- opts:['5x5 sm','10x10 sm','15x15 sm','20x20 sm','8x8 sm'],
- ans:'10x10 sm'},
-
-{q:'Kişilər arasında ilk Dünya Çempionatı neçənci ildə keçirilib?',
- opts:['1947','1949','1952','1964','1913'],
- ans:'1949'},
-
-{q:'Qadınlar arasında ilk Dünya Çempionatı neçənci ildə keçirilib?',
- opts:['1947','1949','1952','1964','1913'],
- ans:'1952'},
-
-{q:'Voleybol topunun çevrəsi nə qədərdir?',
- opts:['60-62 sm','65-67 sm','70-72 sm','62-64 sm','68-70 sm'],
- ans:'65-67 sm'},
-
-{q:'Beynəlxalq voleybol yarışlarını neçə hakim idarə edir?',
- opts:['2 hakim','4 hakim','8 hakim','5 hakim','6 hakim'],
- ans:'8 hakim'},
-
-{q:'Beşinci (həlledici) set neçə xala qədər oynanılır?',
- opts:['15 xala qədər','21 xala qədər','25 xala qədər','30 xala qədər','10 xala qədər'],
- ans:'15 xala qədər'},
+const ALL=[
+{q:'Oyun başladıqdan sonra düzülüşün rəsmi vərəqdən fərqli olduğu aşkar edilərsə, hansı prosedur tətbiq edilir?',opts:['Xəta edən tərəfin həmin hissədə qazandığı bütün xallar ləğv edilir.','Hakimlər tərəfindən komandaya şifahi xəbərdarlıq edilərək oyun davam edir.','Səhv edən komandadan 2 xal silinir və servis haqqı rəqibə verilir.','Düzülüş vərəqi yenidən doldurulur və hər iki komanda sıfırdan başlayır.','Oyunçu dəyişikliyi limiti daxilində dərhal yeni bir püşkatma keçirilir.'],ans:'Xəta edən tərəfin həmin hissədə qazandığı bütün xallar ləğv edilir.'},
+{q:'Servis atan oyunçu topu havaya atdıqdan sonra ona toxunmadan yerə düşməsinə şərait yaradarsa, qərar necə olur?',opts:['Bu bir servis xətasıdır, xal və servis atmaq hüququ rəqibə keçir.','Servis atışının uğursuz cəhdi sayılır və oyunçuya təkrar servis verilir.','Oyunçunun vaxtı uzatması hesab edilir və dərhal sarı vərəqə göstərilir.','Top oyunçuya toxunmadığı üçün hakim fiti ilə oyun yenidən başladılır.','Oyunçuya 8 saniyəlik əlavə bir hazırlıq vaxtı tanımaqla oyun davam edir.'],ans:'Bu bir servis xətasıdır, xal və servis atmaq hüququ rəqibə keçir.'},
+{q:'Beşinci həlledici hissədə komandaların sahə dəyişməsi hansı texniki qaydaya əsasən yerinə yetirilir?',opts:['Komandalardan biri 10 xal topladıqda oyunçu zonaları dəyişməklə icra olunur.','Komandaların hər ikisi cəmi 15 xal topladıqda hakim tərəfindən icra olunur.','Komandalardan biri 8 xal topladıqda oyunçu zonaları dəyişmədən icra olunur.','Yalnız hissə bitdikdən sonra komandaların ümumi razılığı əsasında icra olunur.','Hər taym-aut fasiləsindən sonra oyunun tempini artırmaq üçün dərhal icra olunur.'],ans:'Komandalardan biri 8 xal topladıqda oyunçu zonaları dəyişmədən icra olunur.'},
+{q:'Arxa zona oyunçusu ön zonadan tullanaraq hücum zərbəsi endirərkən top tora toxunursa, bu nə vaxt pozuntudur?',opts:['Zərbə anında top torun üst kənar səviyyəsindən aşağıda yerləşərsə.','Zərbə anında top torun üst kənar səviyyəsindən yuxarıda yerləşərsə.','Oyunçu zərbədən sonra ön zona daxilinə müvazinətini saxlayaraq düşərsə.','Top rəqib blokuna toxunduqdan sonra meydança hüdudlarından kənara düşərsə.','Oyunçunun ayaqları tullanma anında hücum xəttinə toxunmazsa.'],ans:'Zərbə anında top torun üst kənar səviyyəsindən yuxarıda yerləşərsə.'},
+{q:'Blok zamanı topa eyni anda iki komanda yoldaşı toxunarsa, komandanın növbəti haqqı necə müəyyən edilir?',opts:['Bu toxunuş 1 vuruş sayılır və komandanın 2 toxunuş haqqı qalır.','Bu toxunuş vuruş sayılmır və komandanın 3 toxunuş haqqı qalır.','Bu toxunuş 2 vuruş sayılır və komandanın 1 toxunuş haqqı qalır.','Bu toxunuş xəta sayılır və xal birbaşa rəqib komandaya verilir.','Bu toxunuşdan sonra topu yalnız ön zona oyunçusu oyuna daxil edə bilər.'],ans:'Bu toxunuş vuruş sayılmır və komandanın 3 toxunuş haqqı qalır.'},
+{q:'Libero oyunçusunun oyundakı rolu və kapitanlıq hüququ ilə bağlı hansı fikir dərslik materialına uyğundur?',opts:['Libero komandanın taktiki hücumlarını idarə edən əsas kapitan ola bilər.','Libero ön zonada blok qura bilər və oyunun gedişatında kapitanı əvəz edər.','Libero yalnız arxa zonada oynaya bilər və komanda kapitanı ola bilməz.','Libero istənilən zonada çıxış edərək rəsmi olaraq kapitan statusu daşıyar.','Libero yalnız servis atışları zamanı kapitanın funksiyalarını yerinə yetirər.'],ans:'Libero yalnız arxa zonada oynaya bilər və komanda kapitanı ola bilməz.'},
+{q:'Servis zamanı oyunçuların yerləşməsində hansı vəziyyət \'Mövqe xətası\' kimi qeydə alınır?',opts:['Arxa sağ zona oyunçusunun ön sağ zona oyunçusundan daha geridə dayanması.','Ön orta zona oyunçusunun arxa orta zona oyunçusundan daha öndə dayanması.','6 nömrəli oyunçunun 1 nömrəli oyunçudan daha sağda və öndə dayanması.','Arxa sol zona oyunçusunun ön sol zona oyunçusu ilə paralel xətt üzrə dayanması.','4 nömrəli oyunçunun 3 nömrəli oyunçudan daha solda dayanması.'],ans:'6 nömrəli oyunçunun 1 nömrəli oyunçudan daha sağda və öndə dayanması.'},
+{q:'Rəqib komandanın yerinə yetirdiyi servis atışına qarşı blok qurulması qaydalara görə necə tənzimlənir?',opts:['Yalnız ön zonada dayanan kapitan tərəfindən servisə blok qurula bilər.','Servisə blok qurmaq qadağandır və bu hərəkət birbaşa xal itkisi deməkdir.','Servis atışı çox sürətli olarsa, bütün oyunçulara blok qurmağa icazə verilir.','Servisə yalnız top tor səviyyəsindən aşağıda olduğu zaman blok qurula bilər.','Servisə blok qurmaq sərbəstdir, lakin top rəqibə düşərsə xal sayılmaz.'],ans:'Servisə blok qurmaq qadağandır və bu hərəkət birbaşa xal itkisi deməkdir.'},
+{q:'Oyunçuya \'qırmızı vərəqə\' göstərilməsinin nəticəsi dərslikdəki cəzalar bölməsinə görə necə izah olunur?',opts:['Oyunçu yalnız xəbərdarlıq alır və oyun xal itkisi olmadan davam edir.','Səhv edən komanda 1 xal itirir və servis atmaq hüququ rəqibə keçir.','Oyunçu dərhal meydandan qovulur, lakin rəqib komandaya xal verilmir.','Qırmızı vərəqə alan oyunçunun komandası həmin hissəni məğlub başa vurur.','Oyunçu 3 dəqiqəlik cərimə skamyasına göndərilir və komanda azlıqda qalır.'],ans:'Səhv edən komanda 1 xal itirir və servis atmaq hüququ rəqibə keçir.'},
+{q:'Bir hissə (set) ərzində komandanın edə biləcəyi oyunçu dəyişikliyi limiti hansı bənddə düzgün göstərilib?',opts:['Komanda hər hissədə maksimum 3 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda hər hissədə maksimum 8 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda hər hissədə maksimum 6 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda üçün oyunçu dəyişikliyi limiti yoxdur, sərbəst şəkildə dəyişə bilər.','Komanda yalnız zədələnmə halları baş verdikdə 2 oyunçu dəyişikliyi edə bilər.'],ans:'Komanda hər hissədə maksimum 6 oyunçu dəyişikliyi etmək hüququna malikdir.'},
+{q:'Servis atışını yerinə yetirən oyunçu topa vurduğu anda ayağı ilə yan xəttə toxunarsa nə baş verir?',opts:['Xətt hakimi bayrağını qaldırır və servis atışı təkrar edilir.','Bu qayda pozuntusudur, xal və servis haqqı rəqibə verilir.','Oyunçuya xəbərdarlıq edilir, top rəqibə keçərsə oyun davam edir.','Bu hərəkət texniki xəta sayılır və komandadan 1 xal silinir.','Yan xətlərə toxunmaq sərbəstdir, yalnız arxa xətti keçmək olmaz.'],ans:'Bu qayda pozuntusudur, xal və servis haqqı rəqibə verilir.'},
+{q:'Oyunun 1-ci hissəsində hesab 8:7 olduqda hakimin icra etməli olduğu prosedur hansıdır?',opts:['Komandalara 30 saniyəlik adi taym-aut götürmək hüququ tanınır.','Oyunun tempini saxlamaq üçün 60 saniyəlik texniki fasilə verilir.','Komandalar dərhal sahələri dəyişmək üçün mərkəz xəttinə toplanır.','Heç bir fasilə verilmir, oyunçu dəyişikliyi üçün vaxt ayrılır.','Püşkatmanın nəticəsinə uyğun olaraq servis atan tərəf dəyişdirilir.'],ans:'Oyunun tempini saxlamaq üçün 60 saniyəlik texniki fasilə verilir.'},
+{q:'Komandanın 2 nömrəli oyunçusu servis atmaq hüququ qazandıqda hansı hərəkəti etməlidir?',opts:['Saat əqrəbi istiqamətində yerini dəyişərək 1 nömrəli zonaya keçməlidir.','Saat əqrəbinin əksi istiqamətində hərəkət edərək 3 nömrəli zonaya keçməlidir.','Olduğu zonada qalaraq dərhal servis sahəsinə çıxış etmeli və topa vurmalıdır.','Yalnız arxa zona oyunçularından biri ilə yerini dəyişərək müdafiəyə keçməlidir.','Hakimin göstərişi ilə 6 nömrəli zona ilə çarpaz şəkildə yerini dəyişməlidir.'],ans:'Saat əqrəbi istiqamətində yerini dəyişərək 1 nömrəli zonaya keçməlidir.'},
+{q:'Top rəqib sahəsinə keçərkən toru hüdudlandıran antenaların çöl hissəsindən keçərsə, hakimin qərarı?',opts:['Top \'daxildə\' hesab edilir və oyun fasiləsiz şəkildə davam etdirilir.','Top \'out\' sayılır və xal servis atışını qarşılayan komandaya verilir.','Bu vəziyyət tor xətası hesab olunur və servis təkrar yerinə yetirilir.','Antenaya toxunmadığı halda topun hərəkət trayektoriyası düzgün sayılır.','Topun antenadan kənar keçməsi yalnız servis zamanı pozuntu hesab edilir.'],ans:'Top \'out\' sayılır və xal servis atışını qarşılayan komandaya verilir.'},
+{q:'Blok qurulması zamanı oyunçunun əllərinin toru keçərək rəqib sahəsinə daxil olması hansı halda icazəlidir?',opts:['Rəqibin hücum zərbəsindən əvvəl topa toxunaraq trayektoriyanı dəyişdikdə.','Rəqib oyunçunun hərəkətlərinə mane olmaq məqsədilə toru tam keçdikdə.','Rəqib öz hücum zərbəsini tamamladıqdan sonra və ya həmin anda olduqda.','Top torun alt hissəsindən rəqib sahəsinə doğru hərəkət etdiyi zaman.','Blok zamanı əllərin rəqib sahəsinə keçməsi bütün hallarda qadağandır.'],ans:'Rəqib öz hücum zərbəsini tamamladıqdan sonra və ya həmin anda olduqda.'},
+{q:'Bir komanda bir hissə ərzində maksimum neçə adi (30 saniyəlik) taym-aut götürə bilər?',opts:['Bir hissə ərzində hər komanda üçün 1 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 2 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 3 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 4 taym-aut nəzərdə tutulmuşdur.','5-ci hissə istisna olmaqla, hər hissədə limitsiz taym-aut hüququ vardır.'],ans:'Bir hissə ərzində hər komanda üçün 2 taym-aut nəzərdə tutulmuşdur.'},
+{q:'Topun oyunçu tərəfindən aydın şəkildə vurulmayıb, ovuc daxilində saxlanılaraq istiqamətləndirilməsi hansı xətadır?',opts:['\'Dörd vuruş\' xətası sayılır və top birbaşa rəqib komandaya verilir.','\'Topun tutulması\' xətası sayılır və rəqibə bir xal və servis verilir.','\'Mövqe xətası\' sayılır və oyunçuya dərhal sarı vərəqə göstərilir.','\'Tor xətası\' sayılır və oyunun tempini pozduğu üçün oyunçu cəzalanır.','Dərslik qaydalarına görə bu hərəkət texniki cəhətdən düzgün hesab edilir.'],ans:'\'Topun tutulması\' xətası sayılır və rəqibə bir xal və servis verilir.'},
+{q:'Oyunçu rəqib sahəsinə orta xəttin altından hansı şərtlə keçə bilər?',opts:['Rəqib oyunçuların hərəkətinə heç bir maneə yaratmadığı təqdirdə.','Ayağının bir hissəsi hələ də mərkəz xəttinin üzərində qaldığı təqdirdə.','Yalnız top rəqib sahəsində yerə toxunduqdan sonra keçdiyi təqdirdə.','Komanda kapitanı hakimdən əvvəlcədən icazə aldığı xüsusi təqdirdə.','Şəbəkənin altından rəqib sahəsinə keçmək bütün hallarda qadağandır.'],ans:'Rəqib oyunçuların hərəkətinə heç bir maneə yaratmadığı təqdirdə.'},
+{q:'Voleybol matçını idarə edən cəmi 8 hakimdən neçəsi xətt hakimi kimi fəaliyyət göstərir?',opts:['2 nəfər','4 nəfər','6 nəfər','1 nəfər','5 nəfər'],ans:'4 nəfər'},
+{q:'5-ci (həlledici) hissədə texniki taym-autların verilməsi proseduru necədir?',opts:['Hesab 8-ə çatdıqda 60 saniyəlik bir texniki taym-aut verilir.','Hesab 8 və 16-ya çatdıqda iki dəfə texniki taym-aut verilir.','5-ci hissədə heç bir halda texniki taym-aut verilməsi nəzərdə tutulmur.','Yalnız komandalardan biri 15 xal topladıqda texniki fasilə verilir.','Texniki taym-autlar yalnız beynəlxalq final oyunlarında tətbiq edilir.'],ans:'5-ci hissədə heç bir halda texniki taym-aut verilməsi nəzərdə tutulmur.'},
+{q:'Püşkatmanı qazanaraq servis atmaq hüququnu seçən komanda nədən imtina etmiş sayılır?',opts:['Oyun sahəsini seçmək hüququndan','Taym-aut götürmək hüququndan','Oyunçu dəyişmək hüququndan','Libero istifadə etmək hüququndan','Kapitanı təyin etmək hüququndan'],ans:'Oyun sahəsini seçmək hüququndan'},
+{q:'Oyunçu topa vurarkən eyni anda həm əli, həm də çiyni ilə toxunursa, bu neçə vuruş sayılır?',opts:['1 vuruş','2 vuruş','Xəta sayılır','Out sayılır','Cərimə sayılır'],ans:'1 vuruş'},
+{q:'Top rəqib tərəfə keçərkən torun alt boşluğundan keçərsə, hakimin qərarı nədir?',opts:['Oyun davam edir','Xal rəqibə verilir','Top təkrar atılır','Servis təkrar yerinə yetirilir','Net xətası sayılır'],ans:'Xal rəqibə verilir'},
+{q:'Arxa zona oyunçusu olan 5 nömrəli oyunçu blok qurarkən topa toxunarsa, bu necə adlanır?',opts:['Uğurlu müdafiə','Blok xətası','Texniki vuruş','Sahə xətası','Mövqe xətası'],ans:'Blok xətası'},
+{q:'Hakimin fitindən sonra servis neçə saniyə ərzində yerinə yetirilməlidir?',opts:['3 saniyə','5 saniyə','8 saniyə','10 saniyə','12 saniyə'],ans:'8 saniyə'},
+{q:'Blok zamanı topa toxunuş vuruş sayına daxil edilirmi?',opts:['Bəli, daxildir','Xeyr, daxil deyil','Yalnız finalda daxildir','Yalnız 5-ci setdə daxildir','Hakimin qərarına bağlıdır'],ans:'Xeyr, daxil deyil'},
+{q:'Mövqe xətası rəqib komandaya nə qazandırır?',opts:['Yalnız servis haqqı','Yalnız xəbərdarlıq','1 xal və servis haqqı','2 xal və servis haqqı','Heç nə qazandırmır'],ans:'1 xal və servis haqqı'},
+{q:'Oyunçu dəyişikliyi zamanı meydanı tərk edən oyunçu həmin hissədə nə vaxt qayıda bilər?',opts:['İstənilən vaxt qayıda bilər','Yalnız onu əvəz edənin yerinə','Yalnız 5 dəqiqə sonra','Heç bir halda qayıda bilməz','Yalnız zədə halında qayıdar'],ans:'Yalnız onu əvəz edənin yerinə'},
+{q:'Voleybol formalarında nömrələr hansı aralıqda olmalıdır?',opts:['1-12 arası','1-20 arası','1-99 arası','1-6 arası','Nömrə məcburi deyil'],ans:'1-20 arası'},
+{q:'Top tavana və ya oyun sahəsindən kənar əşyaya dəyərsə, bu necə qiymətləndirilir?',opts:['Oyun davam edir','Top out sayılır','Servis təkrar edilir','Xal hücum edənə verilir','Hakimin püşkü ilə həll olunur'],ans:'Top out sayılır'},
+{q:'3:0 və ya 3:1 hesabı ilə bitən oyunda qalib neçə xal qazanır?',opts:['1 xal','2 xal','3 xal','0 xal','5 xal'],ans:'3 xal'},
+{q:'3:2 hesabı ilə bitən oyunda məğlub olan komanda neçə xal qazanır?',opts:['0 xal','1 xal','2 xal','3 xal','Xal qazanmır'],ans:'1 xal'},
+{q:'Hansı halda \'out\' qərarı verilir?',opts:['Top yan xətlərə toxunduqda','Top torun gözcüklərinə dəydikdə','Top antenanın çölündən keçdikdə','Top rəqib blokuna toxunduqda','Top orta xəttə toxunduqda'],ans:'Top antenanın çölündən keçdikdə'},
+{q:'Taym-autun müddəti dərslikdə neçə saniyə göstərilib?',opts:['20 saniyə','30 saniyə','60 saniyə','45 saniyə','15 saniyə'],ans:'30 saniyə'},
+{q:'Arxa zona oyunçularının zonaları hansı rəqəmlərlə işarələnib?',opts:['1, 2, 3','4, 5, 6','1, 5, 6','2, 3, 4','3, 4, 5'],ans:'1, 5, 6'},
+{q:'Voleybol oyununu 1895-ci ildə kim icad etmişdir?',opts:['Ceyms Neysmit','Uilyam Morqan','Alfred Halsted','Elio Lokatelli','Jan Jek Russo'],ans:'Uilyam Morqan'},
+{q:'Voleybolun ilkin adı dərslikdə necə qeyd olunub?',opts:['Volley-ball','Mintonette','Speed-ball','Net-ball','Sky-ball'],ans:'Mintonette'},
+{q:'Voleybol topunun çəkisi nə qədərdir?',opts:['200-220 qr','240-250 qr','260-280 qr','300-320 qr','280-300 qr'],ans:'260-280 qr'},
+{q:'Kişilər üçün voleybol şəbəkəsinin (torunun) hündürlüyü nə qədərdir?',opts:['2.24 m','2.30 m','2.43 m','2.50 m','2.45 m'],ans:'2.43 m'},
+{q:'Qadınlar üçün voleybol şəbəkəsinin (torunun) hündürlüyü nə qədərdir?',opts:['2.15 m','2.20 m','2.24 m','2.30 m','2.43 m'],ans:'2.24 m'},
+{q:'Azərbaycanlı voleybolçu İnna Riskal neçə dəfə Olimpiya mükafatçısı olmuşdur?',opts:['2 dəfə','3 dəfə','4 dəfə','1 dəfə','5 dəfə'],ans:'4 dəfə'},
+{q:'Beynəlxalq Voleybol Federasiyasının (FIVB) qərargahı hansı şəhərdə yerləşir?',opts:['Paris','Lozanna','Roma','London','Bakı'],ans:'Lozanna'},
+{q:'İlk rəsmi voleybol qaydaları neçənci ildə hazırlanıb çap olunmuşdur?',opts:['1895-ci ildə','1897-ci ildə','1900-cü ildə','1913-cü ildə','1947-ci ildə'],ans:'1897-ci ildə'},
+{q:'Voleybol üzrə tarixdəki ilk beynəlxalq turnir hansı regionda keçirilib?',opts:['Avropa','Amerika','Asiya','Afrika','Avstraliya'],ans:'Asiya'},
+{q:'Voleybol meydançasının standart uzunluq və en ölçüləri hansıdır?',opts:['15x28 m','18x9 m','20x10 m','12x24 m','18x12 m'],ans:'18x9 m'},
+{q:'Azərreyl voleybol klubu neçənci ildə \'Top-komandalar\' kubokunun qalibi olub?',opts:['2000-ci ildə','2002-ci ildə','2004-cü ildə','1998-ci ildə','2010-cu ildə'],ans:'2002-ci ildə'},
+{q:'BMKZ voleybol komandası neçənci ildə SSRİ Kubokunun qalibi olmuşdur?',opts:['1980-ci ildə','1991-ci ildə','1990-cı ildə','1985-ci ildə','1992-ci ildə'],ans:'1991-ci ildə'},
+{q:'Qadınlar arasında keçirilən ilk Olimpiya oyunlarında hansı ölkə çempion olub?',opts:['SSRİ','Yaponiya','Çin','ABŞ','Braziliya'],ans:'Yaponiya'},
+{q:'Voleybol meydançasında hücum zonasının (ön zona) uzunluğu neçə metrdir?',opts:['2 metr','3 metr','4 metr','5 metr','6 metr'],ans:'3 metr'},
+{q:'Voleybol torunun kənarlarına bərkidilən antenanın ümumi uzunluğu nə qədərdir?',opts:['1 metr','1.50 metr','1.80 metr','2 metr','1.20 metr'],ans:'1.80 metr'},
+{q:'FIVB neçənci ildə və hansı ölkənin paytaxtında yaradılmışdır?',opts:['1947, Fransa','1947, İsveçrə','1913, Filippin','1913, Yaponiya','1964, Yaponiya'],ans:'1947, Fransa'},
+{q:'Azərbaycan Voleybol Federasiyası (AVF) neçənci ildən FIVB-nin müstəqil üzvüdür?',opts:['1991','1992','1994','1995','1926'],ans:'1992'},
+{q:'Libero sözünün latın dilindən tərcümədə mənası nəyi ifadə edir?',opts:['Güclü','Sürətli','Azad','Müdafiəçi','Köməkçi'],ans:'Azad'},
+{q:'Voleybolda fasilə adlanan iki hissə arasındakı müddət nə qədərdir?',opts:['1 dəqiqə','3 dəqiqə','5 dəqiqə','10 dəqiqə','2 dəqiqə'],ans:'3 dəqiqə'},
+{q:'Voleybol torunun kvadrat formalı gözcüklərinin ölçüsü nə qədərdir?',opts:['5x5 sm','10x10 sm','15x15 sm','20x20 sm','8x8 sm'],ans:'10x10 sm'},
+{q:'Kişilər arasında ilk Voleybol üzrə Dünya Çempionatı neçənci ildə keçirilib?',opts:['1947','1949','1952','1964','1913'],ans:'1949'},
+{q:'Qadınlar arasında ilk Voleybol üzrə Dünya Çempionatı neçənci ildə keçirilib?',opts:['1947','1949','1952','1964','1913'],ans:'1952'},
+{q:'Standart voleybol topunun çevrəsinin uzunluğu nə qədərdir?',opts:['60-62 sm','65-67 sm','70-72 sm','62-64 sm','68-70 sm'],ans:'65-67 sm'},
+{q:'Rəsmi beynəlxalq voleybol yarışlarını cəmi neçə hakim idarə edir?',opts:['2 hakim','4 hakim','8 hakim','5 hakim','6 hakim'],ans:'8 hakim'},
+{q:'Beşinci (həlledici) set maksimum neçə xala qədər davam etdirilir?',opts:['15 xala qədər','21 xala qədər','25 xala qədər','30 xala qədər','10 xala qədər'],ans:'15 xala qədər'}
 ];
 
-/* ═══ STATE ═══ */
-let qs=[], cur=0, score=0, results=[], sOn=true;
-
-/* ═══ AUDIO ═══ */
+let qs=[],cur=0,score=0,results=[],sOn=true;
 let actx;
 function ac(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
-function beep(arr,tp='sine'){
-  if(!sOn)return;
-  try{
-    const c=ac();
-    arr.forEach(([f,t,d])=>{
-      const o=c.createOscillator(),g=c.createGain();
-      o.type=tp;o.connect(g);g.connect(c.destination);
-      o.frequency.value=f;
-      g.gain.setValueAtTime(.22,c.currentTime+t);
-      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+d);
-      o.start(c.currentTime+t);o.stop(c.currentTime+t+d);
-    });
-  }catch(e){}
-}
+function beep(arr,tp='sine'){if(!sOn)return;try{const c=ac();arr.forEach(([f,t,d])=>{const o=c.createOscillator(),g=c.createGain();o.type=tp;o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.setValueAtTime(.22,c.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+d);o.start(c.currentTime+t);o.stop(c.currentTime+t+d);});}catch(e){}}
 const pOk=()=>beep([[440,0,.07],[554,.08,.07],[659,.16,.18]]);
 const pNo=()=>beep([[200,0,.1],[150,.1,.2]],'sawtooth');
 const pEnd=()=>beep([[523,0,.1],[659,.12,.1],[784,.25,.1],[1047,.4,.3]]);
-
-/* ═══ SHUFFLE ═══ */
 function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
-/* ═══ NAV GRID ═══ */
 let navCollapsed=false;
 function toggleNav(){
   navCollapsed=!navCollapsed;
@@ -515,14 +218,11 @@ function buildNav(){
   qs.forEach((q,i)=>{
     const b=document.createElement('button');
     b.className='nq'+(i===cur?' nq-cur':'')+(results[i]==='ok'?' nq-ok':results[i]==='no'?' nq-no':'');
-    b.textContent=i+1;
-    b.title=q.q.substring(0,50);
-    b.onclick=()=>goTo(i);
+    b.textContent=i+1;b.title=q.q.substring(0,50);b.onclick=()=>goTo(i);
     g.appendChild(b);
   });
 }
 
-/* ═══ INIT ═══ */
 function init(){
   qs=shuf(ALL).map(q=>({...q,opts:shuf(q.opts)}));
   cur=0;score=0;results=[];
@@ -530,40 +230,30 @@ function init(){
   document.getElementById('quiz').style.display='';
   upTop();render();buildNav();
 }
-
 function upTop(){
   document.getElementById('barF').style.width=(cur/qs.length*100)+'%';
   document.getElementById('pNum').textContent=`${cur+1}/${qs.length}`;
   document.getElementById('scV').textContent=score;
 }
+function goTo(i){if(i<0||i>=qs.length)return;cur=i;upTop();render();}
 
-function goTo(i){
-  if(i<0||i>=qs.length)return;
-  cur=i;upTop();render();
-}
-
-/* ═══ RENDER ═══ */
 function render(){
   const q=qs[cur];
   const answered=results[cur]!==undefined;
   const isLast=cur===qs.length-1;
-  const cats=['Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki'];
-
-  // Find original index to get category
-  const origIdx=ALL.findIndex(x=>x.q===q.q);
-  const cat=origIdx>=35?'Tarix & Texniki':'Qaydalar';
-
+  const origNo=ALL.findIndex(x=>x.q===q.q)+1;
+  const cat=origNo<=35?'Qaydalar':'Tarix & Texniki';
   const labels=['A','B','C','D','E'];
   document.getElementById('quiz').innerHTML=`
     <div class="card">
       <div class="q-meta">
         <span class="q-num-badge">Sual ${cur+1}</span>
-        <span class="q-category">${cat}</span>
+        <span class="q-cat">${cat}</span>
       </div>
       <div class="q-txt">${q.q}</div>
       <div class="opts" id="opts">
         ${q.opts.map((o,i)=>`
-          <button class="opt${answered?' locked':''}" onclick="pick(this,'${o.replace(/'/g,"&apos;").replace(/"/g,"&quot;")}')">
+          <button class="opt${answered?' locked':''}" data-opt="${i}" onclick="pick(this)">
             <span class="opt-l">${labels[i]}</span>
             <span class="opt-t">${o}</span>
             <span class="opt-i"></span>
@@ -584,30 +274,25 @@ function restoreAnswers(){
     const t=b.querySelector('.opt-t').textContent;
     if(t===q.ans){
       b.classList.add(results[cur]==='ok'?'correct':'reveal');
-      if(results[cur]==='ok')b.querySelector('.opt-i').textContent='✓';
-      else b.querySelector('.opt-i').textContent='✓';
+      b.querySelector('.opt-i').textContent='✓';
     }
-    if(results[cur]==='no'&&b.dataset.wrong==='1'){
+    if(results[cur]==='no'&&b.dataset.picked==='1'){
       b.classList.add('wrong');b.querySelector('.opt-i').textContent='✗';
     }
   });
 }
 
-function pick(btn,sel){
+function pick(btn){
   if(results[cur]!==undefined)return;
   const q=qs[cur];
+  const sel=btn.querySelector('.opt-t').textContent;
   document.querySelectorAll('.opt').forEach(b=>b.classList.add('locked'));
-
-  // decode HTML entities
-  const decoded=sel.replace(/&apos;/g,"'").replace(/&quot;/g,'"');
-
-  if(decoded===q.ans){
+  if(sel===q.ans){
     btn.classList.add('correct');btn.querySelector('.opt-i').textContent='✓';
     score++;results[cur]='ok';pOk();
   } else {
     btn.classList.add('wrong');btn.querySelector('.opt-i').textContent='✗';
-    btn.dataset.wrong='1';
-    results[cur]='no';pNo();
+    btn.dataset.picked='1';results[cur]='no';pNo();
     document.querySelectorAll('.opt').forEach(b=>{
       if(b.querySelector('.opt-t').textContent===q.ans){
         b.classList.add('reveal');b.querySelector('.opt-i').textContent='✓';
