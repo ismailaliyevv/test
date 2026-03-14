@@ -3,700 +3,659 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Voleybol Testi</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Voleybol Testi — 60 Sual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f0ece3;--surface:#fff;--surface2:#f7f4ee;--border:#ddd7c9;
-  --ink:#1a1208;--ink2:#4a3c28;--ink3:#9a8c78;
-  --green:#166534;--gbg:#f0fdf4;
-  --red:#991b1b;--rbg:#fff1f0;
-  --teal:#0f766e;--tbg:#f0fdfa;
-  --amber:#92400e;--abg:#fffbeb;
-  --blue:#1d4ed8;--bbg:#eff6ff;
+  --bg:#f8f9fc;
+  --white:#ffffff;
+  --border:#e4e7ef;
+  --border2:#c8cfe0;
+  --accent:#1a56db;
+  --accent-light:#eff4ff;
+  --accent2:#7c3aed;
+  --ok:#059669;
+  --ok-light:#ecfdf5;
+  --no:#dc2626;
+  --no-light:#fef2f2;
+  --gold:#d97706;
+  --txt:#0f1724;
+  --sub:#64748b;
+  --mute:#94a3b8;
+  --shadow:rgba(15,23,42,.08);
+  --shadow2:rgba(15,23,42,.04);
 }
-body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;min-height:100vh}
-.site-header{background:var(--ink);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;border-bottom:3px solid var(--teal)}
-.site-header h1{font-size:15px;font-weight:700;letter-spacing:1px}
-.site-header h1 span{color:#5eead4}
-.hdr-right{display:flex;align-items:center;gap:8px}
-.pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:13px;font-weight:600;color:#fff}
-.pill.red{color:#fca5a5}
-.snd-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.snd-btn:hover{background:rgba(255,255,255,.2)}
-.wrap{max-width:780px;margin:0 auto;padding:28px 16px 60px}
-.prog{margin-bottom:22px}
-.prog-bar{height:6px;background:var(--border);border-radius:6px;overflow:hidden;margin-bottom:6px}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),#0d9488);border-radius:6px;transition:width .4s ease;width:0}
-.prog-lbl{font-size:12px;color:var(--ink3);font-weight:500;text-align:right}
-.grid-box{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.grid-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
-.q-grid{display:flex;flex-wrap:wrap;gap:5px}
-.gc{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface2);font-size:11px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif}
-.gc:hover{border-color:var(--teal);color:var(--teal);background:var(--tbg)}
-.gc.cur{background:var(--ink);border-color:var(--ink);color:#fff}
-.gc.g-ok{background:var(--green);border-color:var(--green);color:#fff}
-.gc.g-err{background:var(--red);border-color:var(--red);color:#fff}
-.q-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:18px;box-shadow:0 4px 20px rgba(0,0,0,.07);animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.q-header{background:var(--ink);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
-.q-num{font-size:12px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:1px}
-.q-num b{color:#5eead4;font-size:15px}
-.q-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:4px 10px;border-radius:10px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.q-body{padding:22px 20px 14px;border-bottom:1px solid var(--surface2)}
-.q-text{font-size:15px;font-weight:500;line-height:1.7;color:var(--ink)}
-.opts{padding:14px 14px 18px;display:flex;flex-direction:column;gap:8px}
-.opt{background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left;width:100%;font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--ink2);transition:all .18s}
-.opt:hover:not([disabled]){border-color:var(--teal);background:var(--tbg);transform:translateX(3px)}
-.opt[disabled]{cursor:default}
-.opt-key{min-width:28px;height:28px;border-radius:7px;background:var(--border);font-size:11px;font-weight:700;color:var(--ink3);display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
-.opt.correct{border-color:var(--green)!important;background:var(--gbg)!important}
-.opt.correct .opt-key{background:var(--green);color:#fff}
-.opt.wrong{border-color:var(--red)!important;background:var(--rbg)!important;animation:shk .3s ease}
-.opt.wrong .opt-key{background:var(--red);color:#fff}
-.opt.show-ans{border-color:var(--green)!important;border-style:dashed!important;background:var(--gbg)!important}
-.opt.show-ans .opt-key{background:var(--green);color:#fff}
-@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.tbl-wrap{padding:6px 16px 18px}
-table.vtbl{width:100%;border-collapse:collapse;font-size:13px}
-.vtbl th{padding:9px 12px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);text-align:left;border-bottom:1.5px solid var(--border);background:var(--surface2)}
-.vtbl td{padding:8px 12px;border-bottom:1px solid var(--surface2);color:var(--ink2);font-size:13.5px}
-.vtbl td:first-child{font-weight:600}
-.vtbl tr.row-ok td:first-child{color:var(--green)}
-.vtbl tr.row-ok td:first-child::after{content:" ✓"}
-.vtbl tr.row-err td:first-child{color:var(--red)}
-.vtbl tr.row-err td:first-child::after{content:" ✗"}
-.rc{text-align:center}
-.rc input[type=radio]{display:none}
-.rc label{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface2);font-size:11px;font-weight:700;color:var(--ink3);cursor:pointer;transition:all .18s}
-.rc label:hover{border-color:var(--teal);color:var(--teal);background:var(--tbg)}
-.rc input[type=radio]:checked+label{background:var(--teal);border-color:var(--teal);color:#fff}
-.tbl-btn{margin:12px 0 4px;width:100%;padding:11px;background:var(--tbg);border:1.5px solid var(--teal);color:var(--teal);border-radius:10px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;transition:all .18s}
-.tbl-btn:hover{background:var(--teal);color:#fff}
-.tbl-res{margin-top:8px;padding:10px 14px;border-radius:9px;font-size:13px;font-weight:600;display:none}
-.tbl-res.show{display:block}
-.tbl-res.ok{background:var(--gbg);border:1px solid #bbf7d0;color:var(--green)}
-.tbl-res.part{background:var(--abg);border:1px solid #fde68a;color:var(--amber)}
-.tbl-res.fail{background:var(--rbg);border:1px solid #fecaca;color:var(--red)}
-.fb{padding:0 16px 14px;font-size:13px;font-weight:600;display:none;align-items:center;gap:8px}
-.fb.show{display:flex}
-.fb.ok{color:var(--green)}
-.fb.fail{color:var(--red)}
-.nav-row{display:flex;gap:10px;margin-top:4px}
-.nav-btn{padding:12px 22px;border-radius:11px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1.5px solid}
-.nav-btn.back{background:transparent;border-color:var(--border);color:var(--ink2);display:none}
-.nav-btn.back.show{display:flex;align-items:center;gap:8px}
-.nav-btn.back:hover{border-color:var(--ink);color:var(--ink)}
-.nav-btn.next{background:var(--ink);border-color:var(--ink);color:#fff;display:none;margin-left:auto}
-.nav-btn.next.show{display:flex;align-items:center;gap:8px}
-.nav-btn.next:hover{background:var(--teal);border-color:var(--teal)}
-.res-panel{display:none;animation:fadeIn .4s ease}
-.res-panel.show{display:block}
-.res-card{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 6px 30px rgba(0,0,0,.08)}
-.res-top{background:var(--ink);padding:44px 32px;text-align:center}
-.res-emoji{font-size:56px;margin-bottom:12px}
-.res-title{font-size:28px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:6px}
-.res-sub{color:rgba(255,255,255,.5);font-size:14px}
-.res-body{padding:32px}
-.big-sc{text-align:center;margin-bottom:22px}
-.big-sc .n{font-size:72px;font-weight:700;color:var(--teal);line-height:1}
-.big-sc .d{font-size:28px;color:var(--ink3)}
-.stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
-.stat{background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:14px 20px;text-align:center;min-width:88px}
-.stat .sn{font-size:24px;font-weight:700;display:block;margin-bottom:3px}
-.stat .sl{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:1.5px}
-.stat.ok .sn{color:var(--green)}
-.stat.err .sn{color:var(--red)}
-.stat.pct .sn{color:var(--teal)}
-.restart-btn{width:100%;padding:15px;background:var(--ink);border:none;border-radius:13px;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.restart-btn:hover{background:var(--teal)}
-#cfw{position:fixed;inset:0;pointer-events:none;z-index:9999}
-.cp{position:absolute;border-radius:2px;animation:fall linear forwards}
-@keyframes fall{from{transform:translateY(-30px) rotate(0deg);opacity:1}to{transform:translateY(105vh) rotate(600deg);opacity:0}}
-@media(max-width:540px){.q-text{font-size:14px}.gc{width:28px;height:28px;font-size:10px}}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:'Geist',sans-serif;min-height:100vh;}
+
+/* ── LAYOUT ── */
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 80px;}
+
+/* ── HEADER ── */
+.hdr{padding:52px 0 36px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:28px;}
+.hdr-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--accent-light);color:var(--accent);
+  font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  padding:5px 14px;border-radius:100px;border:1px solid rgba(26,86,219,.15);
+  margin-bottom:18px;
+}
+.hdr h1{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:clamp(32px,6vw,52px);line-height:1;
+  color:var(--txt);margin-bottom:8px;letter-spacing:-1px;
+}
+.hdr h1 b{font-style:normal;color:var(--accent);}
+.hdr p{color:var(--sub);font-size:13px;font-weight:400;}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:16px;padding:14px 20px;margin-bottom:16px;
+  display:flex;align-items:center;gap:16px;
+  box-shadow:0 1px 4px var(--shadow2);
+}
+.tb-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--mute);white-space:nowrap;}
+.tb-num{font-size:22px;font-weight:900;color:var(--accent);min-width:60px;text-align:center;font-variant-numeric:tabular-nums;}
+.bar-wrap{flex:1;height:6px;background:var(--border);border-radius:100px;overflow:hidden;}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%;}
+.score-box{text-align:right;min-width:48px;}
+.score-box .sl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute);display:block;}
+.score-box .sv{font-size:22px;font-weight:900;color:var(--gold);}
+.snd-btn{
+  width:36px;height:36px;border-radius:10px;background:var(--bg);
+  border:1px solid var(--border);cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.snd-btn:hover{border-color:var(--border2);}
+
+/* ── NAV GRID ── */
+.nav-panel{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:16px;padding:14px 16px;margin-bottom:16px;
+  box-shadow:0 1px 4px var(--shadow2);
+}
+.nav-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;cursor:pointer;user-select:none;}
+.nav-head span{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute);}
+.nav-toggle{font-size:10px;font-weight:700;color:var(--accent);background:var(--accent-light);border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-family:'Geist',sans-serif;}
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(30px,1fr));gap:4px;max-height:150px;overflow-y:auto;}
+.nav-grid.collapsed{display:none;}
+.nq{
+  width:100%;aspect-ratio:1;border-radius:6px;
+  background:var(--bg);border:1.5px solid var(--border);
+  font-size:9px;font-weight:800;color:var(--mute);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .12s;
+}
+.nq:hover{border-color:var(--border2);color:var(--txt);}
+.nq.nq-cur{background:var(--accent);color:#fff;border-color:var(--accent);}
+.nq.nq-ok{background:var(--ok-light);color:var(--ok);border-color:rgba(5,150,105,.3);}
+.nq.nq-no{background:var(--no-light);color:var(--no);border-color:rgba(220,38,38,.3);}
+
+/* ── CARD ── */
+.card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:20px;padding:28px 26px 22px;
+  margin-bottom:14px;position:relative;overflow:hidden;
+  animation:slideUp .32s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 2px 12px var(--shadow),0 1px 3px var(--shadow2);
+}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:3px 0 0 3px;}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.q-meta{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.q-num-badge{
+  background:var(--accent-light);color:var(--accent);
+  font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;
+  border:1px solid rgba(26,86,219,.15);
+}
+.q-category{font-size:10px;font-weight:600;color:var(--mute);}
+.q-txt{font-size:15px;font-weight:600;color:var(--txt);line-height:1.7;margin-bottom:22px;}
+
+/* ── OPTIONS ── */
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  background:var(--bg);border:1.5px solid var(--border);
+  border-radius:12px;padding:13px 16px;
+  cursor:pointer;font-size:13px;font-weight:500;color:var(--txt);
+  transition:all .15s ease;display:flex;align-items:center;
+  gap:12px;text-align:left;width:100%;font-family:'Geist',sans-serif;
+}
+.opt:hover:not(.locked){
+  border-color:rgba(26,86,219,.4);
+  background:var(--accent-light);
+  transform:translateX(3px);
+}
+.opt-l{
+  width:26px;height:26px;border-radius:7px;flex-shrink:0;
+  background:var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:var(--sub);
+  transition:all .15s;
+}
+.opt-t{flex:1;line-height:1.5;}
+.opt-i{font-size:15px;opacity:0;transition:opacity .18s;flex-shrink:0;}
+.opt.correct{border-color:var(--ok);background:var(--ok-light);}
+.opt.correct .opt-l{background:var(--ok);color:#fff;}
+.opt.correct .opt-i{opacity:1;}
+.opt.wrong{border-color:var(--no);background:var(--no-light);}
+.opt.wrong .opt-l{background:var(--no);color:#fff;}
+.opt.wrong .opt-i{opacity:1;}
+.opt.reveal{border-color:rgba(5,150,105,.5);background:var(--ok-light);}
+.opt.reveal .opt-l{background:var(--ok);color:#fff;}
+.locked{pointer-events:none;}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.015)}100%{transform:scale(1)}}
+@keyframes jolt{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.opt.correct{animation:pop .3s ease;}
+.opt.wrong{animation:jolt .3s ease;}
+
+/* ── BTNS ── */
+.btns{display:flex;justify-content:space-between;margin-top:16px;gap:10px;}
+.btn-prev{
+  display:none;background:var(--white);color:var(--sub);
+  border:1.5px solid var(--border);border-radius:11px;
+  padding:11px 20px;font-family:'Geist',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;
+}
+.btn-prev:hover{border-color:var(--border2);color:var(--txt);}
+.btn-prev.show{display:block;}
+.btn-nx{
+  display:none;background:var(--accent);color:#fff;
+  border:none;border-radius:11px;padding:11px 26px;
+  font-family:'Geist',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;box-shadow:0 3px 12px rgba(26,86,219,.3);
+  transition:all .18s;margin-left:auto;
+}
+.btn-nx:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(26,86,219,.4);}
+.btn-nx.show{display:block;}
+
+/* ── RESULT ── */
+#res{display:none;}
+.rc{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:22px;padding:48px 28px;text-align:center;
+  box-shadow:0 4px 20px var(--shadow);margin-bottom:20px;
+  animation:slideUp .45s ease;
+}
+.rc-emo{font-size:68px;display:block;margin-bottom:14px;}
+.rc-title{font-family:'Instrument Serif',serif;font-style:italic;font-size:38px;color:var(--txt);margin-bottom:6px;}
+.rc-stars{font-size:28px;letter-spacing:4px;margin-bottom:18px;}
+.rc-score{font-size:60px;font-weight:900;color:var(--accent);line-height:1;margin-bottom:6px;}
+.rc-pct{color:var(--sub);font-size:13px;font-weight:500;margin-bottom:28px;}
+.rc-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:320px;margin:0 auto 28px;}
+.rc-stat{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.rc-stat .v{font-size:32px;font-weight:900;line-height:1;}
+.rc-stat .l{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mute);margin-top:3px;}
+.rc-stat.g .v{color:var(--ok);}
+.rc-stat.r .v{color:var(--no);}
+.btn-re{
+  background:var(--accent);color:#fff;border:none;
+  border-radius:12px;padding:14px 40px;
+  font-family:'Geist',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;box-shadow:0 4px 16px rgba(26,86,219,.3);
+  transition:all .2s;
+}
+.btn-re:hover{transform:translateY(-2px);box-shadow:0 7px 24px rgba(26,86,219,.4);}
+
+/* ── CONFETTI ── */
+.cp{position:fixed;top:-12px;border-radius:2px;animation:fall linear forwards;pointer-events:none;z-index:999;}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:0}}
 </style>
 </head>
 <body>
-<div class="site-header">
-  <h1>🏐 <span>Voleybol</span> Qaydaları Testi</h1>
-  <div class="hdr-right">
-    <div class="pill" id="sc">Bal: 0</div>
-    <div class="pill red" id="wc">Səhv: 0</div>
-    <button class="snd-btn" id="sndBtn">🔊</button>
-  </div>
-</div>
 <div class="wrap">
-  <div class="prog">
-    <div class="prog-bar"><div class="prog-fill" id="pf"></div></div>
-    <div class="prog-lbl" id="pl">0 / 52</div>
+  <div class="hdr">
+    <div class="hdr-badge">⚡ Voleybol Qaydaları</div>
+    <h1>Voleybol<br><b>Testi</b></h1>
+    <p>60 sual · Suallar və cavablar hər dəfə qarışır</p>
   </div>
-  <div class="grid-box">
-    <div class="grid-title">Sual Xəritəsi</div>
-    <div class="q-grid" id="qGrid"></div>
+
+  <div class="topbar">
+    <div class="tb-label">Sual</div>
+    <div class="tb-num" id="pNum">1/60</div>
+    <div class="bar-wrap"><div class="bar-fill" id="barF"></div></div>
+    <div class="score-box"><span class="sl">Xal</span><span class="sv" id="scV">0</span></div>
+    <button class="snd-btn" id="sndBtn" title="Səs">🔊</button>
   </div>
-  <div id="qArea"></div>
-  <div class="nav-row" id="navRow">
-    <button class="nav-btn back" id="btnBack">← Geri</button>
-    <button class="nav-btn next" id="btnNext">Növbəti →</button>
-  </div>
-  <div class="res-panel" id="resPanel">
-    <div class="res-card">
-      <div class="res-top">
-        <div class="res-emoji" id="rEmoji">🏆</div>
-        <div class="res-title" id="rTitle">Əla!</div>
-        <div class="res-sub" id="rSub"></div>
-      </div>
-      <div class="res-body">
-        <div class="big-sc"><span class="n" id="rN">0</span><span class="d" id="rD">/52</span></div>
-        <div class="stats">
-          <div class="stat ok"><span class="sn" id="rOk">0</span><span class="sl">Düzgün</span></div>
-          <div class="stat err"><span class="sn" id="rErr">0</span><span class="sl">Səhv</span></div>
-          <div class="stat pct"><span class="sn" id="rPct">0%</span><span class="sl">Faiz</span></div>
-        </div>
-        <button class="restart-btn" onclick="startQuiz()">↺ Yenidən Başla</button>
-      </div>
+
+  <div class="nav-panel">
+    <div class="nav-head" onclick="toggleNav()">
+      <span>📋 Sual Naviqasiyası</span>
+      <button class="nav-toggle" id="navToggleBtn">Gizlət ▲</button>
     </div>
+    <div class="nav-grid" id="navGrid"></div>
   </div>
+
+  <div id="quiz"></div>
+  <div id="res"></div>
 </div>
-<div id="cfw"></div>
+
 <script>
-// ── SUALLAR ──────────────────────────────────────────────────────────
-// Hər sualda dörd variant var. Düzgün cavab müxtəlif mövqelərdədir (A/B/C/D).
-// Shuffle zamanı isCorrect:true olan variant qarışır — mövqe hər dəfə dəyişir.
-const BANK = [
-  // SAHƏ (7)
-  {tp:'c',topic:'Oyun Sahəsi',
-   q:'Voleybol meydançasının eni neçə metrdir?',
-   opts:[{t:'9 m',c:true},{t:'12 m',c:false},{t:'18 m',c:false},{t:'6 m',c:false}]},
+const ALL = [
+{q:'Oyunçu düzülüşü hakimlərə təqdim olunan vərəqdəki ardıcıllıqdan fərqli olarsa və bu, oyun başladıqdan sonra aşkar edilərsə, hansı prosedur tətbiq edilir?',
+ opts:['Xəta edən tərəfin həmin hissədə qazandığı bütün xallar ləğv edilir.','Hakimlər tərəfindən komandaya şifahi xəbərdarlıq edilərək oyun davam edir.','Səhv edən komandadan 2 xal silinir və servis atmaq hüququ rəqibə verilir.','Düzülüş vərəqi yenidən doldurulur və hər iki komanda sıfırdan başlayır.','Oyunçu dəyişikliyi limiti daxilində dərhal yeni bir püşkatma keçirilir.'],
+ ans:'Xəta edən tərəfin həmin hissədə qazandığı bütün xallar ləğv edilir.'},
 
-  {tp:'c',topic:'Oyun Sahəsi',
-   q:'Voleybol meydançasının uzunluğu neçə metrdir?',
-   opts:[{t:'12 m',c:false},{t:'15 m',c:false},{t:'18 m',c:true},{t:'9 m',c:false}]},
+{q:'Servis atan oyunçu topu havaya atdıqdan sonra ona toxunmadan yerə düşməsinə şərait yaradarsa, bu hal dərslik qaydalarına görə necə qiymətləndirilir?',
+ opts:['Bu bir servis xətasıdır, xal və servis atmaq hüququ rəqib komandaya keçir.','Servis atışının uğursuz cəhdi sayılır və oyunçuya təkrar servis verilir.','Oyunçunun vaxtı uzatması hesab edilir və dərhal sarı vərəqə göstərilir.','Top oyunçuya toxunmadığı üçün hakim fiti ilə oyun yenidən başladılır.','Oyunçuya 8 saniyəlik əlavə bir hazırlıq vaxtı tanımaqla oyun davam edir.'],
+ ans:'Bu bir servis xətasıdır, xal və servis atmaq hüququ rəqib komandaya keçir.'},
 
-  {tp:'c',topic:'Oyun Sahəsi',
-   q:'Kişilər üçün tor hündürlüyü neçədir?',
-   opts:[{t:'2.24 m',c:false},{t:'2.43 m',c:true},{t:'2.35 m',c:false},{t:'2.50 m',c:false}]},
+{q:'Beşinci həlledici hissədə komandaların sahə dəyişməsi prosedurunun yerinə yetirilməsi hansı texniki qaydaya əsaslanır?',
+ opts:['Komandalardan biri 10 xal topladıqda oyunçu zonaları dəyişməklə icra olunur.','Komandaların hər ikisi cəmi 15 xal topladıqda hakim tərəfindən icra olunur.','Komandalardan biri 8 xal topladıqda oyunçu zonaları dəyişmədən icra olunur.','Yalnız hissə bitdikdən sonra komandaların ümumi razılığı əsasında icra olunur.','Hər taym-aut fasiləsindən sonra oyunun tempini artırmaq üçün dərhal icra olunur.'],
+ ans:'Komandalardan biri 8 xal topladıqda oyunçu zonaları dəyişmədən icra olunur.'},
 
-  {tp:'c',topic:'Oyun Sahəsi',
-   q:'Qadınlar üçün tor hündürlüyü neçədir?',
-   opts:[{t:'2.20 m',c:false},{t:'2.43 m',c:false},{t:'2.24 m',c:true},{t:'2.35 m',c:false}]},
+{q:'Arxa zona oyunçusu ön zonadan tullanaraq hücum zərbəsi endirərkən top tora toxunursa, bu hansı halda qayda pozuntusu sayılır?',
+ opts:['Zərbə anında top torun üst kənar səviyyəsindən aşağıda yerləşərsə.','Zərbə anında top torun üst kənar səviyyəsindən yuxarıda yerləşərsə.','Oyunçu zərbədən sonra ön zona daxilinə müvazinətini saxlayaraq düşərsə.','Top rəqib blokuna toxunduqdan sonra meydança hüdudlarından kənara düşərsə.','Oyunçunun ayaqları tullanma anında hücum xəttinə heç bir halda toxunmazsa.'],
+ ans:'Zərbə anında top torun üst kənar səviyyəsindən yuxarıda yerləşərsə.'},
 
-  {tp:'c',topic:'Oyun Sahəsi',
-   q:'Servis atışı sahəsinin dərinliyi neçə metrdir?',
-   opts:[{t:'6 m',c:false},{t:'9 m',c:true},{t:'3 m',c:false},{t:'12 m',c:false}]},
+{q:'Blok zamanı topa eyni anda iki komanda yoldaşı toxunarsa, komandanın növbəti oyun hüququ necə müəyyən edilir?',
+ opts:['Bu toxunuş 1 vuruş sayılır və komandanın 2 toxunuş haqqı qalır.','Bu toxunuş vuruş sayılmır və komandanın 3 toxunuş haqqı qalır.','Bu toxunuş 2 vuruş sayılır və komandanın 1 toxunuş haqqı qalır.','Bu toxunuş xəta sayılır və xal birbaşa rəqib komandaya verilir.','Bu toxunuşdan sonra topu yalnız ön zona oyunçusu oyuna daxil edə bilər.'],
+ ans:'Bu toxunuş vuruş sayılmır və komandanın 3 toxunuş haqqı qalır.'},
 
-  {tp:'c',topic:'Oyun Sahəsi',
-   q:'Yan xətlər oyun meydançasına daxildirmi?',
-   opts:[{t:'Bəli, daxildir',c:true},{t:'Xeyr, daxil deyil',c:false},{t:'Yalnız servis üçün',c:false},{t:'Yarısı daxildir',c:false}]},
+{q:'Libero oyunçusunun oyundakı rolu və kapitanlıq hüququ ilə bağlı hansı fikir dərslik materialına uyğundur?',
+ opts:['Libero komandanın taktiki hücumlarını idarə edən əsas kapitan ola bilər.','Libero ön zonada blok qura bilər və oyunun gedişatında kapitanı əvəz edər.','Libero yalnız arxa zonada oynaya bilər və komanda kapitanı ola bilməz.','Libero istənilən zonada çıxış edərək rəsmi olaraq kapitan statusu daşıyar.','Libero yalnız servis atışları zamanı kapitanın funksiyalarını yerinə yetirər.'],
+ ans:'Libero yalnız arxa zonada oynaya bilər və komanda kapitanı ola bilməz.'},
 
-  {tp:'c',topic:'Oyun Sahəsi',
-   q:'Libero dəyişdirmə zonası harada yerləşir?',
-   opts:[{t:'Arxa xətt boyunca bütün zona',c:false},{t:'Hücum xətti uzantısından orta xəttə qədər olan bölmə',c:true},{t:'Meydançanın ortasında',c:false},{t:'Yalnız sol tərəfdə',c:false}]},
+{q:'Servis zamanı oyunçuların meydandakı yerləşməsində hansı vəziyyət "Mövqe xətası" kimi qeydə alınır?',
+ opts:['Arxa sağ zona oyunçusunun ön sağ zona oyunçusundan daha geridə dayanması.','Ön orta zona oyunçusunun arxa orta zona oyunçusundan daha öndə dayanması.','6 nömrəli oyunçunun 1 nömrəli oyunçudan daha sağda və öndə dayanması.','Arxa sol zona oyunçusunun ön sol zona oyunçusu ilə paralel xətt üzrə dayanması.','4 nömrəli oyunçunun 3 nömrəli oyunçudan daha solda və hücum xəttində dayanması.'],
+ ans:'6 nömrəli oyunçunun 1 nömrəli oyunçudan daha sağda və öndə dayanması.'},
 
-  // KOMANDA (6)
-  {tp:'c',topic:'Komanda',
-   q:'Bir komandada maksimum neçə oyunçu ola bilər?',
-   opts:[{t:'10',c:false},{t:'14',c:false},{t:'12',c:true},{t:'16',c:false}]},
+{q:'Rəqib komandanın yerinə yetirdiyi servis atışına qarşı blok qurulması qaydalara görə necə tənzimlənir?',
+ opts:['Yalnız ön zonada dayanan kapitan tərəfindən servisə blok qurula bilər.','Servisə blok qurmaq qadağandır və bu hərəkət birbaşa xal itkisi deməkdir.','Servis atışı çox sürətli olarsa, bütün oyunçulara blok qurmağa icazə verilir.','Servisə yalnız top tor səviyyəsindən aşağıda olduğu zaman blok qurula bilər.','Servisə blok qurmaq sərbəstdir, lakin top rəqib sahəsinə düşərsə xal sayılmaz.'],
+ ans:'Servisə blok qurmaq qadağandır və bu hərəkət birbaşa xal itkisi deməkdir.'},
 
-  {tp:'c',topic:'Komanda',
-   q:'Dünya çempionatlarında yazı cədvəlinə neçə oyunçu qeyd edilir?',
-   opts:[{t:'12',c:false},{t:'16',c:false},{t:'18',c:false},{t:'14',c:true}]},
+{q:'Oyunçuya "qırmızı vərəqə" göstərilməsinin nəticəsi dərslikdəki cəzalar bölməsinə görə necə izah olunur?',
+ opts:['Oyunçu yalnız xəbərdarlıq alır və oyun heç bir xal itkisi olmadan davam edir.','Səhv edən komanda 1 xal itirir və servis atmaq hüququ rəqibə təqdim olunur.','Oyunçu dərhal meydandan qovulur, lakin rəqib komandaya heç bir xal verilmir.','Qırmızı vərəqə alan oyunçunun komandası həmin hissəni məğlub başa vurur.','Oyunçu 3 dəqiqəlik cərimə skamyasına göndərilir və komanda azlıqda qalır.'],
+ ans:'Səhv edən komanda 1 xal itirir və servis atmaq hüququ rəqibə təqdim olunur.'},
 
-  {tp:'c',topic:'Komanda',
-   q:'Hər komandanın meydançada eyni anda neçə oyunçusu olur?',
-   opts:[{t:'5',c:false},{t:'7',c:false},{t:'8',c:false},{t:'6',c:true}]},
+{q:'Bir hissə (set) ərzində komandanın edə biləcəyi oyunçu dəyişikliyi limiti hansı bənddə düzgün göstərilib?',
+ opts:['Komanda hər hissədə maksimum 3 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda hər hissədə maksimum 8 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda hər hissədə maksimum 6 oyunçu dəyişikliyi etmək hüququna malikdir.','Komanda üçün oyunçu dəyişikliyi limiti yoxdur, sərbəst şəkildə dəyişə bilər.','Komanda yalnız zədələnmə halları baş verdikdə 2 oyunçu dəyişikliyi edə bilər.'],
+ ans:'Komanda hər hissədə maksimum 6 oyunçu dəyişikliyi etmək hüququna malikdir.'},
 
-  {tp:'c',topic:'Komanda',
-   q:'Formaların nömrələri hansı aralıqda olmalıdır?',
-   opts:[{t:'1–12',c:false},{t:'1–15',c:false},{t:'1–20',c:true},{t:'1–18',c:false}]},
+{q:'Servis atışını yerinə yetirən oyunçu topa vurduğu anda ayağı ilə servis sahəsini hüdudlandıran yan xəttə toxunarsa:',
+ opts:['Xətt hakimi bayrağını qaldırır və servis atışı təkrar edilir.','Bu qayda pozuntusudur, xal və servis haqqı rəqibə verilir.','Oyunçuya xəbərdarlıq edilir, top rəqibə keçərsə oyun davam edir.','Bu hərəkət texniki xəta sayılır və komandadan 1 xal silinir.','Yan xətlərə toxunmaq sərbəstdir, yalnız arxa xətti keçmək olmaz.'],
+ ans:'Bu qayda pozuntusudur, xal və servis haqqı rəqibə verilir.'},
 
-  {tp:'c',topic:'Komanda',
-   q:'Komandanın kapitanı kim ola bilər?',
-   opts:[{t:'Yalnız ön zona oyunçusu',c:false},{t:'Libero daxil istənilən oyunçu',c:true},{t:'Yalnız libero',c:false},{t:'Libero xaric istənilən oyunçu',c:false}]},
+{q:'Oyunun 1-ci hissəsində hesab 8:7 olduqda hakimin icra etməli olduğu prosedur hansıdır?',
+ opts:['Komandalara 30 saniyəlik adi taym-aut götürmək hüququ tanınır.','Oyunun tempini saxlamaq üçün 60 saniyəlik texniki fasilə verilir.','Komandalar dərhal sahələri dəyişmək üçün mərkəz xəttinə toplanır.','Heç bir fasilə verilmir, oyunçu dəyişikliyi üçün vaxt ayrılır.','Püşkatmanın nəticəsinə uyğun olaraq servis atan tərəf dəyişdirilir.'],
+ ans:'Oyunun tempini saxlamaq üçün 60 saniyəlik texniki fasilə verilir.'},
 
-  {tp:'c',topic:'Komanda',
-   q:'Dünya çempionatlarında neçə libero ola bilər?',
-   opts:[{t:'1',c:false},{t:'3',c:false},{t:'4',c:false},{t:'2',c:true}]},
+{q:'Komandanın 2 nömrəli oyunçusu servis atmaq hüququ qazandıqda hansı hərəkəti etməlidir?',
+ opts:['Saat əqrəbi istiqamətində yerini dəyişərək 1 nömrəli zonaya keçməlidir.','Saat əqrəbinin əksi istiqamətində hərəkət edərək 3 nömrəli zonaya keçməlidir.','Olduğu zonada qalaraq dərhal servis sahəsinə çıxış etməli və topa vurmalıdır.','Yalnız arxa zona oyunçularından biri ilə yerini dəyişərək müdafiəyə keçməlidir.','Hakimin göstərişi ilə 6 nömrəli zona ilə çarpaz şəkildə yerini dəyişməlidir.'],
+ ans:'Saat əqrəbi istiqamətində yerini dəyişərək 1 nömrəli zonaya keçməlidir.'},
 
-  // OYUN QAYDASI (3)
-  {tp:'c',topic:'Oyun Qaydası',
-   q:'Voleybol oyunu necə başlayır?',
-   opts:[{t:'Servis atışı ilə',c:false},{t:'Baş hakim işarəsi ilə',c:false},{t:'Püşkatma ilə',c:true},{t:'Komanda razılaşması ilə',c:false}]},
+{q:'Top rəqib sahəsinə keçərkən toru hüdudlandıran antenaların çöl hissəsindən keçərsə, hakimin qərarı?',
+ opts:['Top "daxildə" hesab edilir və oyun fasiləsiz şəkildə davam etdirilir.','Top "out" sayılır və xal servis atışını qarşılayan komandaya verilir.','Bu vəziyyət tor xətası hesab olunur və servis təkrar yerinə yetirilir.','Antenaya toxunmadığı halda topun hərəkət trayektoriyası düzgün sayılır.','Topun antenadan kənar keçməsi yalnız servis zamanı pozuntu hesab edilir.'],
+ ans:'Top "out" sayılır və xal servis atışını qarşılayan komandaya verilir.'},
 
-  {tp:'c',topic:'Oyun Qaydası',
-   q:'Püşkü qazanan komanda nə seçmək hüququna sahib olur?',
-   opts:[{t:'Oyuna başlamaq VƏ YA sahəni seçmək',c:true},{t:'Yalnız sahəni seçmək',c:false},{t:'Yalnız servis atmaq',c:false},{t:'Oyunçu sayını seçmək',c:false}]},
+{q:'Blok qurulması zamanı oyunçunun əllərinin toru keçərək rəqib sahəsinə daxil olması hansı halda icazəlidir?',
+ opts:['Rəqibin hücum zərbəsindən əvvəl topa toxunaraq trayektoriyanı dəyişdikdə.','Rəqib oyunçunun hərəkətlərinə mane olmaq məqsədilə toru tam keçdikdə.','Rəqib öz hücum zərbəsini tamamladıqdan sonra və ya həmin anda olduqda.','Top torun alt hissəsindən rəqib sahəsinə doğru hərəkət etdiyi zaman.','Blok zamanı əllərin rəqib sahəsinə keçməsi bütün hallarda qadağandır.'],
+ ans:'Rəqib öz hücum zərbəsini tamamladıqdan sonra və ya həmin anda olduqda.'},
 
-  {tp:'c',topic:'Oyun Qaydası',
-   q:'Hissəni qazanmaq üçün nə lazımdır?',
-   opts:[{t:'20 xal toplamaq',c:false},{t:'15 xal toplamaq',c:false},{t:'25 xal toplamaq',c:false},{t:'Rəqibdən ən az 2 xal çox olmaqla tələb olunan xalı toplamaq',c:true}]},
+{q:'Bir komanda bir hissə ərzində maksimum neçə adi (30 saniyəlik) taym-aut götürə bilər?',
+ opts:['Bir hissə ərzində hər komanda üçün 1 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 2 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 3 taym-aut nəzərdə tutulmuşdur.','Bir hissə ərzində hər komanda üçün 4 taym-aut nəzərdə tutulmuşdur.','5-ci hissə istisna olmaqla, hər hissədə limitsiz taym-aut hüququ vardır.'],
+ ans:'Bir hissə ərzində hər komanda üçün 2 taym-aut nəzərdə tutulmuşdur.'},
 
-  // MÖVQELƏr (7)
-  {tp:'c',topic:'Mövqelər',
-   q:'Sağda olan ön zona oyunçusunun nömrəsi neçədir?',
-   opts:[{t:'3',c:false},{t:'4',c:false},{t:'1',c:false},{t:'2',c:true}]},
+{q:'Topun oyunçu tərəfindən aydın şəkildə vurulmayıb, ovuc daxilində saxlanılaraq istiqamətləndirilməsi hansı xətadır?',
+ opts:['"Dörd vuruş" xətası sayılır və top birbaşa rəqib komandaya verilir.','"Topun tutulması" xətası sayılır və rəqibə bir xal və servis verilir.','"Mövqe xətası" sayılır və oyunçuya dərhal sarı vərəqə göstərilir.','"Tor xətası" sayılır və oyunun tempini pozduğu üçün oyunçu cəzalanır.','Dərslik qaydalarına görə bu hərəkət texniki cəhətdən düzgün hesab edilir.'],
+ ans:'"Topun tutulması" xətası sayılır və rəqibə bir xal və servis verilir.'},
 
-  {tp:'c',topic:'Mövqelər',
-   q:'Solda olan ön zona oyunçusunun nömrəsi neçədir?',
-   opts:[{t:'2',c:false},{t:'3',c:false},{t:'4',c:true},{t:'5',c:false}]},
+{q:'Oyunçu rəqib sahəsinə orta xəttin altından hansı şərtlə keçə bilər?',
+ opts:['Rəqib oyunçuların hərəkətinə heç bir maneə yaratmadığı təqdirdə.','Ayağının bir hissəsi hələ də mərkəz xəttinin üzərində qaldığı təqdirdə.','Yalnız top rəqib sahəsində yerə toxunduqdan sonra keçdiyi təqdirdə.','Komanda kapitanı hakimdən əvvəlcədən icazə aldığı xüsusi təqdirdə.','Şəbəkənin altından rəqib sahəsinə keçmək bütün hallarda qadağandır.'],
+ ans:'Rəqib oyunçuların hərəkətinə heç bir maneə yaratmadığı təqdirdə.'},
 
-  {tp:'c',topic:'Mövqelər',
-   q:'Orta ön zona oyunçusunun nömrəsi neçədir?',
-   opts:[{t:'2',c:false},{t:'4',c:false},{t:'6',c:false},{t:'3',c:true}]},
+{q:'Voleybol matçını idarə edən cəmi 8 hakimdən neçəsi xətt hakimi kimi fəaliyyət göstərir?',
+ opts:['2 nəfər','4 nəfər','6 nəfər','1 nəfər','5 nəfər'],
+ ans:'4 nəfər'},
 
-  {tp:'c',topic:'Mövqelər',
-   q:'Arxa zona sağ oyunçusunun nömrəsi neçədir?',
-   opts:[{t:'5',c:false},{t:'6',c:false},{t:'2',c:false},{t:'1',c:true}]},
+{q:'5-ci (həlledici) hissədə texniki taym-autların verilməsi proseduru necədir?',
+ opts:['Hesab 8-ə çatdıqda 60 saniyəlik bir texniki taym-aut verilir.','Hesab 8 və 16-ya çatdıqda iki dəfə texniki taym-aut verilir.','5-ci hissədə heç bir halda texniki taym-aut verilməsi nəzərdə tutulmur.','Yalnız komandalardan biri 15 xal topladıqda texniki fasilə verilir.','Texniki taym-autlar yalnız beynəlxalq final oyunlarında tətbiq edilir.'],
+ ans:'5-ci hissədə heç bir halda texniki taym-aut verilməsi nəzərdə tutulmur.'},
 
-  {tp:'c',topic:'Mövqelər',
-   q:'Arxa zona orta oyunçusunun nömrəsi neçədir?',
-   opts:[{t:'1',c:false},{t:'5',c:false},{t:'3',c:false},{t:'6',c:true}]},
+{q:'Püşkatmanı qazanaraq servis atmaq hüququnu seçən komanda nədən imtina etmiş sayılır?',
+ opts:['Oyun sahəsini seçmək hüququndan','Taym-aut götürmək hüququndan','Oyunçu dəyişmək hüququndan','Libero istifadə etmək hüququndan','Kapitanı təyin etmək hüququndan'],
+ ans:'Oyun sahəsini seçmək hüququndan'},
 
-  {tp:'c',topic:'Mövqelər',
-   q:'Mövqe xətasında rəqib komandaya nə verilir?',
-   opts:[{t:'2 xal',c:false},{t:'3 xal',c:false},{t:'Yalnız mövqe düzəldilir',c:false},{t:'1 xal + servis atma hüququ',c:true}]},
+{q:'Oyunçu topa vurarkən eyni anda həm əli, həm də çiyni ilə toxunursa, bu neçə vuruş sayılır?',
+ opts:['1 vuruş','2 vuruş','Xəta sayılır','"Out" sayılır','Cərimə sayılır'],
+ ans:'1 vuruş'},
 
-  {tp:'c',topic:'Mövqelər',
-   q:'Servis atışından sonra oyunçular nə edə bilər?',
-   opts:[{t:'Yalnız öz zonasında qala bilər',c:false},{t:'Yalnız arxa zonaya keçə bilər',c:false},{t:'Sərbəst hərəkət edib istənilən mövqeyə keçə bilər',c:true},{t:'Mövqeyini dəyişdirə bilməz',c:false}]},
+{q:'Top rəqib tərəfə keçərkən torun alt boşluğundan keçərsə, hakimin qərarı?',
+ opts:['Oyun davam edir','Xal rəqibə verilir','Top təkrar atılır','Servis təkrar yerinə yetirilir','"Net" xətası sayılır'],
+ ans:'Xal rəqibə verilir'},
 
-  // LİBERO (5)
-  {tp:'c',topic:'Libero',
-   q:'Libero oyunçusu neçə oyunçu əvəzinə müdafiə edə bilər?',
-   opts:[{t:'Yalnız 1',c:false},{t:'Limitsiz',c:false},{t:'Ən çox 2',c:true},{t:'Yalnız 2',c:false}]},
+{q:'Arxa zona oyunçusu olan 5 nömrəli oyunçu blok qurarkən topa toxunarsa, bu necə adlanır?',
+ opts:['Uğurlu müdafiə','Blok xətası','Texniki vuruş','Sahə xətası','Mövqe xətası'],
+ ans:'Blok xətası'},
 
-  {tp:'c',topic:'Libero',
-   q:'Libero forması qalanlara nisbətən necə olmalıdır?',
-   opts:[{t:'İstənilən rəngdə',c:false},{t:'Fərqli rəngdə',c:true},{t:'Ağ rəngdə',c:false},{t:'Eyni rəngdə',c:false}]},
+{q:'Hakimin fitindən sonra servis neçə saniyə ərzində yerinə yetirilməlidir?',
+ opts:['3 saniyə','5 saniyə','8 saniyə','10 saniyə','12 saniyə'],
+ ans:'8 saniyə'},
 
-  {tp:'c',topic:'Libero',
-   q:'Libero hansı hərəkətləri edə bilməz?',
-   opts:[{t:'Topun qəbulu',c:false},{t:'Ötürmə etmək',c:false},{t:'Blok qurmaq, servis atmaq, hücum zərbəsi vurmaq',c:true},{t:'Sahəyə daxil olmaq',c:false}]},
+{q:'Blok zamanı topa toxunuş vuruş sayına daxil edilirmi?',
+ opts:['Bəli, daxildir','Xeyr, daxil deyil','Yalnız finalda daxildir','Yalnız 5-ci setdə daxildir','Hakimin qərarına bağlıdır'],
+ ans:'Xeyr, daxil deyil'},
 
-  {tp:'c',topic:'Libero',
-   q:'Libero kapitan ola bilərmi?',
-   opts:[{t:'Bəli, həmişə',c:false},{t:'Komanda qərarı ilə',c:false},{t:'Xeyr, libero kapitan ola bilməz',c:true},{t:'Yalnız finallarda',c:false}]},
+{q:'"Mövqe xətası" rəqib komandaya nə qazandırır?',
+ opts:['Yalnız servis haqqı','Yalnız xəbərdarlıq','1 xal və servis haqqı','2 xal və servis haqqı','Heç nə qazandırmır'],
+ ans:'1 xal və servis haqqı'},
 
-  {tp:'c',topic:'Libero',
-   q:'Libero blok qura bilərmi?',
-   opts:[{t:'Bəli, həmişə',c:false},{t:'Kapitan icazəsi ilə',c:false},{t:'Yalnız ön zonada',c:false},{t:'Xeyr, qadağandır',c:true}]},
+{q:'Oyunçu dəyişikliyi zamanı meydanı tərk edən oyunçu həmin hissədə nə vaxt qayıda bilər?',
+ opts:['İstənilən vaxt qayıda bilər','Yalnız onu əvəz edənin yerinə','Yalnız 5 dəqiqə sonra','Heç bir halda qayıda bilməz','Yalnız zədə halında qayıdar'],
+ ans:'Yalnız onu əvəz edənin yerinə'},
 
-  // SERVİS (3)
-  {tp:'c',topic:'Servis',
-   q:'Servis necə atılır?',
-   opts:[{t:'İki əl ilə',c:false},{t:'Baş ilə',c:false},{t:'Bir əl ilə vurularaq',c:true},{t:'Ayaq ilə',c:false}]},
+{q:'Voleybol formalarında nömrələr hansı aralıqda olmalıdır?',
+ opts:['1-12 arası','1-20 arası','1-99 arası','1-6 arası','Nömrə məcburi deyil'],
+ ans:'1-99 arası'},
 
-  {tp:'c',topic:'Servis',
-   q:'Topu havaya atdıqdan neçə saniyə ərzində vurmalıdır?',
-   opts:[{t:'5 saniyə',c:false},{t:'3 saniyə',c:false},{t:'10 saniyə',c:false},{t:'8 saniyə',c:true}]},
+{q:'Top tavana və ya oyun sahəsindən kənar əşyaya dəyərsə, bu necə qiymətləndirilir?',
+ opts:['Oyun davam edir','Top "out" sayılır','Servis təkrar edilir','Xal hücum edənə verilir','Hakimin püşkü ilə həll olunur'],
+ ans:'Top "out" sayılır'},
 
-  {tp:'c',topic:'Servis',
-   q:'Servis zamanı oyunçunun ayaqları xətti keçsə nə olur?',
-   opts:[{t:'Xəbərdarlıq verilir',c:false},{t:'Servis yenilənir',c:false},{t:'Heç nə olmur',c:false},{t:'Servis xətası — rəqib xal qazanır',c:true}]},
+{q:'3:0 və ya 3:1 hesabı ilə bitən oyunda qalib neçə xal qazanır?',
+ opts:['1 xal','2 xal','3 xal','0 xal','5 xal'],
+ ans:'3 xal'},
 
-  // BLOK (4)
-  {tp:'c',topic:'Blok',
-   q:'Blok kimin tərəfindən qurulur?',
-   opts:[{t:'Libero',c:false},{t:'Yalnız kapitan',c:false},{t:'İstənilən oyunçu',c:false},{t:'Tora yaxın ön zona oyunçuları',c:true}]},
+{q:'3:2 hesabı ilə bitən oyunda məğlub olan komanda neçə xal qazanır?',
+ opts:['0 xal','1 xal','2 xal','3 xal','Xal qazanmır'],
+ ans:'1 xal'},
 
-  {tp:'c',topic:'Blok',
-   q:'Arxa zona oyunçusu blok qura bilərmi?',
-   opts:[{t:'Bəli, həmişə',c:false},{t:'Yalnız 5-ci hissədə',c:false},{t:'Xeyr, qadağandır',c:true},{t:'Kapitan icazəsi ilə',c:false}]},
+{q:'Hansı halda "out" qərarı verilir?',
+ opts:['Top yan xətlərə toxunduqda','Top torun gözcüklərinə dəydikdə','Top antenanın çölündən keçdikdə','Top rəqib blokuna toxunduqda','Top orta xəttə toxunduqda'],
+ ans:'Top antenanın çölündən keçdikdə'},
 
-  {tp:'c',topic:'Blok',
-   q:'Rəqib servis atarkən blok qurmaq olarmı?',
-   opts:[{t:'Bəli',c:false},{t:'Yalnız ön zona üçün',c:false},{t:'Yalnız 3-cü hissədə',c:false},{t:'Xeyr, qadağandır',c:true}]},
+{q:'Taym-autun müddəti dərslikdə neçə saniyə göstərilib?',
+ opts:['20 saniyə','30 saniyə','60 saniyə','45 saniyə','15 saniyə'],
+ ans:'30 saniyə'},
 
-  {tp:'c',topic:'Blok',
-   q:'Blok zamanı topa edilən toxunuş necə sayılır?',
-   opts:[{t:'3 toxunuşdan biri kimi',c:false},{t:'2 toxunuşdan biri kimi',c:false},{t:'Sayılmır — sonra 3 toxunuş daha edilə bilər',c:true},{t:'Pozuntu sayılır',c:false}]},
+{q:'Arxa zona oyunçularının zonaları hansı rəqəmlərlə işarələnib?',
+ opts:['1, 2, 3','4, 5, 6','1, 5, 6','2, 3, 4','3, 4, 5'],
+ ans:'1, 5, 6'},
 
-  // XALLAR (1)
-  {tp:'c',topic:'Xallar',
-   q:'Komanda xal nə vaxt qazanır?',
-   opts:[{t:'Yalnız top yerə dəydikdə',c:false},{t:'Yalnız servis xətasında',c:false},{t:'Top rəqibin sahəsinde yerə dəydikdə, rəqib qayda pozduqda və ya cəzalandırıldıqda',c:true},{t:'Yalnız tora toxunmada',c:false}]},
+{q:'Voleybol oyununu 1895-ci ildə kim icad etmişdir?',
+ opts:['Ceyms Neysmit','Uilyam Morqan','Alfred Halsted','Elio Lokatelli','Jan Jek Russo'],
+ ans:'Uilyam Morqan'},
 
-  // FASİLƏ (6)
-  {tp:'c',topic:'Fasilə',
-   q:'Hər komanda hər hissədə maksimum neçə taym-aut götürə bilər?',
-   opts:[{t:'1',c:false},{t:'3',c:false},{t:'4',c:false},{t:'2',c:true}]},
+{q:'Voleybolun ilkin adı dərslikdə necə qeyd olunub?',
+ opts:['Volley-ball','Mintonette','Speed-ball','Net-ball','Sky-ball'],
+ ans:'Mintonette'},
 
-  {tp:'c',topic:'Fasilə',
-   q:'Adi taym-autun müddəti neçə saniyədir?',
-   opts:[{t:'15',c:false},{t:'20',c:false},{t:'60',c:false},{t:'30',c:true}]},
+{q:'Voleybol topunun çəkisi nə qədərdir?',
+ opts:['200-220 qr','240-250 qr','260-280 qr','300-320 qr','280-300 qr'],
+ ans:'260-280 qr'},
 
-  {tp:'c',topic:'Fasilə',
-   q:'Texniki taym-aut nə vaxt götürülür?',
-   opts:[{t:'İstənilən vaxt',c:false},{t:'Hər 5 xaldan bir',c:false},{t:'Öndə olan komanda 8 və 16-cı xallara çatdıqda',c:true},{t:'Yalnız 5-ci hissədə',c:false}]},
+{q:'Kişilər üçün torun hündürlüyü nə qədərdir?',
+ opts:['2.24 m','2.30 m','2.43 m','2.50 m','2.45 m'],
+ ans:'2.43 m'},
 
-  {tp:'c',topic:'Fasilə',
-   q:'Texniki taym-autun müddəti neçə saniyədir?',
-   opts:[{t:'30',c:false},{t:'45',c:false},{t:'90',c:false},{t:'60',c:true}]},
+{q:'Qadınlar üçün torun hündürlüyü nə qədərdir?',
+ opts:['2.15 m','2.20 m','2.24 m','2.30 m','2.43 m'],
+ ans:'2.24 m'},
 
-  {tp:'c',topic:'Fasilə',
-   q:'İki hissə arasındakı fasilə neçə dəqiqədir?',
-   opts:[{t:'1',c:false},{t:'2',c:false},{t:'5',c:false},{t:'3',c:true}]},
+{q:'Azərbaycanlı voleybolçu İnna Riskal neçə dəfə Olimpiya mükafatçısı olub?',
+ opts:['2 dəfə','3 dəfə','4 dəfə','1 dəfə','5 dəfə'],
+ ans:'4 dəfə'},
 
-  {tp:'c',topic:'Fasilə',
-   q:'5-ci hissədə texniki taym-aut varmı?',
-   opts:[{t:'Bəli, 8-ci xalda',c:false},{t:'Bəli, 5-ci xalda',c:false},{t:'Bəli, 10-cu xalda',c:false},{t:'Xeyr, yoxdur',c:true}]},
+{q:'FIVB-nin qərargahı hazırda hansı şəhərdə yerləşir?',
+ opts:['Paris','Lozanna','Roma','London','Bakı'],
+ ans:'Lozanna'},
 
-  // CƏZALAR (4)
-  {tp:'c',topic:'Cəzalar',
-   q:'Sarı kart nəyi bildirir?',
-   opts:[{t:'Oyundan xaric',c:false},{t:'1 xal rəqibə',c:false},{t:'Xəbərdarlıq — xal verilmir',c:true},{t:'Servis itirilir',c:false}]},
+{q:'İlk voleybol qaydaları rəsmi olaraq neçənci ildə hazırlanıb?',
+ opts:['1895-ci ildə','1897-ci ildə','1900-cü ildə','1913-cü ildə','1947-ci ildə'],
+ ans:'1897-ci ildə'},
 
-  {tp:'c',topic:'Cəzalar',
-   q:'Qırmızı kart nəyi bildirir?',
-   opts:[{t:'Xəbərdarlıq',c:false},{t:'Oyundan çıxarılma',c:false},{t:'Fasilə götürülməsi',c:false},{t:'Rəqibə 1 xal + servis atma',c:true}]},
+{q:'Voleybol üzrə ilk beynəlxalq turnir hansı qitədə keçirilib?',
+ opts:['Avropa','Amerika','Asiya','Afrika','Avstraliya'],
+ ans:'Asiya'},
 
-  {tp:'c',topic:'Cəzalar',
-   q:'Sarı + qırmızı AYRI-AYRI göstərilirsə nə deməkdir?',
-   opts:[{t:'Xəbərdarlıq',c:false},{t:'1 xal rəqibə + servis',c:false},{t:'Oyundan xaric',c:false},{t:'Hissədən xaric',c:true}]},
+{q:'Voleybol meydançasının standart ölçüləri hansıdır?',
+ opts:['15x28 m','18x9 m','20x10 m','12x24 m','18x12 m'],
+ ans:'18x9 m'},
 
-  {tp:'c',topic:'Cəzalar',
-   q:'Oyundan xaric necə göstərilir?',
-   opts:[{t:'Sarı kart',c:false},{t:'Qırmızı kart',c:false},{t:'Sarı və qırmızı BİRLİKDƏ',c:true},{t:'Ağ kart',c:false}]},
+{q:'"Azərreyl" voleybol klubu neçənci ildə "Top-komandalar" kubokunu qazanıb?',
+ opts:['2000-ci ildə','2002-ci ildə','2004-cü ildə','1998-ci ildə','2010-cu ildə'],
+ ans:'2004-cü ildə'},
 
-  // HAKİMLƏR (2)
-  {tp:'c',topic:'Hakimlər',
-   q:'Beynəlxalq voleybol matçında cəmi neçə hakim olur?',
-   opts:[{t:'4',c:false},{t:'6',c:false},{t:'10',c:false},{t:'8',c:true}]},
+{q:'"BMKZ" komandası neçənci ildə SSRİ Kubokunun qalibi olub?',
+ opts:['1980-ci ildə','1991-ci ildə','1990-cı ildə','1985-ci ildə','1992-ci ildə'],
+ ans:'1990-cı ildə'},
 
-  {tp:'c',topic:'Hakimlər',
-   q:'Voleybol matçında neçə baş hakim olur?',
-   opts:[{t:'2',c:false},{t:'3',c:false},{t:'4',c:false},{t:'1',c:true}]},
+{q:'Qadınlar arasında ilk Olimpiya Çempionu olan ölkə hansıdır?',
+ opts:['SSRİ','Yaponiya','Çin','ABŞ','Braziliya'],
+ ans:'SSRİ'},
 
-  // HÜCUM / YERDƏYİŞMƏ (3)
-  {tp:'c',topic:'Hücum Zərbəsi',
-   q:'Arxa zona oyunçusu ön zonadan hücum zərbəsi vura bilərmi?',
-   opts:[{t:'Bəli, həmişə',c:false},{t:'Xeyr, heç vaxt',c:false},{t:'Yalnız libero üçün mümkündür',c:false},{t:'Bəli, amma ayaqları ön zona xəttini keçməməlidir',c:true}]},
+{q:'Hücum zonasının (ön zona) uzunluğu neçə metrdir?',
+ opts:['2 metr','3 metr','4 metr','5 metr','6 metr'],
+ ans:'3 metr'},
 
-  {tp:'c',topic:'Hücum Zərbəsi',
-   q:'Hücum zərbəsinin növləri hansılardır?',
-   opts:[{t:'Yalnız düzünə',c:false},{t:'Yalnız yanaki',c:false},{t:'Düzünə, yanaki, aşağıya',c:false},{t:'Düzünə və yanaki',c:true}]},
+{q:'Voleybol toru üzərindəki antenanın uzunluğu cəmi nə qədərdir?',
+ opts:['1 metr','1.50 metr','1.80 metr','2 metr','1.20 metr'],
+ ans:'1.80 metr'},
 
-  {tp:'c',topic:'Yerdəyişmə',
-   q:'Bir hissədə komanda maksimum neçə oyunçu dəyişikliyi edə bilər?',
-   opts:[{t:'3',c:false},{t:'8',c:false},{t:'12',c:false},{t:'6',c:true}]},
+{q:'FIVB neçənci ildə və hansı ölkədə yaradılıb?',
+ opts:['1947, Fransa','1947, İsveçrə','1913, Filippin','1913, Yaponiya','1964, Yaponiya'],
+ ans:'1947, Fransa'},
 
-  // TARİX (5)
-  {tp:'c',topic:'Tarix',
-   q:'Voleybol ilk dəfə nə vaxt oynanılıb?',
-   opts:[{t:'1891',c:false},{t:'1900',c:false},{t:'1912',c:false},{t:'1895',c:true}]},
+{q:'Azərbaycan Voleybol Federasiyası (AVF) neçənci ildən beynəlxalq üzvdür?',
+ opts:['1991','1992','1994','1995','1926'],
+ ans:'1992'},
 
-  {tp:'c',topic:'Tarix',
-   q:'Voleybol oyununu kim icad etmişdir?',
-   opts:[{t:'James Naismith',c:false},{t:'Pierre de Coubertin',c:false},{t:'Alfred Halstead',c:false},{t:'Uilyam Morgan',c:true}]},
+{q:'"Libero" sözünün latın mənşəli mənası nədir?',
+ opts:['Güclü','Sürətli','Azad','Müdafiəçi','Köməkçi'],
+ ans:'Azad'},
 
-  {tp:'c',topic:'Tarix',
-   q:'FIVB nə vaxt yaradılıb?',
-   opts:[{t:'1913',c:false},{t:'1932',c:false},{t:'1952',c:false},{t:'1947',c:true}]},
+{q:'Voleybolda "fasilə" termini iki hissə arasında neçə dəqiqədir?',
+ opts:['1 dəqiqə','3 dəqiqə','5 dəqiqə','10 dəqiqə','2 dəqiqə'],
+ ans:'3 dəqiqə'},
 
-  {tp:'c',topic:'Tarix',
-   q:'FIVB-nin baş qərargahı hansı şəhərdədir?',
-   opts:[{t:'Paris',c:false},{t:'Roma',c:false},{t:'Berlin',c:false},{t:'Lozanna',c:true}]},
+{q:'Voleybol torunun gözcüklərinin ölçüsü nə qədərdir?',
+ opts:['5x5 sm','10x10 sm','15x15 sm','20x20 sm','8x8 sm'],
+ ans:'10x10 sm'},
 
-  {tp:'c',topic:'Tarix',
-   q:'Voleybol Olimpiya oyunlarına nə vaxt daxil edildi?',
-   opts:[{t:'1952',c:false},{t:'1960',c:false},{t:'1968',c:false},{t:'1964',c:true}]},
+{q:'Kişilər arasında ilk Dünya Çempionatı neçənci ildə keçirilib?',
+ opts:['1947','1949','1952','1964','1913'],
+ ans:'1949'},
 
+{q:'Qadınlar arasında ilk Dünya Çempionatı neçənci ildə keçirilib?',
+ opts:['1947','1949','1952','1964','1913'],
+ ans:'1952'},
+
+{q:'Voleybol topunun çevrəsi nə qədərdir?',
+ opts:['60-62 sm','65-67 sm','70-72 sm','62-64 sm','68-70 sm'],
+ ans:'65-67 sm'},
+
+{q:'Beynəlxalq voleybol yarışlarını neçə hakim idarə edir?',
+ opts:['2 hakim','4 hakim','8 hakim','5 hakim','6 hakim'],
+ ans:'8 hakim'},
+
+{q:'Beşinci (həlledici) set neçə xala qədər oynanılır?',
+ opts:['15 xala qədər','21 xala qədər','25 xala qədər','30 xala qədər','10 xala qədər'],
+ ans:'15 xala qədər'},
 ];
 
-// ── STATE ─────────────────────────────────────────────────────────────
-let Qs=[], cur=0, score=0, wrong=0, answers=[], soundOn=true, actx=null;
+/* ═══ STATE ═══ */
+let qs=[], cur=0, score=0, results=[], sOn=true;
 
-// ── SOUND ─────────────────────────────────────────────────────────────
-function ac(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx}
-function snd(type){
-  if(!soundOn)return;
+/* ═══ AUDIO ═══ */
+let actx;
+function ac(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
+function beep(arr,tp='sine'){
+  if(!sOn)return;
   try{
-    const c=ac(),t=c.currentTime;
-    if(type==='ok'){
-      [[440,0],[554,.1],[659,.2]].forEach(([f,d])=>{
-        const o=c.createOscillator(),g=c.createGain();
-        o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;
-        g.gain.setValueAtTime(.18,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.28);
-        o.start(t+d);o.stop(t+d+.32);
-      });
-    }else if(type==='err'){
+    const c=ac();
+    arr.forEach(([f,t,d])=>{
       const o=c.createOscillator(),g=c.createGain();
-      o.connect(g);g.connect(c.destination);o.type='sawtooth';
-      o.frequency.setValueAtTime(260,t);o.frequency.exponentialRampToValueAtTime(120,t+.28);
-      g.gain.setValueAtTime(.13,t);g.gain.exponentialRampToValueAtTime(.001,t+.32);
-      o.start(t);o.stop(t+.35);
-    }else if(type==='nav'){
-      const o=c.createOscillator(),g=c.createGain();
-      o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=480;
-      g.gain.setValueAtTime(.07,t);g.gain.exponentialRampToValueAtTime(.001,t+.09);
-      o.start(t);o.stop(t+.11);
-    }else if(type==='fin'){
-      [[523,0],[659,.13],[784,.26],[1047,.4]].forEach(([f,d])=>{
-        const o=c.createOscillator(),g=c.createGain();
-        o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;
-        g.gain.setValueAtTime(.18,t+d);g.gain.exponentialRampToValueAtTime(.001,t+d+.32);
-        o.start(t+d);o.stop(t+d+.36);
-      });
-    }
+      o.type=tp;o.connect(g);g.connect(c.destination);
+      o.frequency.value=f;
+      g.gain.setValueAtTime(.22,c.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+d);
+      o.start(c.currentTime+t);o.stop(c.currentTime+t+d);
+    });
   }catch(e){}
 }
-document.getElementById('sndBtn').onclick=function(){
-  soundOn=!soundOn;this.textContent=soundOn?'🔊':'🔇';
-};
+const pOk=()=>beep([[440,0,.07],[554,.08,.07],[659,.16,.18]]);
+const pNo=()=>beep([[200,0,.1],[150,.1,.2]],'sawtooth');
+const pEnd=()=>beep([[523,0,.1],[659,.12,.1],[784,.25,.1],[1047,.4,.3]]);
 
-// ── UTILS ─────────────────────────────────────────────────────────────
-function shuffle(a){
-  const b=[...a];
-  for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
-  return b;
+/* ═══ SHUFFLE ═══ */
+function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+/* ═══ NAV GRID ═══ */
+let navCollapsed=false;
+function toggleNav(){
+  navCollapsed=!navCollapsed;
+  document.getElementById('navGrid').classList.toggle('collapsed',navCollapsed);
+  document.getElementById('navToggleBtn').textContent=navCollapsed?'Göstər ▼':'Gizlət ▲';
 }
-
-// ── START ─────────────────────────────────────────────────────────────
-function startQuiz(){
-  // Shuffle question order + shuffle each choice's options
-  Qs=shuffle(BANK).map(q=>{
-    if(q.tp==='c') return {...q, opts:shuffle([...q.opts])};
-    return {...q};
-  });
-  cur=0; score=0; wrong=0;
-  answers=Qs.map(()=>({done:false,correct:false}));
-  document.getElementById('resPanel').classList.remove('show');
-  document.getElementById('qArea').style.display='block';
-  document.getElementById('navRow').style.display='flex';
-  document.getElementById('cfw').innerHTML='';
-  buildGrid();
-  renderQ();
-}
-
-// ── GRID ─────────────────────────────────────────────────────────────
-function buildGrid(){
-  const g=document.getElementById('qGrid');
-  g.innerHTML='';
-  Qs.forEach((_,i)=>{
+function buildNav(){
+  const g=document.getElementById('navGrid');g.innerHTML='';
+  qs.forEach((q,i)=>{
     const b=document.createElement('button');
-    b.className='gc'+(i===0?' cur':'');
+    b.className='nq'+(i===cur?' nq-cur':'')+(results[i]==='ok'?' nq-ok':results[i]==='no'?' nq-no':'');
     b.textContent=i+1;
-    b.id='gc'+i;
-    b.onclick=()=>{snd('nav');goTo(i);};
+    b.title=q.q.substring(0,50);
+    b.onclick=()=>goTo(i);
     g.appendChild(b);
   });
 }
-function refreshGrid(){
-  Qs.forEach((_,i)=>{
-    const b=document.getElementById('gc'+i);
-    if(!b)return;
-    b.className='gc';
-    if(i===cur)b.classList.add('cur');
-    else if(answers[i].done)b.classList.add(answers[i].correct?'g-ok':'g-err');
-  });
+
+/* ═══ INIT ═══ */
+function init(){
+  qs=shuf(ALL).map(q=>({...q,opts:shuf(q.opts)}));
+  cur=0;score=0;results=[];
+  document.getElementById('res').style.display='none';
+  document.getElementById('quiz').style.display='';
+  upTop();render();buildNav();
 }
 
-// ── NAVIGATE ──────────────────────────────────────────────────────────
+function upTop(){
+  document.getElementById('barF').style.width=(cur/qs.length*100)+'%';
+  document.getElementById('pNum').textContent=`${cur+1}/${qs.length}`;
+  document.getElementById('scV').textContent=score;
+}
+
 function goTo(i){
-  if(i<0||i>=Qs.length)return;
-  cur=i;
-  renderQ();
-  setTimeout(()=>document.getElementById('qArea').scrollIntoView({behavior:'smooth',block:'nearest'}),40);
+  if(i<0||i>=qs.length)return;
+  cur=i;upTop();render();
 }
 
-// ── PROGRESS ─────────────────────────────────────────────────────────
-function refreshUI(){
-  const done=answers.filter(a=>a.done).length;
-  document.getElementById('pf').style.width=(done/Qs.length*100)+'%';
-  document.getElementById('pl').textContent=done+' / '+Qs.length;
-  document.getElementById('sc').textContent='Bal: '+score;
-  document.getElementById('wc').textContent='Səhv: '+wrong;
+/* ═══ RENDER ═══ */
+function render(){
+  const q=qs[cur];
+  const answered=results[cur]!==undefined;
+  const isLast=cur===qs.length-1;
+  const cats=['Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Qaydalar','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki','Tarix & Texniki'];
+
+  // Find original index to get category
+  const origIdx=ALL.findIndex(x=>x.q===q.q);
+  const cat=origIdx>=35?'Tarix & Texniki':'Qaydalar';
+
+  const labels=['A','B','C','D','E'];
+  document.getElementById('quiz').innerHTML=`
+    <div class="card">
+      <div class="q-meta">
+        <span class="q-num-badge">Sual ${cur+1}</span>
+        <span class="q-category">${cat}</span>
+      </div>
+      <div class="q-txt">${q.q}</div>
+      <div class="opts" id="opts">
+        ${q.opts.map((o,i)=>`
+          <button class="opt${answered?' locked':''}" onclick="pick(this,'${o.replace(/'/g,"&apos;").replace(/"/g,"&quot;")}')">
+            <span class="opt-l">${labels[i]}</span>
+            <span class="opt-t">${o}</span>
+            <span class="opt-i"></span>
+          </button>`).join('')}
+      </div>
+      <div class="btns">
+        <button class="btn-prev${cur>0?' show':''}" onclick="goTo(${cur-1})">← Əvvəlki</button>
+        <button class="btn-nx${answered?' show':''}" id="nx" onclick="${isLast?'showRes()':'goTo('+(cur+1)+')'}">${isLast?'Nəticəni Gör →':'Növbəti →'}</button>
+      </div>
+    </div>`;
+  if(answered)restoreAnswers();
+  buildNav();
 }
 
-// ── RENDER QUESTION ───────────────────────────────────────────────────
-function renderQ(){
-  const q=Qs[cur];
-  const area=document.getElementById('qArea');
-  area.innerHTML='';
-
-  const card=document.createElement('div');
-  card.className='q-card';
-
-  // header
-  card.innerHTML='<div class="q-header">'
-    +'<div class="q-num">SUAL <b>'+(cur+1)+'</b> / '+Qs.length+'</div>'
-    +'<div class="q-tag">'+q.topic+'</div>'
-    +'</div>'
-    +'<div class="q-body"><div class="q-text">'+q.q+'</div></div>';
-
-  if(q.tp==='c') renderChoice(card,q,cur);
-  else if(q.tp==='t') renderTable(card,q,cur);
-
-  // feedback
-  const fb=document.createElement('div');
-  const a=answers[cur];
-  if(a.done){
-    fb.className='fb show '+(a.correct?'ok':'fail');
-    fb.textContent=a.correct?'✅ Düzgün cavab!':'❌ Səhv. Düzgün cavab işarələndi.';
-  }else{fb.className='fb';}
-  card.appendChild(fb);
-  area.appendChild(card);
-
-  // nav
-  document.getElementById('btnBack').className='nav-btn back'+(cur>0?' show':'');
-  const nb=document.getElementById('btnNext');
-  if(answers[cur].done){
-    nb.className='nav-btn next show';
-    nb.textContent=cur===Qs.length-1?'Nəticə →':'Növbəti →';
-  }else{
-    nb.className='nav-btn next';
-  }
-  refreshGrid();
-  refreshUI();
-}
-
-// ── CHOICE ───────────────────────────────────────────────────────────
-function renderChoice(card, q, qIndex){
-  const wrap=document.createElement('div');
-  wrap.className='opts';
-  const keys=['A','B','C','D'];
-
-  q.opts.forEach((opt,i)=>{
-    const btn=document.createElement('button');
-    btn.className='opt';
-
-    const isDone=answers[qIndex].done;
-    if(isDone){
-      btn.setAttribute('disabled','');
-      if(answers[qIndex].chosenIdx===i){
-        btn.classList.add(opt.c?'correct':'wrong');
-      }else if(opt.c){
-        btn.classList.add('show-ans');
-      }
+function restoreAnswers(){
+  const q=qs[cur];
+  document.querySelectorAll('.opt').forEach(b=>{
+    const t=b.querySelector('.opt-t').textContent;
+    if(t===q.ans){
+      b.classList.add(results[cur]==='ok'?'correct':'reveal');
+      if(results[cur]==='ok')b.querySelector('.opt-i').textContent='✓';
+      else b.querySelector('.opt-i').textContent='✓';
     }
-
-    btn.innerHTML='<span class="opt-key">'+keys[i]+'</span><span>'+opt.t+'</span>';
-
-    btn.onclick=function(){
-      // Use qIndex (captured at render time) not global cur
-      if(answers[qIndex].done)return;
-      const ok=opt.c;
-      answers[qIndex]={done:true,correct:ok,chosenIdx:i};
-      if(ok){score++;snd('ok');}else{wrong++;snd('err');}
-      // Only re-render if this is still the active question
-      if(cur===qIndex)renderQ();
-    };
-
-    wrap.appendChild(btn);
+    if(results[cur]==='no'&&b.dataset.wrong==='1'){
+      b.classList.add('wrong');b.querySelector('.opt-i').textContent='✗';
+    }
   });
-  card.appendChild(wrap);
 }
 
-// ── TABLE ─────────────────────────────────────────────────────────────
-function renderTable(card, q, qIndex){
-  const wrap=document.createElement('div');
-  wrap.className='tbl-wrap';
-  const a=answers[qIndex];
-  const uv=a.userVals||{};
+function pick(btn,sel){
+  if(results[cur]!==undefined)return;
+  const q=qs[cur];
+  document.querySelectorAll('.opt').forEach(b=>b.classList.add('locked'));
 
-  let html='<table class="vtbl"><thead><tr><th>Element</th>';
-  q.cols.forEach(c=>{ html+='<th>'+c+'</th>'; });
-  html+='</tr></thead><tbody>';
+  // decode HTML entities
+  const decoded=sel.replace(/&apos;/g,"'").replace(/&quot;/g,'"');
 
-  q.rows.forEach((row,ri)=>{
-    let cls='';
-    if(a.done) cls=(uv[ri]===row.correct)?'row-ok':'row-err';
-    html+='<tr class="'+cls+'"><td>'+row.label+'</td>';
-    q.cols.forEach((_,ci)=>{
-      const id='t'+qIndex+'r'+ri+'c'+ci;
-      const chk=(a.done&&uv[ri]===ci)?'checked':'';
-      const dis=a.done?'disabled':'';
-      html+='<td class="rc">'
-        +'<input type="radio" name="t'+qIndex+'r'+ri+'" id="'+id+'" value="'+ci+'" '+chk+' '+dis+'>'
-        +'<label for="'+id+'">'+q.cols[ci][0]+'</label>'
-        +'</td>';
+  if(decoded===q.ans){
+    btn.classList.add('correct');btn.querySelector('.opt-i').textContent='✓';
+    score++;results[cur]='ok';pOk();
+  } else {
+    btn.classList.add('wrong');btn.querySelector('.opt-i').textContent='✗';
+    btn.dataset.wrong='1';
+    results[cur]='no';pNo();
+    document.querySelectorAll('.opt').forEach(b=>{
+      if(b.querySelector('.opt-t').textContent===q.ans){
+        b.classList.add('reveal');b.querySelector('.opt-i').textContent='✓';
+      }
     });
-    html+='</tr>';
-  });
-  html+='</tbody></table>';
-
-  if(!a.done) html+='<button class="tbl-btn" id="tbtn'+qIndex+'">Yoxla ✓</button>';
-
-  let rh='',rc='';
-  if(a.done){
-    const n=q.rows.filter((_,ri)=>uv[ri]===q.rows[ri].correct).length;
-    const tot=q.rows.length;
-    if(n===tot){rc='ok';rh='✅ Hamısı düzgün! ('+tot+'/'+tot+')';}
-    else if(n>0){rc='part';rh='⚠️ '+n+'/'+tot+' düzgündür.';}
-    else{rc='fail';rh='❌ Hamısı səhvdir.';}
   }
-  html+='<div class="tbl-res '+(a.done?'show ':'')+rc+'">'+rh+'</div>';
-  wrap.innerHTML=html;
-  card.appendChild(wrap);
-
-  if(!a.done){
-    const btn=document.getElementById('tbtn'+qIndex);
-    if(btn) btn.onclick=function(){
-      const vals={};
-      q.rows.forEach((_,ri)=>{
-        q.cols.forEach((_,ci)=>{
-          const el=document.querySelector('input[name="t'+qIndex+'r'+ri+'"][value="'+ci+'"]');
-          if(el&&el.checked) vals[ri]=ci;
-        });
-      });
-      if(Object.keys(vals).length<q.rows.length){alert('Bütün sıralar üçün seçim edin!');return;}
-      const ok=q.rows.every((_,ri)=>vals[ri]===q.rows[ri].correct);
-      answers[qIndex]={done:true,correct:ok,userVals:vals};
-      if(ok){score++;snd('ok');}else{wrong++;snd('err');}
-      if(cur===qIndex)renderQ();
-    };
-  }
+  document.getElementById('scV').textContent=score;
+  const nx=document.getElementById('nx');if(nx)nx.classList.add('show');
+  buildNav();
 }
 
-// ── NAV BUTTONS ───────────────────────────────────────────────────────
-document.getElementById('btnNext').onclick=function(){
-  if(cur>=Qs.length-1){showResults();return;}
-  snd('nav'); goTo(cur+1);
-};
-document.getElementById('btnBack').onclick=function(){
-  if(cur>0){snd('nav');goTo(cur-1);}
-};
-
-// ── RESULTS ───────────────────────────────────────────────────────────
-function showResults(){
-  document.getElementById('qArea').style.display='none';
-  document.getElementById('navRow').style.display='none';
-  const p=document.getElementById('resPanel');
-  p.classList.add('show');
-  p.scrollIntoView({behavior:'smooth'});
-  const tot=Qs.length, pct=Math.round(score/tot*100);
-  document.getElementById('rN').textContent=score;
-  document.getElementById('rD').textContent='/'+tot;
-  document.getElementById('rOk').textContent=score;
-  document.getElementById('rErr').textContent=wrong;
-  document.getElementById('rPct').textContent=pct+'%';
-  let e,t,s;
-  if(pct>=90){e='🏆';t='Əla!';s='Voleybol qaydalarını mükəmməl bilirsiniz!';}
-  else if(pct>=75){e='🥈';t='Çox Yaxşı!';s='Güclü nəticə!';}
-  else if(pct>=60){e='🥉';t='Yaxşı İş!';s='Biraz daha öyrənin!';}
-  else if(pct>=40){e='📚';t='Orta Nəticə';s='Materialı yenidən nəzərdən keçirin.';}
-  else{e='💪';t='Davam Et!';s='Qaydaları yenidən oxuyun.';}
-  document.getElementById('rEmoji').textContent=e;
-  document.getElementById('rTitle').textContent=t;
-  document.getElementById('rSub').textContent=s;
-  snd('fin');
-  if(pct>=60)confetti();
+function showRes(){
+  document.getElementById('quiz').style.display='none';
+  const pct=Math.round(score/qs.length*100);
+  let emo,ttl,stars;
+  if(pct>=90){emo='🏆';ttl='Əla Nəticə!';stars='★★★★★';}
+  else if(pct>=75){emo='🎯';ttl='Çox Yaxşı!';stars='★★★★☆';}
+  else if(pct>=60){emo='👍';ttl='Yaxşı!';stars='★★★☆☆';}
+  else if(pct>=40){emo='📚';ttl='Daha Çox Oxu!';stars='★★☆☆☆';}
+  else{emo='💪';ttl='Çalış!';stars='★☆☆☆☆';}
+  pEnd();if(pct>=60)confetti();
+  document.getElementById('barF').style.width='100%';
+  const r=document.getElementById('res');r.style.display='block';
+  r.innerHTML=`<div class="rc">
+    <span class="rc-emo">${emo}</span>
+    <div class="rc-title">${ttl}</div>
+    <div class="rc-stars">${stars}</div>
+    <div class="rc-score">${score}/${qs.length}</div>
+    <div class="rc-pct">${pct}% düzgün cavab</div>
+    <div class="rc-stats">
+      <div class="rc-stat g"><div class="v">${score}</div><div class="l">Düzgün</div></div>
+      <div class="rc-stat r"><div class="v">${qs.length-score}</div><div class="l">Səhv</div></div>
+    </div>
+    <button class="btn-re" onclick="init()">🔄 Yenidən Başla</button>
+  </div>`;
 }
 
 function confetti(){
-  const w=document.getElementById('cfw');w.innerHTML='';
-  const cols=['#0f766e','#c75a0a','#b8860b','#166534','#991b1b','#1d4ed8'];
-  for(let i=0;i<100;i++){
-    const p=document.createElement('div');p.className='cp';
-    const sz=4+Math.random()*8;
-    p.style.cssText='left:'+Math.random()*100+'%;background:'+cols[i%cols.length]+';width:'+sz+'px;height:'+sz+'px;border-radius:'+(Math.random()>.5?'50%':'3px')+';animation-duration:'+(1.8+Math.random()*2.5)+'s;animation-delay:'+(Math.random()*1.5)+'s;';
-    w.appendChild(p);
-  }
-  setTimeout(()=>w.innerHTML='',7000);
+  const cols=['#1a56db','#7c3aed','#059669','#d97706','#dc2626'];
+  for(let i=0;i<80;i++){setTimeout(()=>{
+    const e=document.createElement('div');e.className='cp';
+    e.style.cssText=`left:${Math.random()*100}vw;background:${cols[~~(Math.random()*cols.length)]};width:${5+Math.random()*7}px;height:${5+Math.random()*7}px;animation-duration:${1.4+Math.random()*2}s;animation-delay:${Math.random()*.3}s`;
+    document.body.appendChild(e);setTimeout(()=>e.remove(),4000);
+  },i*20);}
 }
 
-startQuiz();
+document.getElementById('sndBtn').onclick=function(){sOn=!sOn;this.textContent=sOn?'🔊':'🔇';};
+init();
 </script>
 </body>
 </html>
