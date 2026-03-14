@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voleybol Fiziki Tərbiyə - Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 8px;
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .navigation {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 8px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .nav-btn {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            color: #495057;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .nav-btn.answered {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            border-color: #84fab0;
+            color: white;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-color: #f093fb;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .question-container {
+            padding: 40px;
+            min-height: 400px;
+        }
+
+        .question-number {
+            color: #f5576c;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .matching-column h3 {
+            color: #f5576c;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .matching-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border-left: 4px solid #f5576c;
+        }
+
+        .matching-item strong {
+            color: #f5576c;
+            margin-right: 8px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            padding: 18px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            border-color: #84fab0;
+            color: white;
+            font-weight: 500;
+        }
+
+        .option.correct {
+            background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+            border-color: #52c41a;
+            color: white;
+            font-weight: 500;
+        }
+
+        .option.wrong {
+            background: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+            border-color: #ff4d4f;
+            color: white;
+            font-weight: 500;
+        }
+
+        .option-letter {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: white;
+            color: #f5576c;
+            text-align: center;
+            line-height: 35px;
+            font-weight: 700;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-letter {
+            background: white;
+            color: #84fab0;
+        }
+
+        .option.correct .option-letter {
+            background: white;
+            color: #52c41a;
+        }
+
+        .option.wrong .option-letter {
+            background: white;
+            color: #ff4d4f;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-prev:hover:not(:disabled) {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245,87,108,0.4);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: white;
+            padding: 12px 40px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(132,250,176,0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-container {
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .result-score {
+            font-size: 72px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .result-text {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 40px;
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 50px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-container {
+            animation: slideIn 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .matching-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .navigation {
+                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            }
+
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 12px;
+            }
+
+            .question-text {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏐 Voleybol - Fiziki Tərbiyə</h1>
+            <p>Sual <span id="current-q">1</span> / <span id="total-q">60</span></p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+        </div>
+
+        <div class="navigation" id="navigation"></div>
+
+        <div id="quiz-container"></div>
+
+        <div class="controls">
+            <button class="btn btn-prev" id="prevBtn" onclick="previousQuestion()">← Əvvəlki</button>
+            <button class="btn btn-next" id="nextBtn" onclick="nextQuestion()">Növbəti →</button>
+        </div>
+    </div>
+
+    <script>
+        // QARIŞDIRMA FUNKSİYASI
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        const originalQuestions = [
+            // UYĞUNLAŞDIRMA SUALLARI (15 ədəd)
+            {
+                type: 'matching',
+                question: 'Voleybol sahəsi və oyun elementləri haqqında verilmiş məlumatları düzgün uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Oyun sahəsinin uzunluğu' },
+                    { id: 2, text: 'Kişilər üçün şəbəkənin hündürlüyü' },
+                    { id: 3, text: 'Qadınlar üçün şəbəkənin hündürlüyü' },
+                    { id: 4, text: 'Servis zonasının eni' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: '18 metr' },
+                    { id: 'B', text: '2.43 metr' },
+                    { id: 'C', text: '2.24 metr' },
+                    { id: 'D', text: '9 metr' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Oyun sahəsindəki zonaları və oyunçu mövqelərini uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Ön zona oyunçuları' },
+                    { id: 2, text: 'Arxa zona oyunçuları' },
+                    { id: 3, text: 'Libero oyunçunun mövqeyi' },
+                    { id: 4, text: 'Servis atan oyunçunun mövqeyi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: '2, 3, 4 nömrəli zonalar' },
+                    { id: 'B', text: '1, 5, 6 nömrəli zonalar' },
+                    { id: 'C', text: 'Arxa zonada, hücuma qalxa bilməz' },
+                    { id: 'D', text: 'Arxa zonadan, 1 nömrəli zona' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Komanda tərkibi və onların funksiyalarını uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Bir komandada maksimum oyunçu sayı' },
+                    { id: 2, text: 'Meydançada eyni anda olan oyunçu sayı' },
+                    { id: 3, text: 'Libero sayı' },
+                    { id: 4, text: 'Kapitanın əsas vəzifəsi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: '12 nəfər' },
+                    { id: 'B', text: '6 nəfər' },
+                    { id: 'C', text: '1-2 nəfər' },
+                    { id: 'D', text: 'Hakimlə ünsiyyət və komanda rəhbərliyi' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Texniki elementləri və onların xüsusiyyətlərini uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Hücum zərbəsi məhdudiyyəti' },
+                    { id: 2, text: 'Blok quran oyunçu sayı' },
+                    { id: 3, text: 'Top vuruşlarının sayı' },
+                    { id: 4, text: 'Mövqe xətası cəzası' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Arxa zona oyunçuları hücum xəttindən keçə bilməz' },
+                    { id: 'B', text: 'Maksimum 3 oyunçu' },
+                    { id: 'C', text: 'Maksimum 3 dəfə' },
+                    { id: 'D', text: 'Rəqib xal qazanır' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Servis növlərini və onların xüsusiyyətlərini uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Aşağıdan servis' },
+                    { id: 2, text: 'Yuxarıdan qüvvətli servis' },
+                    { id: 3, text: 'Topa vurma hündürlüyü' },
+                    { id: 4, text: 'Servis sahəsi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Başlanğıc səviyyə üçün' },
+                    { id: 'B', text: 'Peşəkar oyunçular üçün' },
+                    { id: 'C', text: 'Beldən yuxarı' },
+                    { id: 'D', text: 'Arxa xəttin arxasında, 9 metr en' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Oyun zamanı baş verən pozuntuları və onların nəticələrini uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Oyunçunun şəbəkəyə toxunması' },
+                    { id: 2, text: 'Topun 4 dəfə vurulması' },
+                    { id: 3, text: 'Oyunçunun tərəfini dəyişməsi' },
+                    { id: 4, text: 'Servis zamanı ayağın zona xəttinə dəyməsi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Xal itkisi' },
+                    { id: 'B', text: 'Xal itkisi və servis itkisi' },
+                    { id: 'C', text: 'Oyunun dayandırılması, xal itkisi' },
+                    { id: 'D', text: 'Pozuntu, xal itkisi' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Hakimlərin növlərini və vəzifələrini uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Baş hakim' },
+                    { id: 2, text: 'İkinci hakim' },
+                    { id: 3, text: 'Yazıçı' },
+                    { id: 4, text: 'Xətt hakimləri' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Oyuna nəzarət, qərarların qəbulu' },
+                    { id: 'B', text: 'Baş hakimə kömək, mövqe nəzarəti' },
+                    { id: 'C', text: 'Protokol, xalların qeydi' },
+                    { id: 'D', text: '2-4 nəfər, topun xəttə toxunmasını müəyyənləşdirir' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Blok və hücum zərbələrini uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Blok zamanı icazə verilən oyunçu sayı' },
+                    { id: 2, text: 'Blok topa vuruş sayına daxil olur mu?' },
+                    { id: 3, text: 'Arxa zona oyunçusunun hücum hüququ' },
+                    { id: 4, text: 'Hücum xətti məsafəsi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Maksimum 3 nəfər' },
+                    { id: 'B', text: 'Xeyr, daxil olmur' },
+                    { id: 'C', text: 'Hücum xəttindən arxada olmalıdır' },
+                    { id: 'D', text: 'Şəbəkədən 3 metr məsafədə' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Taym-aut və dəyişiklikləri uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Bir setdə taym-aut sayı' },
+                    { id: 2, text: 'Taym-aut müddəti' },
+                    { id: 3, text: 'Oyunçu dəyişikliyi sayı' },
+                    { id: 4, text: 'Texniki taym-aut' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Maksimum 2 dəfə' },
+                    { id: 'B', text: '30 saniyə' },
+                    { id: 'C', text: 'Maksimum 6 dəfə' },
+                    { id: 'D', text: '8 və 16-cı xallarda avtomatik' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Libero oyunçu qaydalarını uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Liberonun forma rəngi' },
+                    { id: 2, text: 'Liberonun oyun mövqeyi' },
+                    { id: 3, text: 'Liberonun hücum hüququ' },
+                    { id: 4, text: 'Liberonun servis hüququ' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Fərqli rəng' },
+                    { id: 'B', text: 'Yalnız arxa zonada' },
+                    { id: 'C', text: 'Yoxdur, hücum edə bilməz' },
+                    { id: 'D', text: 'Bəzi qaydalar icazə verir' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Oyun nəticələrini və set qaydalarını uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Set qalib gəlmək üçün xal' },
+                    { id: 2, text: 'Beşinci setdə qalib gəlmək üçün xal' },
+                    { id: 3, text: 'Matçı qazanmaq üçün set sayı' },
+                    { id: 4, text: 'Xal fərqi tələbi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: '25 xal' },
+                    { id: 'B', text: '15 xal' },
+                    { id: 'C', text: '3 set' },
+                    { id: 'D', text: 'Minimum 2 xal fərq' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Sahə xətlərini və onların funksiyalarını uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Hücum xətti' },
+                    { id: 2, text: 'Mərkəz xətti' },
+                    { id: 3, text: 'Yan xətlər' },
+                    { id: 4, text: 'Son xətlər' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Şəbəkədən 3 metr arxada' },
+                    { id: 'B', text: 'Sahəni iki yerə bölür' },
+                    { id: 'C', text: 'Sahənin eni - 9 metr' },
+                    { id: 'D', text: 'Servis zonası - 18 metr' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Top xüsusiyyətlərini və standartları uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Topun çəkisi' },
+                    { id: 2, text: 'Topun diametri' },
+                    { id: 3, text: 'Topun materialı' },
+                    { id: 4, text: 'Topun təzyiqi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: '260-280 qram' },
+                    { id: 'B', text: '65-67 sm' },
+                    { id: 'C', text: 'Dəri və ya süni material' },
+                    { id: 'D', text: '0.30-0.325 kq/sm²' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Rotasiya qaydalarını uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Rotasiya istiqaməti' },
+                    { id: 2, text: 'Rotasiya vaxtı' },
+                    { id: 3, text: 'Servis növbəsi' },
+                    { id: 4, text: 'Mövqe dəyişikliyi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Saat əqrəbi istiqamətində' },
+                    { id: 'B', text: 'Servis qazanıldıqda' },
+                    { id: 'C', text: '1 nömrəli zonada olan oyunçu' },
+                    { id: 'D', text: 'Hər oyunçu növbə ilə dəyişir' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+            {
+                type: 'matching',
+                question: 'Müdafiə texnikalarını və metodlarını uyğunlaşdırın:',
+                leftColumn: [
+                    { id: 1, text: 'Aşağı müdafiə mövqeyi' },
+                    { id: 2, text: 'Yüksək müdafiə mövqeyi' },
+                    { id: 3, text: 'Dalınca qaçma müdafiəsi' },
+                    { id: 4, text: 'Blok müdafiəsi' }
+                ],
+                rightColumn: [
+                    { id: 'A', text: 'Güclü hücumlara qarşı' },
+                    { id: 'B', text: 'Zəif hücumlara qarşı' },
+                    { id: 'C', text: 'Topa çatmaq üçün' },
+                    { id: 'D', text: 'Ön zona oyunçuları tərəfindən' }
+                ],
+                correctAnswer: '1-A, 2-B, 3-C, 4-D'
+            },
+
+            // STANDART 5 VARIANTLI TEST SUALLARI (45 ədəd)
+            {
+                type: 'multiple',
+                question: 'Voleybol sahəsinin ümumi sahəsi nə qədərdir?',
+                options: ['162 m²', '180 m²', '200 m²', '150 m²', '175 m²'],
+                correct: 0
+            },
+            {
+                type: 'multiple',
+                question: 'Kişilər üçün voleybol şəbəkəsinin hündürlüyü nə qədərdir?',
+                options: ['2.24 m', '2.35 m', '2.43 m', '2.50 m', '2.38 m'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Qadınlar üçün şəbəkənin hündürlüyü nə qədərdir?',
+                options: ['2.20 m', '2.24 m', '2.30 m', '2.15 m', '2.28 m'],
+                correct: 1
+            },
+            {
+                type: 'multiple',
+                question: 'Bir komandada meydançada eyni anda neçə oyunçu olur?',
+                options: ['5 nəfər', '7 nəfər', '6 nəfər', '8 nəfər', '4 nəfər'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Voleybolda bir setdə qalib gəlmək üçün neçə xal lazımdır?',
+                options: ['21 xal', '30 xal', '25 xal', '20 xal', '28 xal'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Beşinci (həlledici) setdə qalib gəlmək üçün neçə xal lazımdır?',
+                options: ['10 xal', '12 xal', '15 xal', '20 xal', '18 xal'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Matçı qazanmaq üçün neçə set qazanmaq lazımdır?',
+                options: ['2 set', '4 set', '3 set', '5 set', '1 set'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Oyunçular topu neçə dəfə vurmaq hüququna malikdirlər?',
+                options: ['2 dəfə', '4 dəfə', '3 dəfə', '5 dəfə', 'Məhdudiyyətsiz'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Libero oyunçunun formasının rəngi necə olmalıdır?',
+                options: ['Komanda ilə eyni', 'Qara rəng', 'Fərqli rəng', 'Ağ rəng', 'Mavi rəng'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Hücum xətti şəbəkədən neçə metr məsafədədir?',
+                options: ['2 metr', '4 metr', '3 metr', '5 metr', '2.5 metr'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Bir setdə maksimum neçə taym-aut götürülə bilər?',
+                options: ['1 dəfə', '3 dəfə', '2 dəfə', '4 dəfə', 'Məhdudiyyətsiz'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Taym-autun müddəti neçə saniyədir?',
+                options: ['45 saniyə', '20 saniyə', '30 saniyə', '60 saniyə', '25 saniyə'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Bir setdə maksimum neçə oyunçu dəyişikliyi edilə bilər?',
+                options: ['4 dəfə', '8 dəfə', '6 dəfə', '5 dəfə', 'Məhdudiyyətsiz'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Texniki taym-aut hansı xallarda avtomatik verilir?',
+                options: ['5 və 10', '10 və 20', '8 və 16', '12 və 24', '7 və 14'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Voleybol sahəsinin eni neçə metrdir?',
+                options: ['8 metr', '10 metr', '9 metr', '12 metr', '7 metr'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Voleybol sahəsinin uzunluğu neçə metrdir?',
+                options: ['16 metr', '20 metr', '18 metr', '22 metr', '15 metr'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Blok zamanı maksimum neçə oyunçu iştirak edə bilər?',
+                options: ['2 nəfər', '4 nəfər', '3 nəfər', '5 nəfər', '1 nəfər'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Libero oyunçu hansı zonada oynaya bilər?',
+                options: ['Ön zonada', 'Hər yerdə', 'Arxa zonada', 'Yalnız mərkəzdə', 'Yalnız yan tərəfdə'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Liberonun hücum hüququ varmı?',
+                options: ['Hər zaman var', 'Bəzən var', 'Yoxdur', 'Yalnız arxadan', 'Yalnız öndən'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Servis hansı zonadan atılır?',
+                options: ['3 nömrəli zona', '6 nömrəli zona', '1 nömrəli zona', '2 nömrəli zona', '5 nömrəli zona'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Rotasiya hansı istiqamətdə həyata keçirilir?',
+                options: ['Əks saat əqrəbi', 'İxtiyari', 'Saat əqrəbi', 'Vertikal', 'Horizontal'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Oyunçular hansı halda rotasiya edirlər?',
+                options: ['Hər xaldan sonra', 'Taym-autdan sonra', 'Servis qazanıldıqda', 'Dəyişiklikdən sonra', 'Hər 5 xaldan bir'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Voleybol topunun çəkisi təqribən neçə qramdır?',
+                options: ['200-220 qram', '300-320 qram', '260-280 qram', '240-260 qram', '280-300 qram'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Topun diametri təqribən neçə santimetrdir?',
+                options: ['60-62 sm', '70-72 sm', '65-67 sm', '68-70 sm', '62-64 sm'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Bir komandada maksimum neçə oyunçu ola bilər (ehtiyatla)?',
+                options: ['10 nəfər', '14 nəfər', '12 nəfər', '15 nəfər', '11 nəfər'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Ön zonada neçə oyunçu ola bilər?',
+                options: ['2 nəfər', '4 nəfər', '3 nəfər', '5 nəfər', '1 nəfər'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Arxa zonada neçə oyunçu ola bilər?',
+                options: ['2 nəfər', '4 nəfər', '3 nəfər', '5 nəfər', '1 nəfər'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Oyunda neçə əsas hakim olur?',
+                options: ['1 nəfər', '3 nəfər', '2 nəfər', '4 nəfər', '5 nəfər'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Xətt hakimləri neçə nəfərdir?',
+                options: ['1 nəfər', '3 nəfər', '2-4 nəfər', '5 nəfər', '6 nəfər'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Blokovka topa vuruş sayına daxildirmi?',
+                options: ['Hər zaman daxildir', 'Bəzən daxildir', 'Daxil deyil', 'Yalnız uğurlu blokda', 'Yalnız uğursuz blokda'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Arxa zona oyunçusu hücum edə bilərmi?',
+                options: ['Heç vaxt', 'Hər zaman', 'Hücum xəttindən arxada qalarsa', 'Yalnız blokovkada', 'Yalnız servisdə'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Servis zamanı oyunçunun ayağı zona xəttinə dəyərsə nə olur?',
+                options: ['Heç nə olmur', 'Xəbərdarlıq edilir', 'Pozuntu, xal itkisi', 'Yalnız təkrar halda cəza', 'Oyundan kənarlaşdırma'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Şəbəkəyə toxunma halında nə baş verir?',
+                options: ['Oyun davam edir', 'Xəbərdarlıq', 'Xal itkisi', 'Fasilə verilir', 'Təkrar servis'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Kapitanın əsas vəzifəsi nədir?',
+                options: ['Yalnız oynamaq', 'Yazıçıya kömək', 'Hakimlə ünsiyyət', 'Tamaşaçılara cavab', 'Taktika hazırlamaq'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Oyunçu eyni topu iki dəfə ardıcıl vura bilərmi?',
+                options: ['Hər zaman', 'Bəzən', 'Yalnız blokdan sonra', 'Heç vaxt', 'Yalnız müdafiədə'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Mövqe xətası nədir?',
+                options: ['Səhv forma geyinmək', 'Gecikərək gəlmək', 'Rotasiya zamanı yanlış mövqe', 'Səhv servis', 'Blokovka xətası'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Servis zonasının eni neçə metrdir?',
+                options: ['6 metr', '12 metr', '9 metr', '15 metr', '8 metr'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Oyunçu rəqib tərəfə keçə bilərmi?',
+                options: ['Hər zaman', 'Heç vaxt', 'Yalnız şəbəkə altından, maneə yaratmadan', 'Yalnız hücumda', 'Yalnız müdafiədə'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Top şəbəkəyə dəydikdən sonra oyun davam edirmi?',
+                options: ['Heç vaxt', 'Bəzən', 'Bəli, davam edir', 'Yalnız servisdə', 'Yalnız hücumda'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Libero neçə nömrəli zona oyunçusunu əvəz edə bilər?',
+                options: ['Yalnız 1 nömrəli', 'Yalnız 6 nömrəli', 'İstənilən arxa zona oyunçusunu', 'Yalnız 5 nömrəli', 'Heç birini'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Oyun zamanı topun tavana dəyməsi halında nə olur?',
+                options: ['Oyun davam edir', 'Top təkrar atılır', 'Xal itkisi', 'Fasilə verilir', 'Heç nə olmur'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Fasələ zamanı oyunçular harada olmalıdırlar?',
+                options: ['Meydançada', 'Tamaşaçı yerində', 'Öz zonalarında və ya skamyada', 'Dəhlizlərdə', 'İstənilən yerdə'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Top xəttin kənarına düşdükdə nə olur?',
+                options: ['Oyun davam edir', 'Top qayıdır', 'Xal itkisi, rəqib xal qazanır', 'Təkrar servis', 'Fasilə'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Setlər arası fasilə neçə dəqiqədir?',
+                options: ['1 dəqiqə', '5 dəqiqə', '3 dəqiqə', '2 dəqiqə', '4 dəqiqə'],
+                correct: 2
+            },
+            {
+                type: 'multiple',
+                question: 'Qazanmaq üçün minimum neçə xal fərq olmalıdır?',
+                options: ['1 xal', '3 xal', '2 xal', '4 xal', '5 xal'],
+                correct: 2
+            }
+        ];
+
+        // SUALLARI QARIŞDIR
+        const questions = shuffleArray(originalQuestions).map(q => {
+            if (q.type === 'multiple') {
+                // Cavab variantlarını qarışdır və yeni düzgün cavabı tap
+                const optionsWithIndex = q.options.map((opt, idx) => ({ opt, idx }));
+                const shuffledOptions = shuffleArray(optionsWithIndex);
+                
+                return {
+                    ...q,
+                    options: shuffledOptions.map(item => item.opt),
+                    correct: shuffledOptions.findIndex(item => item.idx === q.correct)
+                };
+            } else {
+                // Matching suallarda yalnız sağ sütunu qarışdır
+                const rightWithIndex = q.rightColumn.map((item, idx) => ({ ...item, originalIdx: idx }));
+                const shuffledRight = shuffleArray(rightWithIndex);
+                
+                // Yeni düzgün cavabı yarat
+                const correctMapping = {
+                    '1-A': 0, '1-B': 1, '1-C': 2, '1-D': 3,
+                    '2-A': 0, '2-B': 1, '2-C': 2, '2-D': 3,
+                    '3-A': 0, '3-B': 1, '3-C': 2, '3-D': 3,
+                    '4-A': 0, '4-B': 1, '4-C': 2, '4-D': 3
+                };
+                
+                const oldPairs = q.correctAnswer.split(', ');
+                const newPairs = oldPairs.map(pair => {
+                    const [num, letter] = pair.split('-');
+                    const oldIdx = correctMapping[pair];
+                    const newLetter = shuffledRight.find(item => item.originalIdx === oldIdx).id;
+                    return `${num}-${newLetter}`;
+                });
+                
+                return {
+                    ...q,
+                    rightColumn: shuffledRight,
+                    correctAnswer: newPairs.join(', ')
+                };
+            }
+        });
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let answeredQuestions = new Set();
+
+        // SƏS EFFEKTLƏRİ
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playClickSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        function playCorrectSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 1000;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+        }
+
+        function playWrongSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 300;
+            oscillator.type = 'sawtooth';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+
+        function renderNavigation() {
+            const nav = document.getElementById('navigation');
+            nav.innerHTML = '';
+            for (let i = 0; i < questions.length; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'nav-btn';
+                btn.textContent = i + 1;
+                if (i === currentQuestion) btn.classList.add('active');
+                if (userAnswers[i] !== null) btn.classList.add('answered');
+                btn.onclick = () => goToQuestion(i);
+                nav.appendChild(btn);
+            }
+        }
+
+        function goToQuestion(index) {
+            playClickSound();
+            currentQuestion = index;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const container = document.getElementById('quiz-container');
+            const q = questions[currentQuestion];
+            const isAnswered = answeredQuestions.has(currentQuestion);
+            
+            let html = '<div class="question-container">';
+            html += `<div class="question-number">Sual ${currentQuestion + 1} / ${questions.length}</div>`;
+            html += `<div class="question-text">${q.question}</div>`;
+
+            if (q.type === 'matching') {
+                html += '<div class="matching-container">';
+                html += '<div class="matching-column"><h3>Sol sütun</h3>';
+                q.leftColumn.forEach(item => {
+                    html += `<div class="matching-item"><strong>${item.id}.</strong> ${item.text}</div>`;
+                });
+                html += '</div>';
+                html += '<div class="matching-column"><h3>Sağ sütun</h3>';
+                q.rightColumn.forEach(item => {
+                    html += `<div class="matching-item"><strong>${item.id})</strong> ${item.text}</div>`;
+                });
+                html += '</div></div>';
+                
+                html += '<div class="options">';
+                const variants = ['A', 'B', 'C', 'D', 'E'];
+                const answers = [
+                    q.correctAnswer,
+                    q.correctAnswer.replace('1-A', '1-B').replace('2-B', '2-A'),
+                    q.correctAnswer.replace('3-C', '3-B').replace('2-B', '2-C'),
+                    q.correctAnswer.replace('1-A', '1-D').replace('4-D', '4-C'),
+                    q.correctAnswer.replace('2-B', '2-D').replace('3-C', '3-A')
+                ];
+                
+                answers.forEach((ans, i) => {
+                    let className = 'option';
+                    if (isAnswered) {
+                        if (i === 0) className += ' correct';
+                        else if (userAnswers[currentQuestion] === i) className += ' wrong';
+                    } else if (userAnswers[currentQuestion] === i) {
+                        className += ' selected';
+                    }
+                    
+                    html += `<div class="${className}" onclick="selectAnswer(${i})">`;
+                    html += `<span class="option-letter">${variants[i]}</span>`;
+                    html += `<span>${ans}</span>`;
+                    html += '</div>';
+                });
+                html += '</div>';
+            } else {
+                html += '<div class="options">';
+                const letters = ['A', 'B', 'C', 'D', 'E'];
+                q.options.forEach((opt, i) => {
+                    let className = 'option';
+                    if (isAnswered) {
+                        if (i === q.correct) className += ' correct';
+                        else if (userAnswers[currentQuestion] === i) className += ' wrong';
+                    } else if (userAnswers[currentQuestion] === i) {
+                        className += ' selected';
+                    }
+                    
+                    html += `<div class="${className}" onclick="selectAnswer(${i})">`;
+                    html += `<span class="option-letter">${letters[i]}</span>`;
+                    html += `<span>${opt}</span>`;
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+            
+            html += '</div>';
+            container.innerHTML = html;
+            
+            updateProgress();
+            renderNavigation();
+            updateButtons();
+        }
+
+        function selectAnswer(index) {
+            if (answeredQuestions.has(currentQuestion)) {
+                return;
+            }
+            
+            playClickSound();
+            userAnswers[currentQuestion] = index;
+            answeredQuestions.add(currentQuestion);
+            
+            const q = questions[currentQuestion];
+            const isCorrect = (q.type === 'matching' && index === 0) || (q.type === 'multiple' && index === q.correct);
+            
+            if (isCorrect) {
+                playCorrectSound();
+            } else {
+                playWrongSound();
+            }
+            
+            renderQuestion();
+        }
+
+        function updateProgress() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            const progress = (answered / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('current-q').textContent = currentQuestion + 1;
+            document.getElementById('total-q').textContent = questions.length;
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.textContent = 'Testi Bitir';
+                nextBtn.className = 'btn btn-submit';
+                nextBtn.onclick = submitQuiz;
+            } else {
+                nextBtn.textContent = 'Növbəti →';
+                nextBtn.className = 'btn btn-next';
+                nextBtn.onclick = nextQuestion;
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                playClickSound();
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                playClickSound();
+                currentQuestion++;
+                renderQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            const unanswered = userAnswers.filter(a => a === null).length;
+            if (unanswered > 0) {
+                if (!confirm(`${unanswered} sual cavabsızdır. Testi bitirmək istəyirsiniz?`)) {
+                    return;
+                }
+            }
+            
+            playCorrectSound();
+            
+            let correct = 0;
+            questions.forEach((q, i) => {
+                if (q.type === 'matching') {
+                    if (userAnswers[i] === 0) correct++;
+                } else {
+                    if (userAnswers[i] === q.correct) correct++;
+                }
+            });
+            
+            const percentage = ((correct / questions.length) * 100).toFixed(1);
+            
+            let message = '';
+            if (percentage >= 90) message = 'Əla! Siz mükəmməl nəticə göstərdiniz! 🏆';
+            else if (percentage >= 75) message = 'Çox yaxşı! Yaxşı hazırlıq səviyyəsi! 🎯';
+            else if (percentage >= 60) message = 'Yaxşı! Daha çox məşq edin! 📚';
+            else if (percentage >= 50) message = 'Kafi! Materialı təkrar edin! 💪';
+            else message = 'Zəif! Daha çox oxuyun! 📖';
+            
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="result-container">
+                    <div class="result-score">${percentage}%</div>
+                    <div class="result-text">
+                        <p style="font-size: 20px; margin-bottom: 15px;">${correct} / ${questions.length} doğru cavab</p>
+                        <p style="font-size: 18px; color: #f5576c; font-weight: 600;">${message}</p>
+                    </div>
+                    <button class="btn btn-restart" onclick="location.reload()">Yenidən Başla 🔄</button>
+                </div>
+            `;
+            
+            document.querySelector('.controls').style.display = 'none';
+            document.querySelector('.navigation').style.display = 'none';
+        }
+
+        // İlk yükləmə
+        renderQuestion();
+    </script>
+</body>
+</html>
