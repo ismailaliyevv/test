@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiziki Tərbiyə — Metodik Vəsait Testi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --blue:#2b6cb0;--blue2:#3182ce;--blue3:#ebf8ff;--blue4:#bee3f8;
+  --green:#38a169;--green2:#f0fff4;--green3:#c6f6d5;
+  --red:#e53e3e;--red2:#fff5f5;--red3:#fed7d7;
+  --gold:#d69e2e;--gray:#718096;--gray2:#e2e8f0;--gray3:#f7fafc;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#edf2f7;color:#1a202c;min-height:100vh;}
+header{background:linear-gradient(135deg,#1a365d,#2b6cb0);color:#fff;padding:20px;text-align:center;}
+header h1{font-size:clamp(1rem,3vw,1.5rem);font-weight:800;margin-bottom:4px;}
+header p{opacity:.8;font-size:.78rem;}
+.prog-wrap{height:4px;background:var(--blue4);position:sticky;top:0;z-index:200;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue2),#63b3ed);transition:width .4s;width:0%;}
+.container{max-width:820px;margin:0 auto;padding:14px 12px 40px;}
+.scoreboard{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.scard{background:#fff;border-radius:10px;padding:10px 6px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.07);border-top:3px solid var(--blue2);}
+.scard-val{font-size:1.3rem;font-weight:900;color:var(--blue);}
+.scard-label{font-size:.6rem;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.nav-wrap{background:#fff;border-radius:12px;padding:12px;box-shadow:0 1px 5px rgba(0,0,0,.07);margin-bottom:12px;}
+.nav-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.nav-title{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);}
+.nav-legend{display:flex;gap:8px;}
+.leg{display:flex;align-items:center;gap:3px;font-size:.58rem;color:var(--gray);font-weight:600;}
+.leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;}
+.nav-grid{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;}
+.nb{aspect-ratio:1;border-radius:3px;border:none;font-size:.52rem;font-weight:700;cursor:pointer;transition:all .12s;background:var(--gray3);color:#a0aec0;padding:0;line-height:1;}
+.nb:hover{transform:scale(1.25);z-index:5;position:relative;}
+.nb.nb-cur{background:var(--blue2)!important;color:#fff!important;box-shadow:0 0 0 2px #fff,0 0 0 3px var(--blue2);}
+.nb.nb-ok{background:var(--green);color:#fff;}
+.nb.nb-err{background:var(--red);color:#fff;}
+.sec-badge{background:linear-gradient(90deg,var(--blue3),transparent);border-left:3px solid var(--blue4);padding:6px 12px;border-radius:0 7px 7px 0;font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:12px;}
+.qcard{background:#fff;border-radius:15px;padding:22px 20px;box-shadow:0 2px 12px rgba(0,0,0,.08);border-left:4px solid var(--blue2);animation:slideIn .22s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.qcard.c-ok{border-left-color:var(--green);}
+.qcard.c-err{border-left-color:var(--red);}
+.q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.q-num{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--blue2);}
+.q-sec-tag{font-size:.6rem;font-weight:600;color:var(--gray);background:var(--gray3);padding:3px 8px;border-radius:5px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.q-text{font-size:.98rem;font-weight:700;line-height:1.65;color:#1a202c;margin-bottom:16px;}
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{padding:11px 15px;border-radius:10px;border:2px solid var(--gray2);cursor:pointer;font-size:.88rem;line-height:1.5;transition:all .15s;background:var(--gray3);font-weight:500;text-align:left;width:100%;color:#2d3748;}
+.opt:hover:not(:disabled){border-color:var(--blue2);background:var(--blue3);color:var(--blue);}
+.opt.correct{background:var(--green2)!important;border-color:var(--green)!important;color:#22543d!important;font-weight:700;}
+.opt.wrong{background:var(--red2)!important;border-color:var(--red)!important;color:#742a2a!important;font-weight:700;}
+.opt:disabled{cursor:default;}
+.feedback{margin-top:12px;padding:10px 14px;border-radius:8px;font-size:.85rem;font-weight:600;animation:fadeIn .2s;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.feedback.ok{background:var(--green2);color:#276749;border:1px solid var(--green3);}
+.feedback.err{background:var(--red2);color:#9b2c2c;border:1px solid var(--red3);}
+.nav-btns{display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:8px;}
+.btn-nav{display:flex;align-items:center;gap:6px;padding:10px 20px;border-radius:10px;border:none;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .18s;}
+.btn-prev{background:#fff;color:var(--blue);border:2px solid var(--blue4);}
+.btn-prev:hover:not(:disabled){border-color:var(--blue2);background:var(--blue3);}
+.btn-prev:disabled{opacity:.3;cursor:default;}
+.btn-next{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 3px 10px rgba(49,130,206,.3);}
+.btn-next:hover{opacity:.9;transform:translateY(-1px);}
+.q-counter{font-size:.78rem;font-weight:700;color:var(--gray);background:#fff;padding:7px 14px;border-radius:8px;border:1.5px solid var(--gray2);white-space:nowrap;}
+#resultPanel{display:none;background:#fff;border-radius:18px;padding:32px 24px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.1);}
+.res-pct{font-size:4rem;font-weight:900;margin:10px 0;}
+.res-msg{font-size:1rem;font-weight:600;color:#4a5568;margin-bottom:20px;}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 20px;}
+.res-item{background:var(--gray3);border-radius:10px;padding:12px 6px;}
+.res-item-val{font-size:1.8rem;font-weight:900;}
+.res-item-lbl{font-size:.68rem;color:var(--gray);font-weight:700;margin-top:3px;}
+.btns-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-restart{background:var(--blue);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-restart:hover{opacity:.9;transform:translateY(-1px);}
+.btn-review{background:#fff;color:var(--blue);border:2px solid var(--blue4);padding:11px 20px;border-radius:10px;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-review:hover{border-color:var(--blue2);background:var(--blue3);}
+@media(max-width:500px){.nav-grid{grid-template-columns:repeat(12,1fr);}.scoreboard{grid-template-columns:repeat(2,1fr);}.btn-nav{padding:9px 14px;font-size:.8rem;}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏃 Fiziki Tərbiyə — Metodik Vəsait Testi</h1>
+  <p>5-ci sinif &nbsp;|&nbsp; 60 Sual &nbsp;|&nbsp; Olimpiya Tarixi · İdman Növləri · Hərəki Qabiliyyətlər</p>
+</header>
+<div class="prog-wrap"><div class="prog-fill" id="progFill"></div></div>
+<div class="container">
+  <div class="scoreboard">
+    <div class="scard"><div class="scard-val">60</div><div class="scard-label">Sual</div></div>
+    <div class="scard"><div class="scard-val" id="scDone" style="color:var(--blue2)">0</div><div class="scard-label">Cavablanıb</div></div>
+    <div class="scard"><div class="scard-val" id="scOk" style="color:var(--green)">0</div><div class="scard-label">Düzgün</div></div>
+    <div class="scard"><div class="scard-val" id="scErr" style="color:var(--red)">0</div><div class="scard-label">Yanlış</div></div>
+  </div>
+  <div class="nav-wrap">
+    <div class="nav-top">
+      <div class="nav-title">🗂 Naviqasiya</div>
+      <div class="nav-legend">
+        <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>Düzgün</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--red)"></div>Yanlış</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--blue2)"></div>Aktiv</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--gray3);border:1px solid var(--gray2)"></div>Boş</div>
+      </div>
+    </div>
+    <div class="nav-grid" id="navGrid"></div>
+  </div>
+  <div id="quizArea">
+    <div class="sec-badge" id="secBadge"></div>
+    <div class="qcard" id="qcard">
+      <div class="q-meta">
+        <div class="q-num" id="qNum"></div>
+        <div class="q-sec-tag" id="qSecTag"></div>
+      </div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="qOpts"></div>
+      <div id="qFb"></div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-nav btn-prev" id="btnPrev" onclick="goPrev()">◀ Geri</button>
+      <div class="q-counter" id="qCtr">1 / 60</div>
+      <button class="btn-nav btn-next" id="btnNext" onclick="goNext()">İrəli ▶</button>
+    </div>
+  </div>
+  <div id="resultPanel">
+    <div style="font-size:3rem" id="resEmoji">🏆</div>
+    <div style="font-size:.95rem;font-weight:700;color:#4a5568;margin-top:6px">Test Tamamlandı!</div>
+    <div class="res-pct" id="resPct"></div>
+    <div class="res-msg" id="resMsg"></div>
+    <div class="res-grid">
+      <div class="res-item"><div class="res-item-val" id="resC" style="color:var(--green)"></div><div class="res-item-lbl">✅ Düzgün</div></div>
+      <div class="res-item"><div class="res-item-val" id="resW" style="color:var(--red)"></div><div class="res-item-lbl">❌ Yanlış</div></div>
+      <div class="res-item"><div class="res-item-val" id="resS" style="color:var(--gray)"></div><div class="res-item-lbl">⬜ Boş</div></div>
+    </div>
+    <div class="btns-row">
+      <button class="btn-restart" onclick="restartQuiz()">🔄 Yenidən Başla</button>
+      <button class="btn-review" onclick="reviewQuiz()">📋 Suallara Bax</button>
+    </div>
+  </div>
+</div>
+<script>
+const ORIG=[{"q": "Sürət qabiliyyətinin inkişafı üçün ən əlverişli yaş dövrü hansıdır?", "opts": ["A) 7–10 yaş", "B) 11–14 yaş", "C) 15–18 yaş", "D) 18–21 yaş", "E) 6–9 yaş"], "ans": 1}, {"q": "Qısa məsafəyə qaçış neçə fazadan ibarətdir?", "opts": ["A) 2 faza", "B) 3 faza", "C) 4 faza", "D) 5 faza", "E) 6 faza"], "ans": 2}, {"q": "Hərəkətin reaksiya tezliyi nə ilə ölçülür?", "opts": ["A) Verilən siqnaldan hərəkətin icrasına başlanma anına kimi olan vaxt", "B) Hərəkətin icrasının tamamlanmasına qədər olan vaxt", "C) İdmançının maksimal sürəti göstərdiyi vaxt", "D) Startdan finişə kimi olan ümumi vaxt", "E) İstirahatdan sonra hərəkətə qoşulma müddəti"], "ans": 0}, {"q": "Sürət qabiliyyətinin inkişafına yönəldilmiş hərəkətlərin sağlamlaşdırıcı təsirlərindən biri hansıdır?", "opts": ["A) Bədən çəkisini artırır", "B) Beynə gedən oksigen miqdarını artırır", "C) Ürək döyüntüsünü azaldır", "D) Qan təzyiqini azaldır", "E) Sinir sistemini ləngidər"], "ans": 1}, {"q": "Sprinterlərin qaçışda hansı startdan istifadə etməsi tövsiyə olunur?", "opts": ["A) Yüksək start", "B) Aşağı start", "C) Orta start", "D) Uçaraq start", "E) Dayanaraq start"], "ans": 1}, {"q": "30 metr məsafəyə qaçışda qızlar üçün 'əla' meyarı neçə saniyə və daha azdır?", "opts": ["A) 5,4 san.", "B) 5,5 san.", "C) 5,6 san.", "D) 5,7 san.", "E) 6,0 san."], "ans": 2}, {"q": "Beynəlxalq Atletika Federasiyaları Assosiyasiyası (IAAF) hansı şəhərdə, hansı ildə yaranmışdır?", "opts": ["A) Paris, 1900", "B) London, 1908", "C) Stockholm, 1912", "D) Afina, 1896", "E) Berlin, 1916"], "ans": 2}, {"q": "Azərbaycanda ilk atletika yarışları hansı ildə keçirilmişdir?", "opts": ["A) 1912", "B) 1918", "C) 1920", "D) 1922", "E) 1923"], "ans": 3}, {"q": "Atletika idman növü neçə bölmə və neçə növdən ibarətdir?", "opts": ["A) 3 bölmə, 30 növ", "B) 4 bölmə, 40 növ", "C) 5 bölmə, 49 növ", "D) 6 bölmə, 54 növ", "E) 5 bölmə, 44 növ"], "ans": 2}, {"q": "Yerindən uzunluğa tullanma neçə fazadan ibarətdir?", "opts": ["A) 2 faza", "B) 3 faza", "C) 4 faza", "D) 5 faza", "E) 6 faza"], "ans": 1}, {"q": "Sürət-güc qabiliyyəti başqa adla nə adlandırılır?", "opts": ["A) Dözümlülük qüvvəsi", "B) Partlayış qüvvəsi", "C) Statik qüvvə", "D) Koordinasiya gücü", "E) Dinamik dözümlülük"], "ans": 1}, {"q": "Sürət-güc qabiliyyətinin inkişafı üçün atletikada hansı bölmələrdən istifadə edilir?", "opts": ["A) Qaçış və yeriş", "B) Atmalar və tullanmalar", "C) Çoxnövlülük və kross", "D) Üzgüçülük və velosiped", "E) Gimnastika və akrobatika"], "ans": 1}, {"q": "Atletikada atmalar hansı növlərə ayrılır?", "opts": ["A) Disk, nizə, kici, çəkic", "B) Disk, nizə, kici, nüvə itələmə", "C) Nizə, kici, nüvə, ox", "D) Disk, nizə, nüvə, çəkic", "E) Disk, kici, çəkic, ox"], "ans": 1}, {"q": "Olimpiya şüarı 'Citius, Altius, Fortius' nə deməkdir?", "opts": ["A) Daha güclü, daha sürətli, daha yüksək", "B) Daha sürətli, daha yüksək, daha güclü", "C) Daha uzaq, daha sürətli, daha möhkəm", "D) Daha cəsur, daha güclü, daha sürətli", "E) Daha çevik, daha dözümlü, daha güclü"], "ans": 1}, {"q": "Tullanmalar neçə hissə və neçə növdən ibarətdir?", "opts": ["A) 1 hissə, 2 növ", "B) 2 hissə, 4 növ", "C) 3 hissə, 6 növ", "D) 2 hissə, 3 növ", "E) 4 hissə, 8 növ"], "ans": 1}, {"q": "Bədənin əyilmə qabiliyyətinin inkişafında dinamik hərəkətlər fəal əyilmə qabiliyyətini orta hesabla neçə faiz artırır?", "opts": ["A) 10–11%", "B) 15–16%", "C) 19–20%", "D) 25–30%", "E) 35–40%"], "ans": 2}, {"q": "BƏQ-in inkişafı üçün dərsdə istifadə olunan ümumi hərəkətlərin neçə faizi dinamik olmalıdır?", "opts": ["A) 20 faiz", "B) 30 faiz", "C) 40 faiz", "D) 50 faiz", "E) 60 faiz"], "ans": 2}, {"q": "Qeyri-fəal əyilmə qabiliyyəti dinamik hərəkətlər vasitəsilə orta hesabla neçə faiz inkişaf edir?", "opts": ["A) 5–6%", "B) 8–9%", "C) 10–11%", "D) 15–16%", "E) 19–20%"], "ans": 2}, {"q": "Gimnastika idman növü kimi I Yay Olimpiya Oyunlarının proqramına hansı ildə daxil edilmişdir?", "opts": ["A) 1881", "B) 1896", "C) 1900", "D) 1904", "E) 1912"], "ans": 1}, {"q": "Beynəlxalq Gimnastika Federasiyası (FJE) hansı ildə yaradılıb?", "opts": ["A) 1869", "B) 1875", "C) 1881", "D) 1896", "E) 1900"], "ans": 2}, {"q": "Gimnastikanın neçə növü var?", "opts": ["A) 5", "B) 7", "C) 8", "D) 9", "E) 11"], "ans": 3}, {"q": "Azərbaycan Beynəlxalq Gimnastika Federasiyası hansı ildə təsis edilib?", "opts": ["A) 1881", "B) 1946", "C) 1991", "D) 1993", "E) 1996"], "ans": 3}, {"q": "5-ci sinif Fiziki tərbiyə dərsliyi neçə tədris vahidindən ibarətdir?", "opts": ["A) 4", "B) 5", "C) 6", "D) 7", "E) 8"], "ans": 2}, {"q": "Dərslikdə hansı yenilik ilk dəfə Fiziki tərbiyə dərsliklərində yer almışdır?", "opts": ["A) Olimpiya oyunları tarixi", "B) İdman normativləri", "C) Fləşmoblar", "D) Kross qaçış", "E) Qiymətləndirmə sistemi"], "ans": 2}, {"q": "Çeviklik qabiliyyətinin inkişafında ciddi reqlamentləşdirilmiş hərəkət metodu qısaca necə adlandırılır?", "opts": ["A) Oyun metodu", "B) Yarış metodu", "C) Hərəkət metodu", "D) Variasiya metodu", "E) Təkrar metodu"], "ans": 2}, {"q": "Basketbol sözündəki 'basket' nə deməkdir?", "opts": ["A) Top", "B) Meydança", "C) Səbət", "D) Halqa", "E) Şəbəkə"], "ans": 2}, {"q": "Basketbol oyununun ilk qaydalarını kim, hansı ildə işləyib hazırlayıb?", "opts": ["A) Pyer De Kuberten, 1896", "B) Demetrius Vikelas, 1894", "C) Doktor Ceyms Neysmit, 1891", "D) Viktor Buan, 1920", "E) Corc Eyzer, 1904"], "ans": 2}, {"q": "Beynəlxalq Basketbol Assosiyasiyaları Federasiyası (FIBA) hansı ildə yaradılıb?", "opts": ["A) 1891", "B) 1912", "C) 1920", "D) 1932", "E) 1936"], "ans": 3}, {"q": "Müasir basketbol oyunu neçə hissə (taym) oynayılır və hər hissə neçə dəqiqə çəkir?", "opts": ["A) 2 hissə × 20 dəq", "B) 4 hissə × 10 dəq", "C) 3 hissə × 15 dəq", "D) 2 hissə × 25 dəq", "E) 4 hissə × 12 dəq"], "ans": 1}, {"q": "Basketbolda bir komandanın topu öz yanında maksimum neçə saniyə saxlaması qadağandır?", "opts": ["A) 8 saniyə", "B) 14 saniyə", "C) 24 saniyə", "D) 30 saniyə", "E) 45 saniyə"], "ans": 2}, {"q": "Basketbol oyun meydançasının ölçüsü neçə metrdir?", "opts": ["A) 20 × 14 m", "B) 28 × 15 m", "C) 25 × 18 m", "D) 30 × 20 m", "E) 32 × 18 m"], "ans": 2}, {"q": "Basketbol topunun çevrəsi və kütləsi nə qədərdir?", "opts": ["A) 70–72 sm, 550–580 qram", "B) 75–78 sm, 600–650 qram", "C) 80–82 sm, 700–750 qram", "D) 68–72 sm, 500–550 qram", "E) 74–76 sm, 560–600 qram"], "ans": 1}, {"q": "Basketbol komandası neçə oyunçudan ibarət olur? Neçəsi meydanda, neçəsi ehtiyatda olur?", "opts": ["A) 10 nəfər: 5 meydanda, 5 ehtiyatda", "B) 12 nəfər: 5 meydanda, 7 ehtiyatda", "C) 15 nəfər: 5 meydanda, 10 ehtiyatda", "D) 11 nəfər: 6 meydanda, 5 ehtiyatda", "E) 14 nəfər: 7 meydanda, 7 ehtiyatda"], "ans": 1}, {"q": "Basketbolda hesab bərabər olduqda əlavə neçə dəqiqəlik vaxt verilir?", "opts": ["A) 3 dəqiqə", "B) 4 dəqiqə", "C) 5 dəqiqə", "D) 8 dəqiqə", "E) 10 dəqiqə"], "ans": 2}, {"q": "Basketbolda topla hərəkət edən oyunçu driblinq etmədən maksimum neçə addım ata bilər?", "opts": ["A) 1 addım", "B) 2 addım", "C) 3 addım", "D) 4 addım", "E) 5 addım"], "ans": 1}, {"q": "Futbol qapısının sahəsi, eni və hündürlüyü hansıdır?", "opts": ["A) 16 kv.m, 7 m, 2,2 m", "B) 18 kv.m, 7,32 m, 2,46 m", "C) 20 kv.m, 8 m, 2,5 m", "D) 15 kv.m, 6,5 m, 2 m", "E) 22 kv.m, 7,5 m, 2,44 m"], "ans": 1}, {"q": "Futbolda hər komandada neçə oyunçu olur?", "opts": ["A) 9", "B) 10", "C) 11", "D) 12", "E) 13"], "ans": 2}, {"q": "Koordinasiya qabiliyyətinin neçə növü var?", "opts": ["A) 1 növ", "B) 2 növ", "C) 3 növ", "D) 4 növ", "E) 5 növ"], "ans": 1}, {"q": "Koordinasiya qabiliyyətinə təsir etməyən amil hansıdır?", "opts": ["A) Hərəkəti dəqiq təhlil etmə bacarığı", "B) Hərəki fəaliyyətin mürəkkəbliyi", "C) Şagirdin boy uzunluğu", "D) Cəsarət və qətiyyət", "E) Digər hərəki qabiliyyətlərin inkişafı"], "ans": 2}, {"q": "Ümumi dözümlülük hansı fiziki yük zamanı özünü göstərir?", "opts": ["A) Maksimal intensivlikli yük", "B) Nisbi aşağı intensivlikli davamlı yük", "C) Qısa müddətli partlayış yükü", "D) Yarış şəraitindəki xüsusi yük", "E) Statik saxlama yükü"], "ans": 1}, {"q": "Xüsusi dözümlülüyün növlərindən biri deyil:", "opts": ["A) Koordinasiya dözümlülüyü", "B) Dinamik dözümlülük", "C) Statik dözümlülük", "D) Sürət dözümlülüyü", "E) Ümumi dözümlülük"], "ans": 4}, {"q": "1000 metr kross qaçışda oğlanlar üçün 90 bal qazanmaq üçün hansı nəticə tələb olunur?", "opts": ["A) 5.59 dəq.", "B) 6.00 dəq.", "C) 6.10 dəq.", "D) 6.30 dəq.", "E) 6.40 dəq."], "ans": 1}, {"q": "Qırmızı əzəl liflərinin xüsusiyyəti hansıdır?", "opts": ["A) Sürətli, lakin dözümsüzdür", "B) Dözümlüdür", "C) Güclü, lakin yavaşdır", "D) Həm sürətli, həm dözümlüdür", "E) Zəif, lakin elastikdir"], "ans": 1}, {"q": "Antik olimpiya oyunları harada və hansı ildən etibarən keçirilirdi?", "opts": ["A) Spartalı, e.ə. 800-ci ildən", "B) Olimp dağı ətrafında, e.ə. 776-cı ildən", "C) Afina şəhərində, e.ə. 500-cü ildən", "D) Olimpia şəhərindən, e.ə. 400-cü ildən", "E) Makedoniyada, e.ə. 350-ci ildən"], "ans": 1}, {"q": "Antik olimpiya oyunlarını qadağan edən Roma imperatoru kimdir?", "opts": ["A) Yuli Sezar", "B) Neron", "C) I Feodosi", "D) Konstantin", "E) Avqust"], "ans": 2}, {"q": "Beynəlxalq Olimpiya Komitəsi (BOK) hansı ildə yarandı?", "opts": ["A) 1888", "B) 1892", "C) 1894", "D) 1896", "E) 1900"], "ans": 2}, {"q": "BOK-un ilk prezidenti kim idi?", "opts": ["A) Pyer De Kuberten", "B) Viktor Buan", "C) Demetrius Vikelas", "D) Corc Eyzer", "E) Hannes Kolehmaynen"], "ans": 2}, {"q": "I Yay Olimpiya Oyunları harada, nə zaman keçirildi?", "opts": ["A) Paris, 14 may – 28 oktyabr 1900", "B) Afina, 6–15 aprel 1896", "C) London, 27 aprel – 31 oktyabr 1908", "D) Stokholm, 5 may – 27 iyul 1912", "E) Sent-Luis, 1 iyul – 23 noyabr 1904"], "ans": 1}, {"q": "I Olimpiya Oyunlarında (1896) qalib gələn ölkə hansı idi?", "opts": ["A) Fransa", "B) Böyük Britaniya", "C) Almaniya", "D) Yunanıstan", "E) ABŞ"], "ans": 3}, {"q": "I Olimpiya Oyunlarında (1896) neçə idmançı iştirak etdi?", "opts": ["A) 180 nəfər", "B) 200 nəfər", "C) 245 nəfər", "D) 310 nəfər", "E) 400 nəfər"], "ans": 2}, {"q": "II Olimpiya Oyunlarında (Paris, 1900) neçə ölkə iştirak etdi?", "opts": ["A) 13 ölkə", "B) 18 ölkə", "C) 20 ölkə", "D) 24 ölkə", "E) 30 ölkə"], "ans": 3}, {"q": "II Olimpiya Oyunlarında (1900) Azərbaycan milli oyunu çövkənlə eynilik təşkil edən idman növü hansı idi?", "opts": ["A) Güləş", "B) Cirit", "C) Ox atma", "D) Polo (atda)", "E) Qılıncoynadan"], "ans": 3}, {"q": "III Olimpiya Oyunlarında (1904, Sent-Luis) 689 iştirakçıdan neçəsi ABŞ-ı təmsil edirdi?", "opts": ["A) 200", "B) 300", "C) 400", "D) 535", "E) 600"], "ans": 3}, {"q": "III Olimpiya Oyunlarında (1904) bir ayağı protez olmasına baxmayaraq medal qazanan gimnast kim idi?", "opts": ["A) Hannes Kolehmaynen", "B) Elvin Krensleyn", "C) Viktor Buan", "D) Corc Eyzer", "E) Demetrius Vikelas"], "ans": 3}, {"q": "IV Olimpiya Oyunlarında (London, 1908) tarixi ilk nə baş verdi?", "opts": ["A) İlk dəfə olimpiya bayrağı meydana çıxarıldı", "B) İlk dəfə olimpiya oyunları üçün xüsusi stadion tikildi", "C) İlk dəfə qadınlar iştirak etdi", "D) İlk dəfə foto-finiş tətbiq edildi", "E) İlk dəfə olimpiya şüarı elan edildi"], "ans": 1}, {"q": "'Olimpiya oyunlarında əsas qələbə deyil, iştirakdır' məşhur ifadəsi hansı oyunlarda söylənmişdir?", "opts": ["A) I Oyunlar, 1896", "B) II Oyunlar, 1900", "C) III Oyunlar, 1904", "D) IV Oyunlar, 1908", "E) V Oyunlar, 1912"], "ans": 3}, {"q": "V Olimpiya Oyunlarında (Stokholm, 1912) proqrama ilk dəfə daxil edilən idman növü hansıdır?", "opts": ["A) Gimnastika", "B) Atletika", "C) Müasir beşnövlülük", "D) Üzgüçülük", "E) Velosiped yarışı"], "ans": 2}, {"q": "Olimpiya bayrağı ilk dəfə hansı oyunlarda meydana çıxarıldı?", "opts": ["A) I Oyunlar, 1896, Afina", "B) IV Oyunlar, 1908, London", "C) V Oyunlar, 1912, Stokholm", "D) VII Oyunlar, 1920, Antverpen", "E) VI Oyunlar, 1916"], "ans": 3}, {"q": "Olimpiya bayrağındakı 5 halqa hansı rənglərdədir?", "opts": ["A) Qırmızı, sarı, yaşıl, mavi, narıncı", "B) Mavi, sarı, qara, yaşıl, qırmızı (ağ fon üzərində)", "C) Qırmızı, mavi, ağ, yaşıl, sarı", "D) Qara, ağ, sarı, yaşıl, qırmızı", "E) Mavi, qırmızı, narıncı, yaşıl, bənövşəyi"], "ans": 1}, {"q": "VII Olimpiya Oyunlarında (1920, Antverpen) ilk dəfə Olimpiya andını içən şəxs kim idi?", "opts": ["A) Pyer De Kuberten", "B) Viktor Buan", "C) Demetrius Vikelas", "D) Hannes Kolehmaynen", "E) Elvin Krensleyn"], "ans": 1}];
+const SECS=[
+  {s:0,e:9,l:"I — Sürət Qabiliyyəti"},
+  {s:10,e:14,l:"II — Sürət-Güc Qabiliyyəti"},
+  {s:15,e:22,l:"III — Bədənin Əyilmə Qabiliyyəti"},
+  {s:23,e:24,l:"IV — Qüvvə / Dərslik"},
+  {s:25,e:39,l:"V — Çeviklik · Basketbol · Futbol"},
+  {s:40,e:43,l:"VI — Dözümlülük"},
+  {s:44,e:59,l:"🏅 Olimpiya Hərəkatı"},
+];
+function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+let QS=[],cur=0,correct=0,wrong=0,answered=[];
+function buildQS(){
+  QS=[];
+  for(const sec of SECS){
+    const sl=ORIG.slice(sec.s,sec.e+1).map((q,i)=>({...q,origIdx:sec.s+i}));
+    for(const q of shuffle(sl)){
+      const ct=q.opts[q.ans];
+      const so=shuffle([...q.opts]);
+      QS.push({q:q.q,opts:so,ans:so.indexOf(ct),origIdx:q.origIdx});
+    }
+  }
+}
+function initState(){cur=0;correct=0;wrong=0;answered=new Array(60).fill(null);buildQS();}
+let ac=null;
+function getAC(){if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();return ac;}
+function tone(f,d,t,v){try{const a=getAC(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type=t||'sine';o.frequency.value=f;g.gain.setValueAtTime(v||.14,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+d);o.start();o.stop(a.currentTime+d);}catch(e){}}
+function sOk(){tone(523,.1,'sine',.12);setTimeout(()=>tone(659,.1,'sine',.12),80);setTimeout(()=>tone(784,.18,'sine',.14),160);setTimeout(()=>tone(1047,.22,'sine',.11),240);}
+function sErr(){tone(220,.08,'sawtooth',.09);setTimeout(()=>tone(185,.18,'sawtooth',.07),120);}
+function sClick(){tone(900,.04,'square',.05);}
+function sWin(){[523,659,784,1047,1319].forEach((f,i)=>setTimeout(()=>tone(f,.16,'sine',.13),i*85));setTimeout(()=>[1047,1319,1568].forEach((f,i)=>setTimeout(()=>tone(f,.22,'sine',.15),i*95)),500);}
+function getSec(idx){for(const s of SECS)if(idx>=s.s&&idx<=s.e)return s;return{l:''};}
+function buildNav(){
+  const g=document.getElementById('navGrid');g.innerHTML='';
+  for(let i=0;i<60;i++){
+    const b=document.createElement('button');
+    b.className='nb';b.id='nb'+i;b.textContent=i+1;
+    const ii=i;b.onclick=()=>{sClick();goTo(ii);};
+    g.appendChild(b);
+  }
+  refreshNav();
+}
+function refreshNav(){
+  for(let i=0;i<60;i++){
+    const b=document.getElementById('nb'+i);if(!b)continue;
+    b.className='nb';
+    if(answered[i])b.classList.add(answered[i].isOk?'nb-ok':'nb-err');
+    if(i===cur)b.classList.add('nb-cur');
+  }
+}
+function renderQ(){
+  const q=QS[cur],a=answered[cur],sec=getSec(q.origIdx);
+  document.getElementById('secBadge').textContent='📚 '+sec.l;
+  const card=document.getElementById('qcard');
+  card.className='qcard'+(a?a.isOk?' c-ok':' c-err':'');
+  document.getElementById('qNum').textContent='Sual '+(cur+1)+' / 60';
+  document.getElementById('qSecTag').textContent=sec.l;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCtr').textContent=(cur+1)+' / 60';
+  const od=document.getElementById('qOpts');od.innerHTML='';
+  q.opts.forEach((opt,oi)=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=opt;
+    if(a){b.disabled=true;if(oi===q.ans)b.classList.add('correct');else if(oi===a.sel)b.classList.add('wrong');}
+    b.onclick=()=>{if(!a)answer(oi);};
+    od.appendChild(b);
+  });
+  const fb=document.getElementById('qFb');
+  if(a){fb.className='feedback '+(a.isOk?'ok':'err');fb.innerHTML=a.isOk?'✅ Düzgün cavab!':'❌ Yanlış. Düzgün cavab: <strong>'+q.opts[q.ans]+'</strong>';}
+  else{fb.className='';fb.innerHTML='';}
+  document.getElementById('btnPrev').disabled=(cur===0);
+  document.getElementById('btnNext').textContent=(cur===59)?'Nəticə 🏆':'İrəli ▶';
+  document.getElementById('progFill').style.width=(answered.filter(x=>x).length/60*100)+'%';
+  refreshNav();
+  document.getElementById('scDone').textContent=answered.filter(x=>x).length;
+  document.getElementById('scOk').textContent=correct;
+  document.getElementById('scErr').textContent=wrong;
+}
+function answer(sel){
+  if(answered[cur])return;
+  const isOk=(sel===QS[cur].ans);
+  answered[cur]={sel,isOk};
+  if(isOk){correct++;sOk();}else{wrong++;sErr();}
+  if(answered.filter(x=>x).length===60)setTimeout(sWin,400);
+  renderQ();
+  if(isOk&&cur<59)setTimeout(()=>{if(answered[cur])goNext();},1400);
+}
+function goTo(i){cur=i;renderQ();document.getElementById('qcard').scrollIntoView({behavior:'smooth',block:'nearest'});}
+function goNext(){sClick();if(cur===59){showResult();return;}cur++;renderQ();}
+function goPrev(){if(cur===0)return;sClick();cur--;renderQ();}
+function showResult(){
+  const pct=Math.round(correct/60*100);
+  const skip=answered.filter(x=>!x).length;
+  document.getElementById('quizArea').style.display='none';
+  const p=document.getElementById('resultPanel');p.style.display='block';p.scrollIntoView({behavior:'smooth'});
+  document.getElementById('resEmoji').textContent=pct>=90?'🥇':pct>=70?'🥈':pct>=40?'🥉':'📚';
+  document.getElementById('resPct').textContent=pct+'%';
+  document.getElementById('resPct').style.color=pct>=70?'var(--green)':pct>=40?'var(--gold)':'var(--red)';
+  document.getElementById('resMsg').textContent=pct>=90?'🎉 Əla! Mükəmməl nəticə!':pct>=70?'👏 Yaxşı nəticə!':pct>=40?'📖 Orta nəticə. Daha çox oxuyun.':'💪 Zəif nəticə. Kitabı yenidən oxuyun.';
+  document.getElementById('resC').textContent=correct;
+  document.getElementById('resW').textContent=wrong;
+  document.getElementById('resS').textContent=skip;
+}
+function restartQuiz(){
+  initState();
+  document.getElementById('resultPanel').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  document.getElementById('progFill').style.width='0%';
+  buildNav();renderQ();window.scrollTo({top:0,behavior:'smooth'});
+}
+function reviewQuiz(){document.getElementById('resultPanel').style.display='none';document.getElementById('quizArea').style.display='block';goTo(0);}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')goNext();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')goPrev();
+  if(e.key>='1'&&e.key<='5'&&!answered[cur])answer(parseInt(e.key)-1);
+});
+initState();buildNav();renderQ();
+</script>
+</body>
+</html>
