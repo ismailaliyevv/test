@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiziki Tərbiyə – 15.02.2026 Test</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;
+  --sur:#f8f8f8;
+  --bor:#e3e3e3;
+  --txt:#111;
+  --sub:#777;
+  --grn:#16a34a;
+  --grn-bg:#f0fdf4;
+  --grn-br:#86efac;
+  --red:#dc2626;
+  --red-bg:#fef2f2;
+  --red-br:#fca5a5;
+  --nav:26px;
+  --rad:10px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.screen{display:none;width:100%}
+.screen.on{display:flex}
+
+/* START */
+#ss{min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center}
+.badge{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--sub);border:1px solid var(--bor);padding:.3rem .9rem;border-radius:100px;margin-bottom:1.8rem}
+.sh{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,5vw,3rem);line-height:1.1;margin-bottom:.5rem}
+.sh em{font-style:italic;color:var(--sub)}
+.ssub{font-size:.88rem;color:var(--sub);margin-bottom:2rem}
+.mrow{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem}
+.mi{text-align:center}
+.mn{display:block;font-family:'DM Serif Display',serif;font-size:2rem;line-height:1}
+.ml{display:block;font-size:.7rem;color:var(--sub);text-transform:uppercase;letter-spacing:.1em;margin-top:.2rem}
+.mdiv{width:1px;height:36px;background:var(--bor);align-self:center}
+.bgo{background:var(--txt);color:#fff;border:none;padding:.85rem 3rem;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:600;border-radius:100px;cursor:pointer;transition:all .2s}
+.bgo:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+
+/* QUIZ */
+#sq{flex-direction:column;align-items:center;padding:1.4rem 1rem 3rem}
+
+.topbar{width:100%;max-width:780px;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:1rem}
+.tl{display:flex;align-items:center;gap:.8rem}
+.qcnt{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--sub)}
+.pw{width:110px;height:3px;background:var(--bor);border-radius:99px;overflow:hidden}
+.pf{height:100%;background:var(--txt);border-radius:99px;transition:width .4s ease}
+
+.tw{display:flex;align-items:center;gap:.45rem}
+.tr{width:36px;height:36px;position:relative;flex-shrink:0}
+.tr svg{transform:rotate(-90deg)}
+.tr .tbg{fill:none;stroke:var(--bor);stroke-width:3}
+.tr .tfg{fill:none;stroke:#16a34a;stroke-width:3;stroke-linecap:round;stroke-dasharray:100.53;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .3s}
+.tnum{font-family:'DM Serif Display',serif;font-size:1.05rem;min-width:30px;text-align:right;color:#16a34a;transition:color .3s}
+.tnum.warn{color:#d97706}.tnum.dng{color:#dc2626}
+
+/* nav grid */
+.ngw{width:100%;max-width:780px;margin-bottom:1.2rem;overflow-x:auto;padding-bottom:3px}
+.ng{display:flex;flex-wrap:wrap;gap:4px}
+.nb{width:var(--nav);height:var(--nav);border:1.5px solid var(--bor);background:#fff;font-size:.6rem;font-weight:600;color:var(--sub);cursor:pointer;border-radius:4px;transition:all .15s;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Sans',sans-serif}
+.nb:hover{border-color:var(--txt);color:var(--txt)}
+.nb.cur{border-color:var(--txt);background:var(--txt);color:#fff}
+.nb.ok{border-color:var(--grn);background:var(--grn-bg);color:var(--grn)}
+.nb.bad{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+.nb.tout{border-color:#f59e0b;background:#fffbeb;color:#d97706}
+.nb.skip{border-color:#94a3b8;background:#f8fafc;color:#94a3b8}
+
+/* card */
+.qcard{width:100%;max-width:780px;background:#fff;border:1px solid var(--bor);border-radius:var(--rad);padding:1.8rem 1.8rem 1.5rem;margin-bottom:1.1rem}
+.qmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.qnum{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--sub)}
+.qscore{font-size:.72rem;color:var(--sub);background:var(--sur);padding:.2rem .6rem;border-radius:100px}
+.qtext{font-family:'DM Serif Display',serif;font-size:1.1rem;line-height:1.6;color:var(--txt);margin-bottom:1.5rem;white-space:pre-line}
+
+/* options - flex column for 5 options */
+.opts{display:flex;flex-direction:column;gap:.5rem}
+.opt{display:flex;align-items:flex-start;gap:.65rem;padding:.7rem .9rem;border:1.5px solid var(--bor);border-radius:8px;background:#fff;cursor:pointer;text-align:left;transition:all .15s;font-family:'DM Sans',sans-serif;width:100%}
+.opt:hover:not(.done){border-color:var(--txt);background:var(--sur)}
+.ol{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;min-width:22px;border:1.5px solid var(--bor);border-radius:4px;font-size:.68rem;font-weight:700;color:var(--sub);background:var(--sur);margin-top:2px;transition:all .15s;flex-shrink:0;font-family:'DM Sans',sans-serif}
+.ot{font-size:.88rem;line-height:1.45;color:var(--txt);flex:1}
+
+.opt.ok{border-color:var(--grn);background:var(--grn-bg);animation:pop .25s ease}
+.opt.ok .ol{border-color:var(--grn);background:var(--grn);color:#fff}
+.opt.bad{border-color:var(--red);background:var(--red-bg);animation:shk .35s ease}
+.opt.bad .ol{border-color:var(--red);background:var(--red);color:#fff}
+.opt.show-ok{border-color:var(--grn);background:var(--grn-bg)}
+.opt.show-ok .ol{border-color:var(--grn);background:var(--grn);color:#fff}
+.opt.done{cursor:default}
+
+@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes shk{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+
+.exp{display:none;margin-top:.9rem;padding:.7rem .95rem;background:var(--sur);border-left:3px solid var(--txt);border-radius:0 6px 6px 0;font-size:.82rem;color:var(--sub);line-height:1.55;animation:fu .25s ease}
+.exp.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* controls */
+.ctrl{width:100%;max-width:780px;display:flex;align-items:center;justify-content:space-between;gap:.8rem}
+.cbtn{display:flex;align-items:center;gap:.45rem;padding:.6rem 1.3rem;border:1.5px solid var(--bor);border-radius:100px;background:#fff;font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:500;color:var(--txt);cursor:pointer;transition:all .15s}
+.cbtn:hover{border-color:var(--txt);background:var(--sur)}
+.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.pri{background:var(--txt);color:#fff;border-color:var(--txt)}
+.cbtn.pri:hover{background:#333}
+
+/* RESULT */
+#sr{min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center}
+.rring{width:130px;height:130px;position:relative;margin:0 auto 1.2rem}
+.rring svg{transform:rotate(-90deg)}
+.rring .rbg{fill:none;stroke:var(--bor);stroke-width:7}
+.rring .rfg{fill:none;stroke:#16a34a;stroke-width:7;stroke-linecap:round;stroke-dasharray:339;stroke-dashoffset:339;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
+.rinn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.rpct{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1}
+.rlbl{font-size:.68rem;color:var(--sub);text-transform:uppercase;letter-spacing:.1em}
+.rh{font-family:'DM Serif Display',serif;font-size:1.7rem;margin-bottom:.4rem}
+.rs{font-size:.88rem;color:var(--sub);margin-bottom:1.6rem}
+.rstats{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.8rem}
+.sbox{padding:.9rem 1.3rem;border:1px solid var(--bor);border-radius:var(--rad);min-width:90px}
+.sn{font-family:'DM Serif Display',serif;font-size:1.7rem;display:block}
+.sn.g{color:var(--grn)}.sn.r{color:var(--red)}.sn.y{color:#d97706}.sn.gr{color:#94a3b8}
+.sl{font-size:.68rem;color:var(--sub);text-transform:uppercase;letter-spacing:.08em}
+
+.tflash{position:fixed;inset:0;background:rgba(220,38,38,.07);pointer-events:none;opacity:0;transition:opacity .3s;z-index:999}
+.tflash.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="tflash" id="tf"></div>
+
+<!-- START -->
+<div class="screen on" id="ss">
+  <span class="badge">Fiziki Tərbiyə · 15.02.2026</span>
+  <h1 class="sh">İmtahan Testi<br><em>60 Sual</em></h1>
+  <p class="ssub">Hər suala 3 dəqiqə vaxt ayrılır · Cavabladıqdan sonra avtomatik keçmir</p>
+  <div class="mrow">
+    <div class="mi"><span class="mn">60</span><span class="ml">Sual</span></div>
+    <div class="mdiv"></div>
+    <div class="mi"><span class="mn">3:00</span><span class="ml">Hər suala</span></div>
+    <div class="mdiv"></div>
+    <div class="mi"><span class="mn">A–E</span><span class="ml">Variant</span></div>
+  </div>
+  <button class="bgo" onclick="startQuiz()">Testi Başlat →</button>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="sq">
+  <div class="topbar">
+    <div class="tl">
+      <span class="qcnt" id="qcnt">1 / 60</span>
+      <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+    </div>
+    <div class="tw">
+      <div class="tr">
+        <svg viewBox="0 0 38 38" width="36" height="36">
+          <circle class="tbg" cx="19" cy="19" r="16"/>
+          <circle class="tfg" id="tcirc" cx="19" cy="19" r="16"/>
+        </svg>
+      </div>
+      <span class="tnum" id="tdisp">3:00</span>
+    </div>
+  </div>
+
+  <div class="ngw"><div class="ng" id="navg"></div></div>
+
+  <div class="qcard">
+    <div class="qmeta">
+      <span class="qnum" id="qbadge">Sual 1</span>
+      <span class="qscore" id="qscore">– / 60</span>
+    </div>
+    <div class="qtext" id="qtext"></div>
+    <div class="opts" id="opts"></div>
+    <div class="exp" id="exp"></div>
+  </div>
+
+  <div class="ctrl">
+    <button class="cbtn" id="bp" onclick="goTo(cur-1)">← Geri</button>
+    <button class="cbtn" id="bsk" onclick="skipQ()">Burax</button>
+    <button class="cbtn pri" id="bn" onclick="nxtAct()">İrəli →</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="sr">
+  <div class="rring">
+    <svg width="130" height="130" viewBox="0 0 130 130">
+      <circle class="rbg" cx="65" cy="65" r="54"/>
+      <circle class="rfg" id="rarc" cx="65" cy="65" r="54"/>
+    </svg>
+    <div class="rinn">
+      <div class="rpct" id="rpct">0%</div>
+      <div class="rlbl">Nəticə</div>
+    </div>
+  </div>
+  <h2 class="rh" id="rtit">–</h2>
+  <p class="rs" id="rsub">–</p>
+  <div class="rstats">
+    <div class="sbox"><span class="sn g" id="rc">0</span><span class="sl">Düzgün</span></div>
+    <div class="sbox"><span class="sn r" id="rw">0</span><span class="sl">Yanlış</span></div>
+    <div class="sbox"><span class="sn y" id="rt">0</span><span class="sl">Vaxt bitdi</span></div>
+    <div class="sbox"><span class="sn gr" id="rsk">0</span><span class="sl">Buraxıldı</span></div>
+  </div>
+  <button class="bgo" onclick="restartQ()">Yenidən Başlat →</button>
+</div>
+
+<script>
+// ── DATA (PDF-dən, olduğu kimi) ──────────────────────────────────────────────
+const ORIG = [{"q": "1. Basketbol oyununda şagird topu yerə vuraraq aparmalı, eyni zamanda müəllimin fiti ilə dərhal dayanıb topu səbətə atmalıdır. Şagirdlərdən biri qaçarkən topu yaxşı idarə etsə də, dayanma anında müvazinətini itirir və atış üçün lazım olan bədən vəziyyətini (ayaqların və qolların uzlaşmasını) vaxtında qura bilmir. Müəllim izah edir ki, bu, bədənin hərəkət sürəti ilə məkan daxilindəki hərəkətlərin bir-birinə uyğunlaşdırılmamasıdır.\n\nŞagirdin hərəkət zamanı bədənini zaman və məkan daxilində nizamlayaraq müxtəlif hərəkətləri (qaçış, dayanma, atış) vahid bir sistemdə birləşdirə bilməməsi onun hansı hərəki qabiliyyətinin zəif olduğunu göstərir?", "opts": ["A) Sürət", "B) Dözümlülük", "C) Güc", "D) Hərəki koordinasiya", "E) Əyilgənlik"], "ans": 3}, {"q": "2. Dinamik müvazinət statik müvazinətdən nə ilə fərqlənir?", "opts": ["A) Hərəkətsiz vəziyyətdə saxlanılması ilə", "B) Gözlərin bağlı olması ilə", "C) Yerdəyişmə zamanı istiqamətin və tarazlığın saxlanılması ilə", "D) Əzələlərin daha çox gərilməsi ilə", "E) Yalnız akrobatik hərəkətlərdə tətbiq olunması ilə"], "ans": 2}, {"q": "3. Dəqiq icranın komponentlərinə aid olmayan variantı seçin:", "opts": ["A) Ölçmə dəqiqliyi", "B) Hədəf dəqiqliyi", "C) Koordinasiya", "D) Siqnallara dəqiq cavab vermə", "E) Verilmiş statik vəziyyətin qorunması"], "ans": 2}, {"q": "4. Dözümlülük qabiliyyətinə aid olanları seçin.\n1. Əzələ gərginliyinin uzun müddət statik vəziyyətdə saxlanılması\n2. Ritmik asta qaçış-120 m\n3. Dabanları sağrı əzələlərinə çatdırmaqla qaçış\n4. Bir əllə tək qıçla oturub-durmaq\n5. Hər iki qıçın təkanı ilə sağa-sola çoxsaylı tullanmalar", "opts": ["A) 1,2,3", "B) 1,2,5", "C) 2,3,4", "D) 2,3,5", "E) 1,3,4"], "ans": 0}, {"q": "5. Fiziki tərbiyə müəlliminin vəzifəsinə aid deyil:", "opts": ["A) İdman qurğuları inşa etmək", "B) Oyunları təşkil etmək", "C) Təhlükəsizliyi təmin etmək", "D) Şagirdlərə nəzarət etmək", "E) Dərsi qurmaq"], "ans": 0}, {"q": "6. Dözümlülüyün tərkib komponentləri hansılardır?\n1. Qüvvə dözümlülüyü\n2. Sürət dözümlülüyü\n3. Koordinasiya dözümlülüyü\n4. Ümumi dözümlülük\n5. Xüsusi dözümlülük\n6. Statik dözümlülük\n7. Dinamik dözümlülük", "opts": ["A) 1.2", "B) 4.5", "C) 6.7", "D) 2.4", "E) 2.3"], "ans": 1}, {"q": "7. Şagird sərbəst olaraq ətraf mühitdən, öz ağırlığından və dartma hərəkətlərindən maksimal istifadə edir. Hansı əyilənliyə aiddir?", "opts": ["A) Dinamik fəal hərəkətlər", "B) Dinamik qeyri-fəal hərəkətlər", "C) Statik hərəkətlər", "D) Statik qeyri-fəal hərəkətlər", "E) Qarışıq hərəkətlər"], "ans": 1}, {"q": "8. Məktəbin idman meydançasında üçtəkanla tullanma üzrə seçim yarışları keçirilir. Müəllim meydançanı beynəlxalq standartlara uyğun hazırlamaq üçün təkan lövhəsini qum hovuzundan müəyyən məsafədə yerləşdirir. O qeyd edir ki, bu məsafə idmançının \"sıçrayış\", \"addım\" və \"tullanma\" fazalarını tam yerinə yetirib qum hovuzuna təhlükəsiz enməsi üçün hesablanmışdır.\n\nKeçirilən rəsmi yarışlarda müəllimin təkan lövhəsi ilə qum hovuzu arasında qoymalı olduğu standart məsafə nə qədərdir?", "opts": ["A) 11 metr", "B) 13 metr", "C) 15 metr", "D) 8 metr", "E) 21 metr"], "ans": 1}, {"q": "9. Sürət-güc hərəki qabiliyyəti ümumtəhsil məktəblərində hansı istiqamətlərdə inkişaf etdirilir?", "opts": ["A) Bədənin ön əzələləri, bədənin arxa əzələləri", "B) Bədənin ön əzələləri, bədənin arxa əzələləri, yuxarı ətraflar, aşağı ətraflar", "C) Yuxarı ətraflar, aşağı ətraflar", "D) Sürət qabiliyyətinin təkmilləşdirilməsi"], "ans": 2}, {"q": "10. Basketbol topunun səbətə atılması hansı hərəki qabiliyyəti inkişaf etdirir?", "opts": ["A) Sürət-güc", "B) Sürət", "C) BƏQ", "D) Çeviklik", "E) Qüvvə"], "ans": 3}, {"q": "11. Stadionda 800 m qaçışı zamanı hansı xüsusiyyət müşahidə olunur?", "opts": ["A) Start və finiş xətti üst-üstə düşür", "B) Yalnız aşağı startdan istifadə olunur", "C) İdmançılar bütün məsafəni öz zolaqları ilə qaçır", "D) Maneələr hər 100 metrdən bir qoyulur", "E) Start tapançası iki dəfə açılır"], "ans": 0}, {"q": "12. İdman yerişində idmançının diskvalifikasiya olunması üçün neçə fərqli hakimdən qırmızı kart alması lazımdır?", "opts": ["A) 1", "B) 2", "C) 3", "D) 4", "E) 5"], "ans": 2}, {"q": "13. Sürət qabiliyyətinin inkişafını şərtləndirən amillərə aiddir?", "opts": ["A) Ətraf mühitin temperaturundan", "B) Əzələnin en kəsiyi", "C) Əzələ liflərinin xüsusiyyəti", "D) Əzələ daxili koordinasiyadan", "E) Əzələ bağ aparatının elastikliyi"], "ans": 2}, {"q": "14. Uyğunluğu müəyyən edin:\n1. Koordinasiya dözümlülüyü\n2. Dinamik dözümlülük\n3. Statik dözümlülük\na. əzələ gərginliyini uzun müddət eyni vəziyyətdə saxlamaqdır\nb. çətin texniki hərəkətlərin dəfələrlə təkrarlanmasıdır.\nc. ağır əzələ hərəkətlərinin nisbətən sakit tempdə, lakin uzun müddət icrasıdır.", "opts": ["A) 1-c, 2-a, 3-b", "B) 1-a, 2-b, 3-c", "C) 1-b, 2-a, 3-c", "D) 1-c, 2-b, 3-a", "E) 1-b, 2-c, 3-a"], "ans": 4}, {"q": "15. Hansı fikir həm voleybol, həm də badminton üçün doğrudur?", "opts": ["A) Top torun altından keçə bilər", "B) Oyunda ayaqla toxunmağa icazə verilir", "C) Servis mütləq torun üzərindən ötürülməlidir", "D) Top tora toxunanda xal verilir", "E) Servis hər zaman meydançanın ortasından edilir"], "ans": 2}, {"q": "16. Futbol və futzalda qapıya topun daxil olması ilə bağlı düzgün fikir hansıdır?", "opts": ["A) Futzalda top yalnız havadan daxil olmalıdır", "B) Futbolda top xətti tam keçməsə də qol sayılır", "C) Hər ikisində top qapı xəttini tam keçməlidir", "D) Futzalda top qapıdan yer ilə keçə bilməz", "E) Futbolda qol yalnız başla vurulanda sayılır"], "ans": 2}, {"q": "17. Həndbolda 7 metrlik atış hansı halda verilir?", "opts": ["A) Künc zərbəsi zamanı", "B) Açıq qol vəziyyətində qayda pozulanda", "C) Mərkəzdən başlama zamanı", "D) Oyundan kənar olduqda", "E) Pass gecikdirildikdə"], "ans": 1}, {"q": "18. Həndbolda \"passiv oyun\" anlayışı nə deməkdir?", "opts": ["A) Müdafiənin zəif olması", "B) Qapıçının oyuna qoşulmaması", "C) Hücumun məqsədsiz uzadılması", "D) Sürətli hücum", "E) Künc zərbəsi"], "ans": 2}, {"q": "19. Məktəb şahmat turnirində ağlarla oynayan şagird rəqibinin (qaraların) demək olar ki, bütün fiqurlarını vurub və böyük üstünlük qazanıb. Qaraların yalnız şahı qalıb. Ağlar son gedişini elə edir ki, qaraların şahı vuruş altında qalmır, lakin qaraların şahının və digər heç bir piyadasının hərəkət etməyə yeri qalmır.\n\nŞahmat qaydalarına görə, bu vəziyyət necə adlanır?", "opts": ["A) Pat", "B) Mat", "C) Daimi şah", "D) Rokirovka", "E) 50 gediş qaydası"], "ans": 0}, {"q": "20. Basketbol və 3×3 basketbolda oxşar cəhət hansıdır?", "opts": ["A) Hakimin hava atışı ilə başlayır", "B) 2 texniki fol alan oyunçu oyundan kənarlaşdırılır", "C) Qeyri-idman foluna görə 2 Cərimə atışı verilir", "D) Top səbətdən keçəndə xal sayılmır", "E) Komandada 5 əsas oyunçu olur"], "ans": 2}, {"q": "21. Voleybol və badminton oyunlarında bir setin qalibi olmaq üçün tələb olunan minimum xal sayları hansı variantda düzgün göstərilmişdir?", "opts": ["A) Voleybol: 15 xal / Badminton: 15 xal", "B) Voleybol: 21 xal / Badminton: 25 xal", "C) Voleybol: 25 xal / Badminton: 21 xal", "D) Voleybol: 30 xal / Badminton: 21 xal", "E) Voleybol: 25 xal / Badminton: 11 xal"], "ans": 2}, {"q": "22. Şahmatda nə zaman qalaqurma etmək olmaz?", "opts": ["A) Şah və top tərpənməyibsə", "B) Arada fiqur varsa", "C) Şah şah altında deyilsə", "D) Top h1 xanasındadırsa", "E) Debüt mərhələsində"], "ans": 1}, {"q": "23. Atletika üzrə onnövçülük yarışlarında idmançılar birinci günün sonunda artıq dörd çətin növü (sürət, tullanma və atma hərəkətlərini) tamamlayıblar. Günün qalibini müəyyən etmək və xalları hesablamaq üçün idmançılar sonuncu — beşinci starta hazırlaşırlar. Bu növ həm sürət, həm də yüksək dözümlülük tələb edən qaçış növüdür.\n\nOnnövçülük yarışlarının birinci gününə yekun vuran həmin sonuncu növ hansıdır?", "opts": ["A) 100 metr qaçış", "B) Hündürlüyə tullanma", "C) 400 metr qaçış", "D) 1500 metr qaçış", "E) Uzunluğa tullanma"], "ans": 2}, {"q": "24. Şüvüllə tullanmada idmançı havada olarkən əllərini şüvülün üzərində yuxarı sürüşdürə bilərmi?", "opts": ["A) Bəli, sərbəstdir", "B) Xeyr, bu qayda pozuntusudur", "C) Yalnız plankanı keçdikdən sonra olar", "D) Yalnız şüvül əyilən zaman olar", "E) Yalnız tullanış 5 metrdən yuxarıdırsa olar"], "ans": 1}, {"q": "25. Məktəbin futbol komandasının üzvü olan şagird intensiv məşqlərdən sonra bədəninin daha tez bərpa olunması və hüceyrələrinin oksidləşdirici stresdən qorunması üçün qidalanmasına diqqət edir. Müəllim ona bildirir ki, bəzi vitaminlər \"gənclik vitamini\" adlanır və hüceyrə yeniləyici xüsusiyyəti ilə orqanizmi xəstəliklərdən qoruyur.\n\nMüəllimin bəhs etdiyi, güclü antioksidant təsiri ilə yaşlanmanı ləngidən və hüceyrələri yeniləyən həmin vitamin hansıdır?", "opts": ["A) B vitamini", "B) K vitamini", "C) D vitamini", "D) E vitamini", "E) C vitamini"], "ans": 3}, {"q": "26. 3×3 basketbolda komanda 7-ci, 8-ci və 9-cu faulu etdikdə rəqib komanda nə qədər cərimə atışı qazanır?", "opts": ["A) 1 cərimə atışı", "B) 2 cərimə atışı", "C) 3 cərimə atışı", "D) 1 cərimə atışı və topa sahib olma", "E) Heç biri"], "ans": 1}, {"q": "27. XXXIII Yay Olimpiya oyunlarında boks idman növündə medal qazanan idmançımız kimdir?", "opts": ["A) Hidayat Heydsrov", "B) Dominges Alfonso", "C) Həsrət Cəfərov", "D) Qaşım Magomedov", "E) Zelim Kotsoev"], "ans": 1}, {"q": "28. Məktəbdə keçirilən tibbi-pedaqoji müayinə zamanı müəllim şagirdlərin fiziki inkişafını qeyd edir. Şagirdlərdən birinin boyunun həmyaşıdlarından uzun olduğu, lakin sümük quruluşunun çox zəif, əzələlərinin isə kifayət qədər inkişaf etmədiyi müşahidə olunur. Müəllim bu şagird üçün fərdi güc məşqləri planlaşdırmağı qərara alır.\n\nVerilmiş təsvirə əsasən, bu şagird hansı bədən quruluşu tipinə malikdir?", "opts": ["A) Astenik", "B) Digestiv", "C) Torkal", "D) Əzələ", "E) Piy"], "ans": 0}, {"q": "29. Məşqləmə effekti təkcə hərəkətin icrası zamanı deyil, daha çox hərəkətlərin təkrar icrası arasındakı vaxt intervalında başlayır. Bu hansı metodun xüsusiyyətidir?", "opts": ["A) Təkrar metod", "B) İnterval metod", "C) Yarış metodu", "D) Oyun metodu", "E) Nəzarət metodu"], "ans": 1}, {"q": "30. Orqanizmin ümumi fiziki hazırlığını, ayrı-ayrı əzələ qruplarının hazırlıq səviyyəsini yüksəltmək məqsədi ilə istifadə olunan, müxtəlif idman növlərinə aid hərəkətlər kompleksi necə adlanır?", "opts": ["A) Ümuminkişaf hərəkətlər", "B) Hazırlayıcı hərəkətlər", "C) Köməkçi hərəkətlər", "D) Sıra hərəkətləri", "E) Əsas hərəkətlər"], "ans": 0}, {"q": "31. Sıra hazırlığı qaydalarına əsasən, şagird sıravi addım zamanı pəncəsini döşəmədən neçə santimetr hündürlüyə qaldırmalıdır?", "opts": ["A) 30 sm", "B) 10 sm", "C) 15-20 sm", "D) 30-35 sm", "E) 20-25 sm"], "ans": 2}, {"q": "32. Daxili orqanların tənzimlənməsində iştirak edir?", "opts": ["A) Refleks prinsipi", "B) Vegetativ sinir sistemi", "C) Periferik sinir sistemi", "D) Bas beyin", "E) Onurğa beyni"], "ans": 1}, {"q": "33. 11-ci sinif şagirdi mütəmadi olaraq idmanla məşğul olur, hərbi hazırlıq dərslərində yüksək normativlər göstərir və dərslərindən sonra yorulmadan ev işlərinə kömək edir. Müəllim qeyd edir ki, bu şagird həm dözümlü, həm sağlam, həm də gələcəyin əsgəri kimi vətəni müdafiə etməyə tam hazırdır.\n\nŞagirdin həm əmək, həm vətəni müdafiə, həm də həyat funksiyalarının uzunmüddətli icrasını təmin edən bu yüksək hazırlıq vəziyyəti necə adlanır?", "opts": ["A) Fiziki inkişaf", "B) Fiziki kamillik", "C) Fiziki hazırlıq", "D) Fiziki mədəniyyət", "E) Fiziki tərəqqi"], "ans": 1}, {"q": "34. Orqanizmdə hüceyrənin məhv olunmasının əsas səbəbi sayılır?", "opts": ["A) Sistemli həyat", "B) Oksigen çatışmazlığı", "C) Sistemsiz həyat", "D) Çəki azlığı", "E) Fiziki hərəkətlər"], "ans": 1}, {"q": "35. Sakit halda idmanla məşğul olmayan insanlar bir dəqiqə ərzində neçə tənəffüs aktı icra edir?", "opts": ["A) 10-14", "B) 12-16", "C) 11-19", "D) 8-10", "E) 22-26"], "ans": 1}, {"q": "36. Tarazlıq vəziyyətindən uzaqlaşdığı nöqtələr arasındakı məsafə, hərəkətin son həddi necə adlanır?", "opts": ["A) Tarazlıq", "B) Elastiklik", "C) Dinamik hərəkətlər", "D) Amplituda", "E) Statik hərəkətlər"], "ans": 3}, {"q": "37. Sağlamlığın möhkəmləndirilməsi, hərəkətlər və onların təyinatı, idman növləri, icra üsulları, hərəki qabiliyyətlər, metodlar haqqında biliklərin mənimsənilməsi hansı təhsil səviyyəsinə aiddir?", "opts": ["A) İbtidai", "B) Ümumi orta", "C) Tam orta", "D) Orta ixtisas", "E) Məktəbə qədər təhsil"], "ans": 2}, {"q": "38. Voleybolda dəyişikliklərin edilməsi ilə bağlı hansı fikirlər doğrudur?\n1. Hər setdə 6 dəyişiklik limiti var.\n2. Oyunçu yalnız özünü əvəz edən ehtiyat oyunçu ilə dəyişdirilə bilər.\n3. Ehtiyat oyunçu özünü əvəz edən oyunçu ilə dəyişdirilə bilməz.\n4. Libero oyunçu yalnız libero ilə əvəzlənə bilər.\n5. Dəyişiklik yalnız Baş hakimin icazəsi ilə aparılır.", "opts": ["A) 1, 2, 5", "B) 1, 3, 5", "C) 1, 4", "D) 2, 5", "E) 1, 2, 3, 5"], "ans": 0}, {"q": "39. Həndbol oyunu zamanı şagird yan xətdən topu oyuna daxil etmək üçün xəttin kənarına gəlir. O, bir ayağını yan xəttin üstünə qoyur, digər ayağını isə meydançanın daxilinə yerləşdirir. Topu ötürmək üçün qolunu geriyə atdığı anda xəttin üzərindəki ayağını yuxarı qaldırır və topu yoldaşına atır. Müəllim fiti çalaraq zərbənin qaydalara uyğun olmadığını bildirir.\n\nHəndbol qaydalarına əsasən, müəllimin zərbəni qayda pozuntusu kimi qeyd etməsinin əsas səbəbi nədir?", "opts": ["A) Şagirdin ikinci ayağının meydançanın daxilində olması.", "B) Şagirdin topu tək əllə atması.", "C) Top əldən çıxana qədər bir ayağın yan xətt üzərində sabit qalmaması.", "D) Rəqib oyunçunun şagirdə çox yaxın durması.", "E) Şagirdin zərbəni 3 saniyədən gec vurması."], "ans": 2}, {"q": "40. Futbolda VAR aşağıdakılardan hansına müdaxilə edə bilər?", "opts": ["A) Qolun olub-olmamasına", "B) Yanlış oyunçuya xəbərdarlıq edilib və ya qovulursa", "C) 11 metrlik cərimə zərbəsi (penalti) qərarına", "D) Birbaşa qırmızı vərəqə", "E) Hamısı doğrudur"], "ans": 4}, {"q": "41. Qapıçı topu oyuna daxil etdikdən sonra ikinci dəfə əli ilə toxunarsa nə verilir?", "opts": ["A) Sərbəst zərbə", "B) Cərimə zərbəsi", "C) Penalti", "D) Heç nə verilmir", "E) Küncdən zərbə"], "ans": 0}, {"q": "42. Voleybol meydançasının bölündüyü əsas zonaların neçə metrlik məsafələrdə yerləşdiyi ilə bağlı doğru fikirləri müəyyən edin:\n1. Hücum xətti ortaq xətdən 3 m məsafədədir.\n2. Meydança bərabər ölçülü 9 x 9 m-lik iki hissəyə bölünür.\n3. Servis zonası arxa xətt boyunca 5 m-lik zolaqdır.\n4. Direklər torun yan tərəfindən 1 m uzaqda ola bilər.\n5. Direklər torun yan tərəfindən ən azı 50 sm uzaqda olmalıdır.", "opts": ["A) 1, 2, 3, 5", "B) 1, 2, 4", "C) 1, 2, 4, 5", "D) 3, 4, 5", "E) 1, 2, 3, 4"], "ans": 2}, {"q": "43. Məktəb birinciliyində badminton üzrə final görüşü keçirilir. Hər iki idmançı çox güclü mübarizə aparır və hesab bərabərliyi (20:20, 24:24, 27:27) setin sonuna qədər davam edir. Nəhayət, tabloda hesab 29:29 olur. Azarkeşlər oyunun daha nə qədər uzanacağını maraqla gözləyirlər.\n\nBadmintonun rəsmi qaydalarına əsasən, bu gərgin setin qalibi hansı halda müəyyən olunacaq?", "opts": ["A) Fərq 2 xal olana qədər oyun davam edəcək.", "B) Hesab 31-30 olana qədər oyun davam edəcək.", "C) 30-cu xalı ilk qazanan tərəf setin qalibi elan olunacaq.", "D) Hakimin qərarı ilə set yenidən başlanacaq.", "E) Püşkatma yolu ilə qalib seçiləcək."], "ans": 2}, {"q": "44. V İslam Həmrəyliyi Oyunlarında Azərbaycan hansı idman növləri üzrə gümüş medal qazanmışdır?", "opts": ["A) 3×3 basketbol, voleybol", "B) 3×3 basketbol, həndbol", "C) 3×3 basketbol, futbol", "D) Voleybol", "E) Tenis"], "ans": 1}, {"q": "45. Badmintonda setlər arasında nə qədər fasilə verilir?", "opts": ["A) 1 dəqiqə", "B) 3 dəqiqə", "C) 2 dəqiqə", "D) Fasilə verilmir", "E) 5 dəqiqə"], "ans": 2}, {"q": "46. Həndbol yarışı zamanı hücum edən oyunçu sürətlə rəqib qapısına tərəf qaçır. Müdafiəçi onu arxadan formasından dartaraq saxlayır və topun yerə düşməsinə səbəb olur. Müdafiəçi bu hərəkəti ilə hücumun qarşısını qanunsuz şəkildə kəsir.\n\nHəndbol qaydalarına əsasən, müdafiə olunan komandanın bu qayda pozuntusuna görə rəqib komandanın xeyrinə ilk növbədə nə təyin edilməlidir?", "opts": ["A) Sərbəst zərbə", "B) Cərimə zərbəsi", "C) Qapıdan zərbə", "D) Yandan zərbə", "E) Mərkəzdən zərbə"], "ans": 0}, {"q": "47. Çıxıqlara aid qeyd edilənlərdən biri yanlışdır.", "opts": ["A) Zədələnmiş oynaq ətrafına soyuq kompres qoymaq", "B) Çıxıq oynaqların yerdəyişməsidir", "C) Oynağı dərhal yerinə salmağa çalışmaq", "D) Zədə almış şəxsi uzatmaq", "E) Yuxarı ətrafda baş veribsə zədələnmiş ətrafı boyuna bağlanmış ləçəkdən sallamaq"], "ans": 2}, {"q": "48. Sıra hərəkətlərinə aid qeyd edilən fikirlərdən hansı yanlışdır?", "opts": ["A) Düzülüşdə yerləşənlərin baxdığı istiqamət front adlanır", "B) Dövlət himni səslənərkən komanda verilmədən farağat vəziyyəti alınır", "C) İrəliləmələr zamanı şagirdlərin sağa dönməsi üçün \"Sağa dön!\" komandası verilir", "D) Geriyə dönmə sol tərəfdən icra olunur", "E) Cərgədə şagirdlər arasındakı məsafə interval adlanır"], "ans": 2}, {"q": "49. Dərsin hissələrində şagirdin fəaliyyətinə aid olanları seçin.\n1. Hərəkətlərin icra ardıcıllığını müəyyən edir\n2. Dərsdə fəaliyyətini planlaşdırır\n3. Öz nəticəsini təhlil edir\n4. Hərəkətləri nümayiş etdirir\n5. Komandalı fəaliyyət zamanı əməkdaşlıq qurur", "opts": ["A) 1, 3, 5", "B) 2, 4", "C) 1, 4, 5", "D) 2, 3, 4, 5", "E) 2, 3, 5"], "ans": 4}, {"q": "50. Məktəbin idman zalında qaçış məşqləri zamanı şagirdlərdən birinin qəfildən yerə yıxıldığı, bədəninin qıc olduğu və ağzından köpük gəldiyi müşahidə olunur. Şagirdlər təşvişə düşür və bəziləri onun dilinin boğazına qaçmaması üçün ağzını qaşıqla açmağa çalışırlar. Müəllim dərhal müdaxilə edərək onları uzaqlaşdırır.\n\nVerilmiş situasiyada müəllimin ilk olaraq hansı addımı atması doğru olar?", "opts": ["A) Dilini qaşıqla tutmaq", "B) Xəstəni yan üstdə uzatmaq", "C) Ağzını açıb su vermək", "D) Üzünə su vurmaq və ya soyuq kompres qoymaq", "E) Üzünə şillə vurmaq"], "ans": 1}, {"q": "51. Azərbaycan Respublikasında təhsilalma formalarını seçin:\n1. Formal\n2. Əyani\n3. Qeyri-formal\n4. Qiyabi\n5. Distand\n6. Ənənəvi\n7. İnformal\n8. Sərbəst", "opts": ["A) 1,3,4,6", "B) 2,4,6,7", "C) 1,2,3,7", "D) 2,4,6,8", "E) 2,4,5,8"], "ans": 2}, {"q": "52. Müəllim voleybol oyununa başlamazdan əvvəl şagirdlərə belə bir tapşırıq verir: \"Oyun zamanı komandanın müdafiə taktikasında etdiyiniz dəyişikliklərin (məsələn, blokun qurulması və ya oyunçuların yerdəyişməsi) oyunun ümumi gedişatına və xal qazanma ehtimalınıza necə təsir etdiyini əsaslandırın.\"\n\nVerilmiş situasiyada şagirddən hansı təfəkkür növü və bilik növü tələb olunur?", "opts": ["A) Tənqidi təfəkkür, Konseptual bilik", "B) Məntiqi təfəkkür, Deklarativ bilik", "C) Yaradıcı təfəkkür, Prosedural bilik", "D) Məntiqi təfəkkür, Konseptual bilik", "E) Tənqidi təfəkkür, Metakoqnitiv bilik"], "ans": 0}, {"q": "53. Verilənlərdən alt standartın funksiyalarını seçin:\n1. Şagird sonda hansı bilik və bacarığa yiyələnəcək\n2. Alt standart sinifdən-sinfə keçdikcə dəyişmir\n3. Təlimdə inteqrativliyi təmin edir\n4. Bütün növ qiymətləndirmənin aparılmasını təmin edir\n5. Təlimin məzmununun davamlı inkişafını təmin edir", "opts": ["A) 1,3,4", "B) 1,2,5", "C) 2,4,5", "D) 1,3,5", "E) 1,2,3"], "ans": 3}, {"q": "54. Müəllim IX sinifdə şagirdlərə basketbolda maneəni keçmə texnikasını izah edir. Bir müddət sonra şagirdlərin hərəkətləri təkrar etməkdən yorulduğunu və maraqsız qaldığını görür. Müəllim dərhal dərsi dayandırır və deyir: \"Gəlin belə edək, sinfi iki komandaya bölürəm. Hər komanda özü üçün ən sürətli və effektiv 'hücum taktikası' hazırlasın və bunu yarış şəklində tətbiq edək.\" Şagirdlər dərhal fəallaşır və böyük həvəslə çalışırlar.\n\nBu situasiyada fiziki tərbiyə müəlliminin yanaşması pedaqoji prosesin hansı prinsipinin tələbidir?", "opts": ["A) Tamlıq", "B) Fəaliyyətin stimullaşdırılması", "C) Məzmunun inteqrativliyi", "D) Dəstəkləyici mühitin yaradılması", "E) Qiymətləndirmə"], "ans": 1}, {"q": "55. Son zamanlar ölkəmizdə yaşanan əsas problemlərdən biri də uşaq zorakılığıdır. Bununla bağlı məktəbin direktoru Aygül müəllimə maarifləndirici seminar keçirir. Bu seminarda bütün müəllimlərin fikirləri dinlənilir. Seminarda iştirak edən Günay müəllimə sadəcə öz məktəblərinin bu məsələyə önəm verdiyini, digər məktəblərin bu kimi vacib məsələ ilə maraqlanmadığını, biganə yanaşdıqlarını qeyd edir. Günay müəllimə hansı etik davranışa riayət etmir?", "opts": ["A) Loyallıq", "B) Mədəni davranış", "C) Konfidensiallıq", "D) Qərərsizlik", "E) Peşəkarlıq və fərdi məsuliliyyət"], "ans": 0}, {"q": "56. XXI əsr bacarıqları ilə bağlı doğru olmayan uyğunlaşdırmanı göstərin:", "opts": ["A) Savadlılıq kompentensiyası - Yazılı və şifahi şəkildə təqdim olunmuş informasiyaları, faktları, emosiyaları, fikirləri anlamaq, interpretasiya etmək, həmçinin şifahi və yazılı şəkildə ifadə etmək bacarığıdır.", "B) Çox dil bilmək kompentensiyası - Müxtəlif dillərdən adekvat və səmərəli istifadə etmək bacarığını əks etdirir.", "C) Rəqəmsal savadlılıq kompentensiyası - İşdə, şəxsi həyatda məqsədə uyğun şəkildə, inamlı şəkildə, operativ və tənqidi yanaşaraq onun istifadəsidir.", "D) Öyrənməyi öyrənmək kompentensiyası - Konfliktləri inklüziv və dəstəkləyici şəraitdə həll edə bilmək", "E) Fəal vətəndaş mövqeyi kompentensiyası - Özünün və başqalarının mədəniyyəti haqqında məlumatlı olmaq, başqalarının mədəniyyətinə hörmətlə yanaşmaq."], "ans": 3}, {"q": "57. Müəllim şagirdlərə həndbol oyununun qaydalarını və taktiki gedişlərini öyrədir. Daha sonra belə bir tapşırıq verir: \"Təsəvvür edin ki, komandanızın əsas hücumçusu zədələnib və rəqib komanda müdafiədə çox güclüdür. Qələbə qazanmaq üçün heç kimin gözləmədiyi, tamamilə yeni bir hücum taktikası və ya oyun kombinasiyası hazırlayıb tətbiq edin.\"\n\nMüəllimin şagirdlərdən yeni bir oyun taktikası tərtib etməsini istəməsi Blum taksonomiyasının hansı mərhələsinə aiddir?", "opts": ["A) Xatırlamaq", "B) Tətbiq etmək", "C) Təhlil etmək", "D) Dəyərləndirmək", "E) Yaratmaq"], "ans": 4}, {"q": "58. Siz müşahidə edirsiniz ki, fəal və dərslərində uğurlu olan bir şagird son zamanlar dərslərdə çox dalğın görünür, tapşırıqlara maraq göstərmir və yoldaşlarından təcrid olunur. Bu vəziyyətdə müəllimin atacağı ilk addım hansı olmalıdır?", "opts": ["A) Şagirdin dəyişən davranışı barədə dərhal sinif iclasında müzakirə açmaq", "B) Şagirdin bu vəziyyətini rəhbərliyə məlumat vermək", "C) Şagirdlə dərsdən kənar, təkbətək mühitdə söhbət edərək narahatlığının səbəbini soruşmaq", "D) Heç bir müdaxilə etmədən şagirdin öz-özünə düzəlməsini gözləmək", "E) Şagirdin valideyninə zəng edib, məlumat vermək"], "ans": 2}, {"q": "59. Təfəkkür haqqında deyilən fikirlərdən hansı biri yanlışdır?", "opts": ["A) Problemi həll etmə bacarığı həm tənqidi, həm də yaradıcı təfəkkür bacarıqları hesabına baş verir.", "B) İnsanın məntiqi və tənqidi təfəkkür bacarıqları əsasında yaradıcı təfəkkürü formalaşır.", "C) Tənqidi təfəkkürlü insan anladığı informasiyanı anladığı kimi ötürür.", "D) Təbiətdəki hadisə və proseslərin səbəbini anlamaq sistemli düşüncə bacarığının hesabına baş tutur.", "E) Təbiət və cəmiyyətdəki qanunauyğunluqları deduktiv düşüncə bacarıqları hesabına dərk edilir."], "ans": 1}, {"q": "60. Fiziki tərbiyə dərsində şagirdlər basketbolda topun yerə vurularaq aparılması və eyni zamanda maneələrin keçilməsi texnikasını öyrənirlər. Şagirdlərdən biri hərəkəti koordinasiyalı şəkildə yerinə yetirmədə çətinlik çəkir və topu tez-tez itirir. Müəllim şagirdin yerinə hərəkəti etmir, lakin ona: \"Topun hündürlüyünə deyil, dizlərinin bükülmə dərəcəsinə və topu itələyən barmaqlarının vəziyyətinə diqqət et\" — deyərək istiqamətverici göstəriş verir. Bu kiçik texniki dəstəkdən sonra şagird hərəkəti müstəqil və düzgün şəkildə tamamlayır.\n\nFiziki tərbiyə müəlliminin şagirdə birbaşa kömək etmək əvəzinə, ona hərəkəti müstəqil etməsi üçün verdiyi bu müvəqqəti texniki dəstək hansı nəzəriyyəyə aiddir?", "opts": ["A) J.Piaje – \"Zehni inkişafın mərhələləri\"", "B) L.Viqotski – \"Sosial inkişaf\"", "C) K.Dvek – \"Düşüncə tərzi\"", "D) L.Kolberq – \"Mənəvi inkişaf\"", "E) H.Hardner – \"Çoxşaxəli intellekt\""], "ans": 1}];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let qs=[],cur=0,ans=[],tid=null,tl=180;
+const TT=180;
+
+// ── AUDIO ────────────────────────────────────────────────────────────────────
+let actx=null;
+function aC(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
+function snd(t){
+  try{
+    const c=aC(),o=c.createOscillator(),g=c.createGain();
+    o.connect(g);g.connect(c.destination);
+    if(t==='ok'){
+      o.frequency.setValueAtTime(523,c.currentTime);
+      o.frequency.setValueAtTime(659,c.currentTime+.1);
+      o.frequency.setValueAtTime(784,c.currentTime+.2);
+      g.gain.setValueAtTime(.16,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.5);
+      o.start(c.currentTime);o.stop(c.currentTime+.5);
+    }else if(t==='bad'){
+      o.frequency.setValueAtTime(220,c.currentTime);
+      o.frequency.setValueAtTime(160,c.currentTime+.18);
+      g.gain.setValueAtTime(.16,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.45);
+      o.start(c.currentTime);o.stop(c.currentTime+.45);
+    }else if(t==='tout'){
+      [0,.18,.36].forEach((d,i)=>{
+        const o2=c.createOscillator(),g2=c.createGain();
+        o2.connect(g2);g2.connect(c.destination);
+        o2.frequency.value=400-i*80;
+        g2.gain.setValueAtTime(.13,c.currentTime+d);
+        g2.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+.15);
+        o2.start(c.currentTime+d);o2.stop(c.currentTime+d+.15);
+      });
+    }else if(t==='nav'){
+      o.frequency.value=440;
+      g.gain.setValueAtTime(.07,c.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.07);
+      o.start(c.currentTime);o.stop(c.currentTime+.07);
+    }else if(t==='fin'){
+      [523,659,784,1047].forEach((f,i)=>{
+        const o2=c.createOscillator(),g2=c.createGain();
+        o2.connect(g2);g2.connect(c.destination);
+        o2.frequency.value=f;
+        g2.gain.setValueAtTime(.14,c.currentTime+i*.12);
+        g2.gain.exponentialRampToValueAtTime(.001,c.currentTime+i*.12+.25);
+        o2.start(c.currentTime+i*.12);o2.stop(c.currentTime+i*.12+.25);
+      });
+    }
+  }catch(e){}
+}
+
+// ── SHUFFLE only QUESTIONS order (not options - PDF order kept) ──────────────
+function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function buildQs(){
+  // Questions in original PDF order - no shuffle
+  qs = ORIG.map(q => Object.assign({}, q));
+  ans = new Array(qs.length).fill(null);
+}
+
+// ── NAV GRID ─────────────────────────────────────────────────────────────────
+function buildNav(){
+  const g=document.getElementById('navg');
+  g.innerHTML='';
+  qs.forEach((_,i)=>{
+    const b=document.createElement('button');
+    b.className='nb';b.textContent=i+1;b.id='nb'+i;
+    b.onclick=()=>{snd('nav');goTo(i);};
+    g.appendChild(b);
+  });
+}
+
+function updNav(){
+  qs.forEach((_,i)=>{
+    const b=document.getElementById('nb'+i);
+    if(!b)return;
+    b.className='nb';
+    if(i===cur){b.classList.add('cur');return;}
+    const a=ans[i];if(!a)return;
+    if(a.tout)b.classList.add('tout');
+    else if(a.skip)b.classList.add('skip');
+    else b.classList.add(a.ch===a.co?'ok':'bad');
+  });
+  const c=document.getElementById('nb'+cur);
+  if(c)c.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+}
+
+// ── TIMER ────────────────────────────────────────────────────────────────────
+function startTimer(){
+  clearInterval(tid);tl=TT;updTimer();
+  tid=setInterval(()=>{tl--;updTimer();if(tl<=0){clearInterval(tid);onTimeout();}},1000);
+}
+function updTimer(){
+  const m=Math.floor(tl/60),s=tl%60;
+  document.getElementById('tcirc').style.strokeDashoffset=100.53*(1-tl/TT);
+  const d=document.getElementById('tdisp');
+  d.textContent=m+':'+(s<10?'0':'')+s;
+  d.className='tnum';
+  const fg=document.getElementById('tcirc');
+  if(tl<=30){d.classList.add('dng');fg.style.stroke='#dc2626';}
+  else if(tl<=60){d.classList.add('warn');fg.style.stroke='#d97706';}
+  else fg.style.stroke='#16a34a';
+}
+function onTimeout(){
+  snd('tout');
+  ans[cur]={ch:-1,co:qs[cur].ans,tout:true};
+  markDone(true);
+  const tf=document.getElementById('tf');
+  tf.classList.add('on');
+  setTimeout(()=>tf.classList.remove('on'),600);
+  updNav();updCtrl();
+}
+
+// ── SCORE ────────────────────────────────────────────────────────────────────
+function getScore(){
+  return ans.filter(a=>a&&!a.tout&&!a.skip&&a.ch===a.co).length;
+}
+function updScore(){
+  document.getElementById('qscore').textContent=getScore()+' / '+qs.length;
+}
+
+// ── RENDER Q ─────────────────────────────────────────────────────────────────
+function renderQ(i){
+  const q=qs[i];
+  document.getElementById('qbadge').textContent='Sual '+(i+1);
+  document.getElementById('qcnt').textContent=(i+1)+' / '+qs.length;
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('pf').style.width=((i+1)/qs.length*100)+'%';
+  document.getElementById('exp').textContent='';
+  document.getElementById('exp').className='exp';
+  updScore();
+
+  const og=document.getElementById('opts');
+  og.innerHTML='';
+  const letters=['A','B','C','D','E','F'];
+  q.opts.forEach((o,j)=>{
+    const b=document.createElement('button');
+    b.className='opt';
+    b.innerHTML=`<span class="ol">${letters[j]}</span><span class="ot">${o}</span>`;
+    b.onclick=()=>handleAns(j);
+    og.appendChild(b);
+  });
+
+  const a=ans[i];
+  if(a){
+    markDone(a.tout,true);
+    // Show explanation with correct answer
+    const co=qs[i].ans;
+    const expEl=document.getElementById('exp');
+    expEl.textContent='Düzgün cavab: '+letters[co]+') '+qs[i].opts[co];
+    expEl.classList.add('on');
+  }
+  updNav();updCtrl();
+}
+
+function updCtrl(){
+  const a=ans[cur];
+  const allDone=ans.every(x=>x!==null);
+  document.getElementById('bp').disabled=cur===0;
+  document.getElementById('bsk').style.display=(a||allDone)?'none':'flex';
+  const bn=document.getElementById('bn');
+  if(cur===qs.length-1&&allDone)bn.textContent='Nəticə →';
+  else bn.textContent='İrəli →';
+}
+
+// ── ANSWER ───────────────────────────────────────────────────────────────────
+function handleAns(ch){
+  if(ans[cur])return;
+  clearInterval(tid);
+  const co=qs[cur].ans;
+  ans[cur]={ch,co};
+  markDone(false);
+  snd(ch===co?'ok':'bad');
+  // Show correct answer letter
+  const letters=['A','B','C','D','E','F'];
+  const expEl=document.getElementById('exp');
+  expEl.textContent='Düzgün cavab: '+letters[co]+') '+qs[cur].opts[co];
+  expEl.classList.add('on');
+  updScore();
+  updNav();
+  updCtrl();
+  // NO auto-advance — user presses next
+}
+
+function markDone(isTimeout,noAnim=false){
+  const q=qs[cur];
+  const btns=document.querySelectorAll('.opt');
+  btns.forEach((b,i)=>{
+    b.classList.add('done');
+    if(i===q.ans&&(isTimeout||ans[cur].ch!==q.ans))b.classList.add('show-ok');
+    if(!isTimeout&&i===ans[cur].ch)b.classList.add(ans[cur].ch===q.ans?'ok':'bad');
+  });
+}
+
+// ── NAV ──────────────────────────────────────────────────────────────────────
+function nxtAct(){
+  const allDone=ans.every(x=>x!==null);
+  if(cur===qs.length-1&&allDone){showResult();return;}
+  if(cur<qs.length-1)goTo(cur+1);
+}
+
+function goTo(i){
+  if(i<0||i>=qs.length)return;
+  cur=i;
+  if(!ans[cur])startTimer();
+  else clearInterval(tid);
+  renderQ(cur);
+}
+
+function skipQ(){
+  if(ans[cur])return;
+  ans[cur]={ch:-1,co:qs[cur].ans,skip:true};
+  updNav();updCtrl();
+  // find next unanswered
+  let nx=-1;
+  for(let i=cur+1;i<qs.length;i++){if(!ans[i]){nx=i;break;}}
+  if(nx===-1)for(let i=0;i<cur;i++){if(!ans[i]){nx=i;break;}}
+  if(nx!==-1)goTo(nx);else showResult();
+}
+
+// ── SCREENS ──────────────────────────────────────────────────────────────────
+function showScr(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+function startQuiz(){
+  buildQs();buildNav();cur=0;
+  showScr('sq');startTimer();renderQ(0);
+}
+function restartQ(){clearInterval(tid);startQuiz();}
+
+function showResult(){
+  clearInterval(tid);snd('fin');
+  const c=ans.filter(a=>a&&!a.tout&&!a.skip&&a.ch===a.co).length;
+  const w=ans.filter(a=>a&&!a.tout&&!a.skip&&a.ch!==a.co).length;
+  const t=ans.filter(a=>a&&a.tout).length;
+  const s=ans.filter(a=>a&&a.skip).length;
+  const pct=Math.round(c/qs.length*100);
+  document.getElementById('rc').textContent=c;
+  document.getElementById('rw').textContent=w;
+  document.getElementById('rt').textContent=t;
+  document.getElementById('rsk').textContent=s;
+  document.getElementById('rpct').textContent=pct+'%';
+  document.getElementById('rtit').textContent=pct>=90?'Əla! 🏆':pct>=70?'Yaxşı! 👍':pct>=50?'Orta':'Yenidən cəhd et';
+  document.getElementById('rsub').textContent=c+' düzgün / '+qs.length+' sualdan · '+pct+'%';
+  const arc=document.getElementById('rarc');
+  arc.style.stroke=pct>=70?'#16a34a':pct>=50?'#d97706':'#dc2626';
+  showScr('sr');
+  setTimeout(()=>{arc.style.strokeDashoffset=339*(1-pct/100);},100);
+}
+</script>
+</body>
+</html>
