@@ -280,7 +280,6 @@
   <p>BSQ / KSQ — şəkildən oxuyub avtomatik hesabla</p>
 </div>
 
-<!-- Steps -->
 <div class="steps">
   <div class="step active" id="step1"><span class="step-num">1</span>Növ seç</div>
   <div class="step" id="step2"><span class="step-num">2</span>Yarım il</div>
@@ -288,7 +287,6 @@
   <div class="step" id="step4"><span class="step-num">4</span>Nəticə</div>
 </div>
 
-<!-- Step 1: Type -->
 <div class="card" id="card1">
   <div class="card-title">📋 Qiymətləndirmə növü</div>
   <div class="type-btns">
@@ -302,7 +300,6 @@
     </button>
   </div>
 
-  <!-- KSQ count (hidden until KSQ selected) -->
   <div id="ksq-count-area" style="display:none; margin-top:16px;">
     <div class="divider"></div>
     <div class="card-title" style="margin-bottom:10px;">KSQ sayı neçədir?</div>
@@ -315,7 +312,6 @@
   </div>
 </div>
 
-<!-- Step 2: Half -->
 <div class="card" id="card2" style="display:none;">
   <div class="card-title">📅 Yarım il</div>
   <div class="half-btns">
@@ -324,7 +320,6 @@
   </div>
 </div>
 
-<!-- Step 3: Image -->
 <div class="card" id="card3" style="display:none;">
   <div class="card-title">📸 Jurnal şəklini yüklə</div>
 
@@ -363,7 +358,6 @@
   <div class="error-box" id="errorBox"></div>
 </div>
 
-<!-- Step 4: Results -->
 <div class="card" id="card4" style="display:none;">
   <div id="results">
     <div class="result-header">
@@ -379,8 +373,9 @@
 </div>
 
 <script>
-const API_KEY = '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';
-const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+// YENİLƏNMİŞ HİSSƏ: Google Gemini 2.0 API tənzimləmələri
+const API_KEY = 'AIzaSyC00i8eWC4OE1KOc-PHewNLi9YzcrXLJ_c';
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 let selectedType = null;
 let ksqCount = 2;
@@ -394,7 +389,6 @@ function selectType(type) {
   document.getElementById('btn-bsq').className = 'type-btn' + (type==='BSQ' ? ' selected-bsq' : '');
   document.getElementById('ksq-count-area').style.display = type === 'KSQ' ? 'block' : 'none';
   setStep(1, true);
-  // Show step 2
   document.getElementById('card2').style.display = 'block';
   setStep(2, 'active');
 }
@@ -470,7 +464,6 @@ function setPreview(dataUrl) {
   document.getElementById('errorBox').style.display = 'none';
 }
 
-// Drag & drop
 const ua = document.getElementById('uploadArea');
 ua.addEventListener('dragover', e => { e.preventDefault(); ua.classList.add('dragover'); });
 ua.addEventListener('dragleave', () => ua.classList.remove('dragover'));
@@ -500,8 +493,7 @@ function setProgress(pct) {
   document.getElementById('progressFill').style.width = pct + '%';
 }
 
-
-
+// YENİLƏNMİŞ ANALYZE FUNKSİYASI
 async function analyzeImage() {
   if (!imageBase64) return;
   document.getElementById('analyzeBtn').disabled = true;
@@ -513,19 +505,12 @@ async function analyzeImage() {
     ? `Bu KSQ jurnalıdır. ${ksqCount} dənə KSQ var (KSQ1, KSQ2, ..., KSQ${ksqCount}).`
     : 'Bu BSQ jurnalıdır. Hər şagird üçün BSQ qiymətini tap.';
 
-  const prompt = `Azərbaycan məktəb jurnalı şəkli. ${typeHint} ${selectedHalf === 1 ? '1-ci yarım il.' : '2-ci yarım il.'}
-
-Bütün şagirdlərin adını və qiymətini oxu. Adlar Azərbaycan adlarıdır (soyad + ad). Əl yazısını diqqətlə oxu: ə,ı,ü,ö,ğ,ş,ç,x hərflərinə diqqət et. Soyadlar -ov/-ova/-li/-zadə/-oğlu/-qızı ilə bitir.
-
-${selectedType === 'KSQ' 
-  ? `Boş xanalar üçün null.`
-  : ``}
-
-Yalnız JSON, başqa heç nə:
-${selectedType === 'KSQ' 
-  ? `{"type":"KSQ","students":[{"num":1,"name":"Soyad Ad","grades":{"ksq1":8,"ksq2":7}}]}`
-  : `{"type":"BSQ","students":[{"num":1,"name":"Soyad Ad","bsq":8}]}`
-}`;
+  const promptText = `Azərbaycan məktəb jurnalı şəkli. ${typeHint} ${selectedHalf === 1 ? '1-ci yarım il.' : '2-ci yarım il.'}
+  Bütün şagirdlərin adını və qiymətini oxu. Adlar Azərbaycan adlarıdır (soyad + ad). Əl yazısını diqqətlə oxu.
+  Yalnız JSON formatında cavab ver:
+  ${selectedType === 'KSQ' 
+    ? `{"type":"KSQ","students":[{"num":1,"name":"Soyad Ad","grades":{"ksq1":8,"ksq2":7}}]}`
+    : `{"type":"BSQ","students":[{"num":1,"name":"Soyad Ad","bsq":8}]}`}`;
 
   try {
     setProgress(30);
@@ -533,23 +518,18 @@ ${selectedType === 'KSQ'
 
     const response = await fetch(API_URL, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://jurnal-hesab.local',
-        'X-Title': 'Jurnal Hesablayici'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'google/gemini-2.0-flash-001',
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'text', text: prompt },
-            { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${imageBase64}` } }
+        contents: [{
+          parts: [
+            { text: promptText },
+            { inline_data: { mime_type: "image/jpeg", data: imageBase64 } }
           ]
         }],
-        max_tokens: 1100,
-        temperature: 0.05
+        generationConfig: {
+          temperature: 0.1,
+          response_mime_type: "application/json"
+        }
       })
     });
 
@@ -557,19 +537,14 @@ ${selectedType === 'KSQ'
     setStatus('⚙️ Hesablanır...');
 
     if (!response.ok) {
-      const err = await response.text();
-      throw new Error('API xətası: ' + err);
+      const err = await response.json();
+      throw new Error('API xətası: ' + (err.error?.message || 'Bilinməyən xəta'));
     }
 
     const data = await response.json();
-    const raw = data.choices?.[0]?.message?.content || '';
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     
-    // Parse JSON from response — handle markdown code blocks
-    const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-    const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('JSON tapılmadı. AI cavabı: ' + raw.substring(0,200));
-    
-    const parsed = JSON.parse(jsonMatch[0]);
+    const parsed = JSON.parse(raw);
     setProgress(100);
     setStatus('✅ Tamamlandı!');
 
@@ -588,7 +563,6 @@ ${selectedType === 'KSQ'
 }
 
 function calcKSQ(grades) {
-  // Y = (ksq1 + ksq2 + ... + ksqn) / n
   const vals = Object.values(grades).filter(v => v !== null && v !== undefined && v !== '');
   if (vals.length === 0) return null;
   const sum = vals.reduce((a,b) => a + Number(b), 0);
@@ -596,7 +570,6 @@ function calcKSQ(grades) {
 }
 
 function calcBSQ(ksqAvg, bsq) {
-  // Y = (ksq1+...+ksqn)/n * 40/100 + BSQ * 60/100
   return (ksqAvg * 0.4 + bsq * 0.6).toFixed(2);
 }
 
@@ -614,7 +587,6 @@ function showResults(data) {
   const type = data.type || selectedType;
   const students = data.students || [];
 
-  // Formula display
   let formulaTxt = '';
   if (type === 'KSQ') {
     formulaTxt = `Y = (KSQ1 + KSQ2 + ... + KSQ${ksqCount}) ÷ ${ksqCount}`;
@@ -637,7 +609,6 @@ function showResults(data) {
       const parts = Object.entries(s.grades || {}).map(([k,v]) => `${k.toUpperCase()}:${v ?? '—'}`).join(' ');
       gradesDisplay = parts;
     } else {
-      // BSQ mode — students have both ksq avg and bsq, or just bsq
       if (s.grades) {
         const ksqAvg = calcKSQ(s.grades);
         finalScore = calcBSQ(Number(ksqAvg), Number(s.bsq || 0));
