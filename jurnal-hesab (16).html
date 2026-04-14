@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jurnal Hesablayıcı</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #222636;
+    --border: #2e3347;
+    --accent: #4f8ef7;
+    --accent2: #a78bfa;
+    --green: #34d399;
+    --red: #f87171;
+    --yellow: #fbbf24;
+    --text: #e8eaf0;
+    --muted: #8b92a9;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+  .header p { color: var(--muted); font-size: 14px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  /* Steps */
+  .steps { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .step {
+    flex: 1; min-width: 100px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    transition: all .3s;
+  }
+  .step.active { border-color: var(--accent); color: var(--accent); background: rgba(79,142,247,.08); }
+  .step.done { border-color: var(--green); color: var(--green); background: rgba(52,211,153,.08); }
+  .step-num { font-size: 20px; font-weight: 900; display: block; margin-bottom: 2px; }
+
+  /* Type selector */
+  .type-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .type-btn {
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .25s;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+  }
+  .type-btn .sub { font-size: 11px; color: var(--muted); font-weight: 600; display: block; margin-top: 4px; }
+  .type-btn:hover { border-color: var(--accent); background: rgba(79,142,247,.1); }
+  .type-btn.selected-ksq { border-color: var(--accent); background: rgba(79,142,247,.15); color: var(--accent); }
+  .type-btn.selected-bsq { border-color: var(--accent2); background: rgba(167,139,250,.15); color: var(--accent2); }
+
+  /* KSQ count */
+  .ksq-count {
+    display: flex; align-items: center; gap: 12px; justify-content: center;
+    margin-top: 4px;
+  }
+  .count-btn {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); font-size: 22px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+    font-family: 'Nunito', sans-serif;
+  }
+  .count-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .count-display {
+    font-size: 36px; font-weight: 900; min-width: 60px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+  }
+  .count-label { color: var(--muted); font-size: 13px; text-align: center; margin-top: 6px; }
+
+  /* Half selector */
+  .half-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .half-btn {
+    background: var(--surface2); border: 2px solid var(--border);
+    border-radius: 10px; padding: 14px;
+    text-align: center; cursor: pointer;
+    transition: all .25s; color: var(--text);
+    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px;
+  }
+  .half-btn:hover { border-color: var(--yellow); }
+  .half-btn.selected { border-color: var(--yellow); background: rgba(251,191,36,.12); color: var(--yellow); }
+
+  /* Upload */
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .upload-area:hover, .upload-area.dragover {
+    border-color: var(--accent);
+    background: rgba(79,142,247,.06);
+  }
+  .upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-icon { font-size: 40px; margin-bottom: 10px; }
+  .upload-area p { color: var(--muted); font-size: 14px; }
+  .upload-area strong { color: var(--accent); }
+
+  .preview-img {
+    width: 100%; border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-top: 12px; display: none;
+    max-height: 300px; object-fit: contain;
+  }
+
+  /* Camera */
+  .camera-area { position: relative; }
+  #videoEl {
+    width: 100%; border-radius: 10px; background: #000;
+    display: none; max-height: 280px; object-fit: cover;
+  }
+  .cam-btns { display: flex; gap: 10px; margin-top: 10px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 10px;
+    font-family: 'Nunito', sans-serif; font-weight: 800;
+    font-size: 14px; cursor: pointer; border: none;
+    transition: all .2s; width: 100%; justify-content: center;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--accent), #3b6fd4); color: #fff; }
+  .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+  .btn-success { background: linear-gradient(135deg, var(--green), #059669); color: #fff; }
+  .btn-success:hover { opacity: .9; transform: translateY(-1px); }
+  .btn-outline { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+  /* Progress */
+  .progress-bar {
+    height: 4px; background: var(--border); border-radius: 4px;
+    margin: 12px 0; overflow: hidden; display: none;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 4px; width: 0; transition: width .4s;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0%,100% { opacity: 1; } 50% { opacity: .6; }
+  }
+
+  .status-msg {
+    text-align: center; font-size: 13px; color: var(--muted);
+    margin: 8px 0; min-height: 20px;
+  }
+
+  /* Results */
+  #results { display: none; }
+  .result-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; flex-wrap: gap;
+  }
+  .result-title { font-size: 16px; font-weight: 800; }
+  .result-badge {
+    background: rgba(79,142,247,.2); color: var(--accent);
+    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  }
+
+  .student-grid { display: flex; flex-direction: column; gap: 10px; }
+  .student-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 14px;
+    animation: slideIn .3s ease both;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .student-num {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: var(--muted);
+    flex-shrink: 0;
+  }
+  .student-name { flex: 1; font-weight: 700; font-size: 14px; }
+  .student-grades {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted); margin-top: 2px;
+  }
+  .student-score {
+    font-size: 24px; font-weight: 900;
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+  }
+  .score-5 { color: var(--green); }
+  .score-4 { color: var(--accent); }
+  .score-3 { color: var(--yellow); }
+  .score-2 { color: var(--red); }
+
+  .error-box {
+    background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3);
+    border-radius: 10px; padding: 14px; color: var(--red);
+    font-size: 13px; display: none; margin-top: 10px;
+  }
+
+  .formula-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--accent2);
+    text-align: center; margin-bottom: 14px;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 6px;
+    font-size: 11px; font-weight: 700;
+  }
+  .tag-ksq { background: rgba(79,142,247,.2); color: var(--accent); }
+  .tag-bsq { background: rgba(167,139,250,.2); color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 Jurnal Hesablayıcı</h1>
+  <p>BSQ / KSQ — şəkildən oxuyub avtomatik hesabla</p>
+</div>
+
+<!-- Steps -->
+<div class="steps">
+  <div class="step active" id="step1"><span class="step-num">1</span>Növ seç</div>
+  <div class="step" id="step2"><span class="step-num">2</span>Yarım il</div>
+  <div class="step" id="step3"><span class="step-num">3</span>Şəkil çək</div>
+  <div class="step" id="step4"><span class="step-num">4</span>Nəticə</div>
+</div>
+
+<!-- Step 1: Type -->
+<div class="card" id="card1">
+  <div class="card-title">📋 Qiymətləndirmə növü</div>
+  <div class="type-btns">
+    <button class="type-btn" onclick="selectType('KSQ')" id="btn-ksq">
+      KSQ
+      <span class="sub">Kiçik Summativ Qiymətləndirmə</span>
+    </button>
+    <button class="type-btn" onclick="selectType('BSQ')" id="btn-bsq">
+      BSQ
+      <span class="sub">Böyük Summativ Qiymətləndirmə</span>
+    </button>
+  </div>
+
+  <!-- KSQ count (hidden until KSQ selected) -->
+  <div id="ksq-count-area" style="display:none; margin-top:16px;">
+    <div class="divider"></div>
+    <div class="card-title" style="margin-bottom:10px;">KSQ sayı neçədir?</div>
+    <div class="ksq-count">
+      <button class="count-btn" onclick="changeCount(-1)">−</button>
+      <div class="count-display" id="ksq-count-val">2</div>
+      <button class="count-btn" onclick="changeCount(1)">+</button>
+    </div>
+    <div class="count-label">KSQ sayını seçin (1–10)</div>
+  </div>
+</div>
+
+<!-- Step 2: Half -->
+<div class="card" id="card2" style="display:none;">
+  <div class="card-title">📅 Yarım il</div>
+  <div class="half-btns">
+    <button class="half-btn" onclick="selectHalf(1)" id="half1">I Yarım il</button>
+    <button class="half-btn" onclick="selectHalf(2)" id="half2">II Yarım il</button>
+  </div>
+</div>
+
+<!-- Step 3: Image -->
+<div class="card" id="card3" style="display:none;">
+  <div class="card-title">📸 Jurnal şəklini yüklə</div>
+
+  <div class="camera-area">
+    <video id="videoEl" autoplay playsinline></video>
+    <canvas id="canvasEl" style="display:none;"></canvas>
+  </div>
+
+  <div class="cam-btns">
+    <button class="btn btn-outline" onclick="startCamera()" id="camStartBtn">📷 Kamera aç</button>
+    <button class="btn btn-primary" onclick="capturePhoto()" id="captureBtn" style="display:none;">🎯 Çək</button>
+    <button class="btn btn-outline" onclick="stopCamera()" id="camStopBtn" style="display:none;">✕ Bağla</button>
+  </div>
+
+  <div style="text-align:center; margin: 12px 0; color: var(--muted); font-size: 13px;">— və ya —</div>
+
+  <div class="upload-area" id="uploadArea">
+    <input type="file" accept="image/*" id="fileInput" onchange="handleFile(this)">
+    <div class="upload-icon">🖼️</div>
+    <p><strong>Şəkil seçin</strong> və ya buraya sürükləyin</p>
+    <p style="font-size:12px; margin-top:4px;">JPG, PNG, HEIC</p>
+  </div>
+
+  <img id="previewImg" class="preview-img" alt="Jurnal şəkli">
+
+  <div style="margin-top:14px;">
+    <button class="btn btn-success" onclick="analyzeImage()" id="analyzeBtn" disabled>
+      🤖 Hesabla
+    </button>
+  </div>
+
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <div class="status-msg" id="statusMsg"></div>
+  <div class="error-box" id="errorBox"></div>
+</div>
+
+<!-- Step 4: Results -->
+<div class="card" id="card4" style="display:none;">
+  <div id="results">
+    <div class="result-header">
+      <div class="result-title">📊 Nəticələr</div>
+      <div id="resultBadge" class="result-badge"></div>
+    </div>
+    <div class="formula-box" id="formulaBox"></div>
+    <div class="student-grid" id="studentGrid"></div>
+    <div style="margin-top:16px;">
+      <button class="btn btn-outline" onclick="resetAll()">🔄 Yenidən başla</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_KEY = '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';
+const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+let selectedType = null;
+let ksqCount = 2;
+let selectedHalf = null;
+let imageBase64 = null;
+let stream = null;
+
+function selectType(type) {
+  selectedType = type;
+  document.getElementById('btn-ksq').className = 'type-btn' + (type==='KSQ' ? ' selected-ksq' : '');
+  document.getElementById('btn-bsq').className = 'type-btn' + (type==='BSQ' ? ' selected-bsq' : '');
+  document.getElementById('ksq-count-area').style.display = type === 'KSQ' ? 'block' : 'none';
+  setStep(1, true);
+  // Show step 2
+  document.getElementById('card2').style.display = 'block';
+  setStep(2, 'active');
+}
+
+function changeCount(d) {
+  ksqCount = Math.max(1, Math.min(10, ksqCount + d));
+  document.getElementById('ksq-count-val').textContent = ksqCount;
+}
+
+function selectHalf(h) {
+  selectedHalf = h;
+  document.getElementById('half1').className = 'half-btn' + (h===1 ? ' selected' : '');
+  document.getElementById('half2').className = 'half-btn' + (h===2 ? ' selected' : '');
+  setStep(2, true);
+  document.getElementById('card3').style.display = 'block';
+  setStep(3, 'active');
+}
+
+function setStep(n, state) {
+  const el = document.getElementById('step'+n);
+  if (state === true) el.className = 'step done';
+  else if (state === 'active') el.className = 'step active';
+}
+
+// Camera
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+    const v = document.getElementById('videoEl');
+    v.srcObject = stream;
+    v.style.display = 'block';
+    document.getElementById('camStartBtn').style.display = 'none';
+    document.getElementById('captureBtn').style.display = 'flex';
+    document.getElementById('camStopBtn').style.display = 'flex';
+  } catch(e) {
+    showError('Kamera açılmadı: ' + e.message);
+  }
+}
+
+function capturePhoto() {
+  const v = document.getElementById('videoEl');
+  const c = document.getElementById('canvasEl');
+  c.width = v.videoWidth;
+  c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v, 0, 0);
+  const dataUrl = c.toDataURL('image/jpeg', 0.9);
+  setPreview(dataUrl);
+  stopCamera();
+}
+
+function stopCamera() {
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+  document.getElementById('videoEl').style.display = 'none';
+  document.getElementById('camStartBtn').style.display = 'flex';
+  document.getElementById('captureBtn').style.display = 'none';
+  document.getElementById('camStopBtn').style.display = 'none';
+}
+
+function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => setPreview(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+function setPreview(dataUrl) {
+  imageBase64 = dataUrl.split(',')[1];
+  const img = document.getElementById('previewImg');
+  img.src = dataUrl;
+  img.style.display = 'block';
+  document.getElementById('analyzeBtn').disabled = false;
+  document.getElementById('errorBox').style.display = 'none';
+}
+
+// Drag & drop
+const ua = document.getElementById('uploadArea');
+ua.addEventListener('dragover', e => { e.preventDefault(); ua.classList.add('dragover'); });
+ua.addEventListener('dragleave', () => ua.classList.remove('dragover'));
+ua.addEventListener('drop', e => {
+  e.preventDefault(); ua.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const r = new FileReader();
+    r.onload = ev => setPreview(ev.target.result);
+    r.readAsDataURL(file);
+  }
+});
+
+function showError(msg) {
+  const b = document.getElementById('errorBox');
+  b.textContent = '⚠️ ' + msg;
+  b.style.display = 'block';
+}
+
+function setStatus(msg) {
+  document.getElementById('statusMsg').textContent = msg;
+}
+
+function setProgress(pct) {
+  const bar = document.getElementById('progressBar');
+  bar.style.display = 'block';
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+
+
+async function analyzeImage() {
+  if (!imageBase64) return;
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('errorBox').style.display = 'none';
+  setProgress(10);
+  setStatus('🤖 AI jurnalı oxuyur...');
+
+  const typeHint = selectedType === 'KSQ'
+    ? `Bu KSQ jurnalıdır. ${ksqCount} dənə KSQ var (KSQ1, KSQ2, ..., KSQ${ksqCount}).`
+    : 'Bu BSQ jurnalıdır. Hər şagird üçün BSQ qiymətini tap.';
+
+  const prompt = `Azərbaycan məktəb jurnalı şəkli. ${typeHint} ${selectedHalf === 1 ? '1-ci yarım il.' : '2-ci yarım il.'}
+
+Bütün şagirdlərin adını və qiymətini oxu. Adlar Azərbaycan adlarıdır (soyad + ad). Əl yazısını diqqətlə oxu: ə,ı,ü,ö,ğ,ş,ç,x hərflərinə diqqət et. Soyadlar -ov/-ova/-li/-zadə/-oğlu/-qızı ilə bitir.
+
+${selectedType === 'KSQ' 
+  ? `Boş xanalar üçün null.`
+  : ``}
+
+Yalnız JSON, başqa heç nə:
+${selectedType === 'KSQ' 
+  ? `{"type":"KSQ","students":[{"num":1,"name":"Soyad Ad","grades":{"ksq1":8,"ksq2":7}}]}`
+  : `{"type":"BSQ","students":[{"num":1,"name":"Soyad Ad","bsq":8}]}`
+}`;
+
+  try {
+    setProgress(30);
+    setStatus('📡 Məlumat göndərilir...');
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://jurnal-hesab.local',
+        'X-Title': 'Jurnal Hesablayici'
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.0-flash-001',
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${imageBase64}` } }
+          ]
+        }],
+        max_tokens: 1100,
+        temperature: 0.05
+      })
+    });
+
+    setProgress(70);
+    setStatus('⚙️ Hesablanır...');
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error('API xətası: ' + err);
+    }
+
+    const data = await response.json();
+    const raw = data.choices?.[0]?.message?.content || '';
+    
+    // Parse JSON from response — handle markdown code blocks
+    const cleaned = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('JSON tapılmadı. AI cavabı: ' + raw.substring(0,200));
+    
+    const parsed = JSON.parse(jsonMatch[0]);
+    setProgress(100);
+    setStatus('✅ Tamamlandı!');
+
+    setTimeout(() => {
+      document.getElementById('progressBar').style.display = 'none';
+      showResults(parsed);
+    }, 500);
+
+  } catch(e) {
+    setProgress(0);
+    document.getElementById('progressBar').style.display = 'none';
+    setStatus('');
+    showError(e.message);
+    document.getElementById('analyzeBtn').disabled = false;
+  }
+}
+
+function calcKSQ(grades) {
+  // Y = (ksq1 + ksq2 + ... + ksqn) / n
+  const vals = Object.values(grades).filter(v => v !== null && v !== undefined && v !== '');
+  if (vals.length === 0) return null;
+  const sum = vals.reduce((a,b) => a + Number(b), 0);
+  return (sum / vals.length).toFixed(2);
+}
+
+function calcBSQ(ksqAvg, bsq) {
+  // Y = (ksq1+...+ksqn)/n * 40/100 + BSQ * 60/100
+  return (ksqAvg * 0.4 + bsq * 0.6).toFixed(2);
+}
+
+function scoreClass(s) {
+  if (s >= 8) return 'score-5';
+  if (s >= 6) return 'score-4';
+  if (s >= 4) return 'score-3';
+  return 'score-2';
+}
+
+function showResults(data) {
+  setStep(3, true);
+  setStep(4, 'active');
+
+  const type = data.type || selectedType;
+  const students = data.students || [];
+
+  // Formula display
+  let formulaTxt = '';
+  if (type === 'KSQ') {
+    formulaTxt = `Y = (KSQ1 + KSQ2 + ... + KSQ${ksqCount}) ÷ ${ksqCount}`;
+  } else {
+    formulaTxt = `Y = (KSQ ortalama × 40/100) + (BSQ × 60/100)`;
+  }
+  document.getElementById('formulaBox').textContent = formulaTxt;
+  document.getElementById('resultBadge').textContent = type;
+  document.getElementById('resultBadge').className = 'result-badge ' + (type === 'KSQ' ? 'tag-ksq' : 'tag-bsq');
+
+  const grid = document.getElementById('studentGrid');
+  grid.innerHTML = '';
+
+  students.forEach((s, i) => {
+    let finalScore, gradesDisplay;
+
+    if (type === 'KSQ') {
+      const avg = calcKSQ(s.grades || {});
+      finalScore = avg;
+      const parts = Object.entries(s.grades || {}).map(([k,v]) => `${k.toUpperCase()}:${v ?? '—'}`).join(' ');
+      gradesDisplay = parts;
+    } else {
+      // BSQ mode — students have both ksq avg and bsq, or just bsq
+      if (s.grades) {
+        const ksqAvg = calcKSQ(s.grades);
+        finalScore = calcBSQ(Number(ksqAvg), Number(s.bsq || 0));
+        const parts = Object.entries(s.grades).map(([k,v]) => `${k.toUpperCase()}:${v ?? '—'}`).join(' ');
+        gradesDisplay = `${parts} | BSQ:${s.bsq}`;
+      } else {
+        finalScore = s.bsq || '—';
+        gradesDisplay = `BSQ: ${s.bsq}`;
+      }
+    }
+
+    const sc = parseFloat(finalScore);
+    const cls = isNaN(sc) ? '' : scoreClass(sc);
+
+    const card = document.createElement('div');
+    card.className = 'student-card';
+    card.style.animationDelay = (i * 0.05) + 's';
+    card.innerHTML = `
+      <div class="student-num">${s.num || i+1}</div>
+      <div style="flex:1">
+        <div class="student-name">${s.name || 'Şagird ' + (i+1)}</div>
+        <div class="student-grades">${gradesDisplay}</div>
+      </div>
+      <div class="student-score ${cls}">${finalScore ?? '—'}</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('card4').style.display = 'block';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('card4').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetAll() {
+  selectedType = null; selectedHalf = null; imageBase64 = null; ksqCount = 2;
+  ['card2','card3','card4'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('btn-ksq').className = 'type-btn';
+  document.getElementById('btn-bsq').className = 'type-btn';
+  document.getElementById('ksq-count-area').style.display = 'none';
+  document.getElementById('ksq-count-val').textContent = '2';
+  document.getElementById('half1').className = 'half-btn';
+  document.getElementById('half2').className = 'half-btn';
+  document.getElementById('previewImg').style.display = 'none';
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('studentGrid').innerHTML = '';
+  document.getElementById('statusMsg').textContent = '';
+  document.getElementById('errorBox').style.display = 'none';
+  document.getElementById('progressBar').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  ['step1','step2','step3','step4'].forEach((id,i) => {
+    document.getElementById(id).className = 'step' + (i===0 ? ' active' : '');
+  });
+  stopCamera();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
